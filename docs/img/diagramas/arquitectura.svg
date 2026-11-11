@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1060 660" width="1060" height="660" font-family="Segoe UI, Arial, Helvetica, sans-serif"><rect width="100%" height="100%" fill="#fff"/><defs>
+<marker id="flecha" viewBox="0 0 12 12" refX="12" refY="6" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,1 L12,6 L0,11" fill="none" stroke="#1d2b44" stroke-width="1.4"/></marker>
+<marker id="llena" viewBox="0 0 12 12" refX="12" refY="6" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,1 L12,6 L0,11 z" fill="#1d2b44"/></marker>
+<marker id="triangulo" viewBox="0 0 16 16" refX="16" refY="8" markerWidth="16" markerHeight="16" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M1,1 L16,8 L1,15 z" fill="#fff" stroke="#1d2b44" stroke-width="1.3"/></marker>
+<marker id="rombo" viewBox="0 0 20 12" refX="20" refY="6" markerWidth="20" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,6 L10,1 L20,6 L10,11 z" fill="#1d2b44"/></marker>
+<marker id="muchos" viewBox="0 0 16 16" refX="16" refY="8" markerWidth="16" markerHeight="16" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,8 L16,1 M0,8 L16,8 M0,8 L16,15 M3,2 L3,14" fill="none" stroke="#1d2b44" stroke-width="1.3"/></marker>
+<marker id="uno" viewBox="0 0 16 16" refX="16" refY="8" markerWidth="16" markerHeight="16" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M6,1 L6,15 M10,1 L10,15" fill="none" stroke="#1d2b44" stroke-width="1.3"/></marker>
+</defs><polygon points="20,80 32,68 232,68 220,80" fill="#e9eef6" stroke="#1d2b44" stroke-width="1.3"/>
+<polygon points="220,80 232,68 232,208 220,220" fill="#d5deeb" stroke="#1d2b44" stroke-width="1.3"/>
+<rect x="20" y="80" width="200" height="140" rx="0" fill="#fbfcfe" stroke="#1d2b44" stroke-width="1.3"/>
+<text x="30.0" y="96.0" font-size="12.5" text-anchor="start" dominant-baseline="central" font-weight="700" fill="#1d2433">«device» Equipo portería</text>
+<rect x="40" y="130" width="160" height="60" rx="4" fill="#fff" stroke="#1d2b44" stroke-width="1.3"/>
+<rect x="176" y="138" width="14" height="18" fill="#fff" stroke="#1d2b44"/>
+<rect x="172" y="141" width="8" height="4" fill="#fff" stroke="#1d2b44"/>
+<rect x="172" y="149" width="8" height="4" fill="#fff" stroke="#1d2b44"/>
+<text x="108.0" y="152.2" font-size="12.5" text-anchor="middle" dominant-baseline="central" font-weight="normal" fill="#1d2433">Navegador web</text>
+<text x="108.0" y="167.9" font-size="12.5" text-anchor="middle" dominant-baseline="central" font-weight="normal" fill="#1d2433">(HTML5 / CSS3)</text>
+<polygon points="280,30 292,18 852,18 840,30" fill="#e9eef6" stroke="#1d2b44" stroke-width="1.3"/>
+<polygon points="840,30 852,18 852,628 840,640" fill="#d5deeb" stroke="#1d2b44" stroke-width="1.3"/>
+<rect x="280" y="30" width="560" height="610" rx="0" fill="#fbfcfe" stroke="#1d2b44" stroke-width="1.3"/>
+<text x="290.0" y="46.0" font-size="12.5" text-anchor="start" dominant-baseline="central" font-weight="700" fill="#1d2433">«execution environment» Servidor de aplicación · Python 3 + Flask</text>
+<rect x="300" y="70" width="520" height="120" rx="6" fill="#f3f6fb" stroke="#1d2b44" stroke-width="1.3"/>
+<text x="312.0" y="86.0" font-size="12.5" text-anchor="start" dominant-baseline="central" font-weight="700" fill="#12305a">Capa de presentación (controllers + templates)</text>
+<rect x="352.0" y="108" width="200" height="64" rx="4" fill="#fff" stroke="#1d2b44" stroke-width="1.3"/>
+<rect x="528.0" y="116" width="14" height="18" fill="#fff" stroke="#1d2b44"/>
+<rect x="524.0" y="119" width="8" height="4" fill="#fff" stroke="#1d2b44"/>
+<rect x="524.0" y="127" width="8" height="4" fill="#fff" stroke="#1d2b44"/>
+<text x="440.0" y="132.9" font-size="11.5" text-anchor="middle" dominant-baseline="central" font-weight="normal" fill="#1d2433">Controladores</text>
+<text x="440.0" y="147.2" font-size="11.5" text-anchor="middle" dominant-baseline="central" font-weight="normal" fill="#1d2433">(Blueprints Flask)</text>
+<rect x="568.0" y="108" width="200" height="64" rx="4" fill="#fff" stroke="#1d2b44" stroke-width="1.3"/>
+<rect x="744.0" y="116" width="14" height="18" fill="#fff" stroke="#1d2b44"/>
+<rect x="740.0" y="119" width="8" height="4" fill="#fff" stroke="#1d2b44"/>
+<rect x="740.0" y="127" width="8" height="4" fill="#fff" stroke="#1d2b44"/>
+<text x="656.0" y="132.9" font-size="11.5" text-anchor="middle" dominant-baseline="central" font-weight="normal" fill="#1d2433">Vistas Jinja2</text>
+<text x="656.0" y="147.2" font-size="11.5" text-anchor="middle" dominant-baseline="central" font-weight="normal" fill="#1d2433">+ hoja de estilos</text>
+<rect x="300" y="215" width="520" height="120" rx="6" fill="#f3f6fb" stroke="#1d2b44" stroke-width="1.3"/>
+<text x="312.0" y="231.0" font-size="12.5" text-anchor="start" dominant-baseline="central" font-weight="700" fill="#12305a">Capa de lógica de negocio (services)</text>
+<rect x="329.0" y="253" width="150" height="64" rx="4" fill="#fff" stroke="#1d2b44" stroke-width="1.3"/>
+<rect x="455.0" y="261" width="14" height="18" fill="#fff" stroke="#1d2b44"/>
+<rect x="451.0" y="264" width="8" height="4" fill="#fff" stroke="#1d2b44"/>
+<rect x="451.0" y="272" width="8" height="4" fill="#fff" stroke="#1d2b44"/>
+<text x="392.0" y="285.0" font-size="11.5" text-anchor="middle" dominant-baseline="central" font-weight="normal" fill="#1d2433">ParqueoService</text>
+<rect x="495.0" y="253" width="150" height="64" rx="4" fill="#fff" stroke="#1d2b44" stroke-width="1.3"/>
+<rect x="621.0" y="261" width="14" height="18" fill="#fff" stroke="#1d2b44"/>
+<rect x="617.0" y="264" width="8" height="4" fill="#fff" stroke="#1d2b44"/>
+<rect x="617.0" y="272" width="8" height="4" fill="#fff" stroke="#1d2b44"/>
+<text x="558.0" y="285.0" font-size="11.5" text-anchor="middle" dominant-baseline="central" font-weight="normal" fill="#1d2433">VehiculoService</text>
+<rect x="661.0" y="253" width="130" height="64" rx="4" fill="#fff" stroke="#1d2b44" stroke-width="1.3"/>
+<rect x="767.0" y="261" width="14" height="18" fill="#fff" stroke="#1d2b44"/>
+<rect x="763.0" y="264" width="8" height="4" fill="#fff" stroke="#1d2b44"/>
+<rect x="763.0" y="272" width="8" height="4" fill="#fff" stroke="#1d2b44"/>
+<text x="714.0" y="285.0" font-size="11.5" text-anchor="middle" dominant-baseline="central" font-weight="normal" fill="#1d2433">AuthService</text>
+<rect x="300" y="360" width="520" height="120" rx="6" fill="#f3f6fb" stroke="#1d2b44" stroke-width="1.3"/>
+<text x="312.0" y="376.0" font-size="12.5" text-anchor="start" dominant-baseline="central" font-weight="700" fill="#12305a">Capa de acceso a datos (repositories)</text>
+<rect x="301.5" y="398" width="150" height="64" rx="4" fill="#fff" stroke="#1d2b44" stroke-width="1.3"/>
+<rect x="427.5" y="406" width="14" height="18" fill="#fff" stroke="#1d2b44"/>
+<rect x="423.5" y="409" width="8" height="4" fill="#fff" stroke="#1d2b44"/>
+<rect x="423.5" y="417" width="8" height="4" fill="#fff" stroke="#1d2b44"/>
+<text x="364.5" y="422.9" font-size="11.5" text-anchor="middle" dominant-baseline="central" font-weight="normal" fill="#1d2433">RegistroRepository</text>
+<text x="364.5" y="437.2" font-size="11.5" text-anchor="middle" dominant-baseline="central" font-weight="normal" fill="#1d2433">CeldaRepository</text>
+<rect x="467.5" y="398" width="185" height="64" rx="4" fill="#fff" stroke="#1d2b44" stroke-width="1.3"/>
+<rect x="628.5" y="406" width="14" height="18" fill="#fff" stroke="#1d2b44"/>
+<rect x="624.5" y="409" width="8" height="4" fill="#fff" stroke="#1d2b44"/>
+<rect x="624.5" y="417" width="8" height="4" fill="#fff" stroke="#1d2b44"/>
+<text x="548.0" y="422.9" font-size="11.5" text-anchor="middle" dominant-baseline="central" font-weight="normal" fill="#1d2433">VehiculoRepository</text>
+<text x="548.0" y="437.2" font-size="11.5" text-anchor="middle" dominant-baseline="central" font-weight="normal" fill="#1d2433">MensualidadRepository</text>
+<rect x="668.5" y="398" width="150" height="64" rx="4" fill="#fff" stroke="#1d2b44" stroke-width="1.3"/>
+<rect x="794.5" y="406" width="14" height="18" fill="#fff" stroke="#1d2b44"/>
+<rect x="790.5" y="409" width="8" height="4" fill="#fff" stroke="#1d2b44"/>
+<rect x="790.5" y="417" width="8" height="4" fill="#fff" stroke="#1d2b44"/>
+<text x="731.5" y="422.9" font-size="11.5" text-anchor="middle" dominant-baseline="central" font-weight="normal" fill="#1d2433">NovedadRepository</text>
+<text x="731.5" y="437.2" font-size="11.5" text-anchor="middle" dominant-baseline="central" font-weight="normal" fill="#1d2433">UsuarioRepository</text>
+<rect x="300" y="505" width="520" height="52" rx="6" fill="#fff8e1" stroke="#1d2b44" stroke-width="1.3"/>
+<text x="560.0" y="523.6" font-size="12" text-anchor="middle" dominant-baseline="central" font-weight="normal" fill="#1d2433">Modelo de dominio (models.py): Usuario, Cliente, Vehiculo, Mensualidad,</text>
+<text x="560.0" y="538.6" font-size="12" text-anchor="middle" dominant-baseline="central" font-weight="normal" fill="#1d2433">Celda, RegistroParqueo, Novedad</text>
+<rect x="300" y="572" width="520" height="50" rx="6" fill="#fff" stroke="#1d2b44" stroke-width="1.3" stroke-dasharray="6 4"/>
+<text x="560.0" y="597.0" font-size="12" text-anchor="middle" dominant-baseline="central" font-weight="normal" fill="#1d2433">db.py · conexión sqlite3, creación del esquema y datos iniciales</text>
+<polygon points="880,380 892,368 1052,368 1040,380" fill="#e9eef6" stroke="#1d2b44" stroke-width="1.3"/>
+<polygon points="1040,380 1052,368 1052,538 1040,550" fill="#d5deeb" stroke="#1d2b44" stroke-width="1.3"/>
+<rect x="880" y="380" width="160" height="170" rx="0" fill="#fbfcfe" stroke="#1d2b44" stroke-width="1.3"/>
+<text x="890.0" y="396.0" font-size="12.5" text-anchor="start" dominant-baseline="central" font-weight="700" fill="#1d2433">«device» Servidor BD</text>
+<path d="M905,430 a55.0,10 0 0,0 110,0 v80 a55.0,10 0 0,1 -110,0 z" fill="#fff8e1" stroke="#1d2b44" stroke-width="1.3"/>
+<ellipse cx="960.0" cy="430" rx="55.0" ry="10" fill="#fff8e1" stroke="#1d2b44" stroke-width="1.3"/>
+<text x="960.0" y="461.1" font-size="12" text-anchor="middle" dominant-baseline="central" font-weight="normal" fill="#1d2433">SQLite</text>
+<text x="960.0" y="476.1" font-size="12" text-anchor="middle" dominant-baseline="central" font-weight="normal" fill="#1d2433">autos_colombia</text>
+<text x="960.0" y="491.1" font-size="12" text-anchor="middle" dominant-baseline="central" font-weight="normal" fill="#1d2433">.sqlite</text>
+<polyline points="200.0,160.0 300.0,160.0" fill="none" stroke="#1d2b44" stroke-width="1.3" marker-start="url(#llena)" marker-end="url(#llena)"/>
+<text x="250.0" y="148.0" font-size="11.5" text-anchor="middle" dominant-baseline="central" font-weight="normal" fill="#5b6575" font-style="italic">HTTP</text>
+<polyline points="560.0,190.0 560.0,215.0" fill="none" stroke="#1d2b44" stroke-width="1.3" marker-end="url(#llena)"/>
+<polyline points="560.0,335.0 560.0,360.0" fill="none" stroke="#1d2b44" stroke-width="1.3" marker-end="url(#llena)"/>
+<polyline points="820.0,450.0 905.0,450.0" fill="none" stroke="#1d2b44" stroke-width="1.3" marker-end="url(#llena)"/>
+<text x="862.0" y="430.0" font-size="11.5" text-anchor="middle" dominant-baseline="central" font-weight="normal" fill="#5b6575" font-style="italic">SQL</text></svg>

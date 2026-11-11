@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block titulo %}Registrar vehículo{% endblock %}
+{% block subtitulo %}Nuevo vehículo de mensualidad{% endblock %}
+{% block contenido %}
+<form method="post" class="grid grid-2">
+  <div class="tarjeta">
+    <div class="tarjeta-cab"><h2>{{ icono('carro') }} Vehículo</h2></div>
+    <div class="campo">
+      <div class="etiqueta-campo">Tipo</div>
+      <div class="pills">
+        <label class="pill"><input type="radio" name="tipo" value="CARRO" {{ 'checked' if d.tipo != 'MOTO' }}><span>{{ icono('carro', 16) }} Carro</span></label>
+        <label class="pill"><input type="radio" name="tipo" value="MOTO" {{ 'checked' if d.tipo == 'MOTO' }}><span>{{ icono('moto', 16) }} Moto</span></label>
+      </div>
+    </div>
+    <label for="placa">Placa</label>
+    <div class="placa-campo"><input id="placa" name="placa" class="placa-input" maxlength="7" placeholder="ABC123" autocomplete="off" data-estado="placa-estado" value="{{ d.placa or '' }}" required></div>
+    <div id="placa-estado" class="placa-estado"></div>
+    <div class="grid grid-2" style="gap:14px;margin-top:16px">
+      <div class="campo"><label for="marca">Marca</label><input id="marca" name="marca" value="{{ d.marca or '' }}" placeholder="Mazda"></div>
+      <div class="campo"><label for="color">Color</label><input id="color" name="color" value="{{ d.color or '' }}" placeholder="Rojo"></div>
+    </div>
+  </div>
+  <div class="tarjeta">
+    <div class="tarjeta-cab"><h2>{{ icono('usuario') }} Propietario y mensualidad</h2></div>
+    <div class="grid grid-2" style="gap:14px">
+      <div class="campo"><label for="documento">Documento</label><input id="documento" name="documento" inputmode="numeric" value="{{ d.documento or '' }}" required></div>
+      <div class="campo"><label for="telefono">Teléfono</label><input id="telefono" name="telefono" inputmode="tel" value="{{ d.telefono or '' }}"></div>
+    </div>
+    <div class="campo"><label for="nombres">Nombre completo</label><input id="nombres" name="nombres" value="{{ d.nombres or '' }}" required></div>
+    <div class="campo"><label for="email">Correo</label><input id="email" name="email" type="email" value="{{ d.email or '' }}"></div>
+    <div class="grid grid-2" style="gap:14px">
+      <div class="campo"><label for="fecha_inicio">Desde</label><input id="fecha_inicio" name="fecha_inicio" type="date" value="{{ d.fecha_inicio }}" required></div>
+      <div class="campo"><label for="fecha_fin">Hasta</label><input id="fecha_fin" name="fecha_fin" type="date" value="{{ d.fecha_fin }}" required></div>
+    </div>
+    <div class="campo"><label for="valor">Valor de la mensualidad (COP)</label><input id="valor" name="valor" type="number" min="0" step="1000" value="{{ d.valor }}" required></div>
+    <p class="ayuda">Si el documento ya existe, el vehículo se asocia a ese propietario.</p>
+    <div style="display:flex;gap:10px;margin-top:8px">
+      <button class="btn exito grande" style="flex:1">{{ icono('check') }} Guardar</button>
+      <a class="btn secundario grande" href="{{ url_for('vehiculos.listar') }}">Cancelar</a>
+    </div>
+  </div>
+</form>
+{% endblock %}

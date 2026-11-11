@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block titulo %}Historial{% endblock %}
+{% block subtitulo %}Entradas y salidas registradas{% endblock %}
+{% block contenido %}
+<div class="tarjeta">
+  <form class="filtros" method="get">
+    <div class="campo"><label for="placa">Placa</label><div class="con-icono">{{ icono('buscar', 16) }}<input id="placa" name="placa" value="{{ placa }}" placeholder="ABC123"></div></div>
+    <div class="campo"><label for="fecha">Fecha</label><input id="fecha" name="fecha" type="date" value="{{ fecha }}"></div>
+    <button class="btn">Filtrar</button>
+    {% if placa or fecha %}<a class="btn secundario" href="{{ url_for('parqueo.historial') }}">{{ icono('x', 15) }} Limpiar</a>{% endif %}
+    <span class="ayuda" style="margin-left:auto">{{ registros|length }} resultado(s)</span>
+  </form>
+</div>
+<div class="tarjeta">
+  <div class="tabla-envoltura">
+  <table>
+    <thead><tr><th>#</th><th>Placa</th><th>Celda</th><th>Entrada</th><th>Salida</th><th>Permanencia</th><th>Estado</th></tr></thead>
+    <tbody>
+    {% for r in registros %}
+    <tr>
+      <td><a href="{{ url_for('parqueo.comprobante', registro_id=r.id) }}">#{{ r.id }}</a></td>
+      <td><span class="placa">{{ r.placa }}</span><span class="secundario">{{ r.cliente }}</span></td>
+      <td>{{ r.celda }}</td>
+      <td>{{ r.fecha_entrada }}</td>
+      <td>{{ r.fecha_salida or '—' }}</td>
+      <td {% if not r.fecha_salida %}data-desde="{{ r.fecha_entrada }}"{% endif %}>{{ r.fecha_entrada|duracion(r.fecha_salida) }}</td>
+      <td>{% if r.fecha_salida %}<span class="etq neutro">Finalizado</span>{% else %}<span class="etq ok">Dentro</span>{% endif %}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="7" class="vacio">{{ icono('historial', 28) }}No hay movimientos para los filtros seleccionados.</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+</div>
+{% endblock %}

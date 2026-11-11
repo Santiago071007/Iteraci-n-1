@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block titulo %}Registrar entrada{% endblock %}
+{% block subtitulo %}Escribe la placa; la celda se asigna automáticamente{% endblock %}
+{% block contenido %}
+{% set elegida = request.form.celda_id or '' %}
+<form method="post" class="grid grid-7-5">
+  <div class="tarjeta">
+    <div class="tarjeta-cab"><h2>{{ icono('entrada') }} Datos de ingreso</h2></div>
+    <label for="placa">Placa del vehículo</label>
+    <div class="placa-campo">
+      <input id="placa" name="placa" class="placa-input" maxlength="7" placeholder="ABC123" autocomplete="off"
+             data-estado="placa-estado" value="{{ request.form.placa or '' }}" required autofocus>
+    </div>
+    <div id="placa-estado" class="placa-estado">Carro ABC123 · Moto ABC12D</div>
+
+    <div class="etiqueta-campo" style="margin-top:22px">Celda</div>
+    <div class="opciones-celda">
+      <label class="celda-opcion auto">
+        <input type="radio" name="celda_id" id="celda-auto" value="" {{ 'checked' if not elegida }}>
+        <span>{{ icono('check', 16) }} <b>Asignar automáticamente</b></span>
+      </label>
+      {% for c in celdas %}
+      <label class="celda-opcion" data-tipo="{{ c.tipo_vehiculo }}">
+        <input type="radio" name="celda_id" value="{{ c.id }}" {{ 'checked' if elegida == c.id|string }}>
+        <span><b>{{ c.codigo }}</b>{{ icono('carro' if c.tipo_vehiculo == 'CARRO' else 'moto', 16) }}</span>
+      </label>
+      {% endfor %}
+    </div>
+    <p class="ayuda">Al escribir la placa solo se muestran las celdas del tipo de vehículo detectado.</p>
+    <button class="btn exito bloque grande" style="margin-top:18px">{{ icono('check') }} Registrar entrada</button>
+  </div>
+  <div class="apilado">
+    <div class="tarjeta">
+      <div class="tarjeta-cab"><h2>{{ icono('escudo') }} El sistema verifica</h2></div>
+      <ol class="pasos">
+        <li><span class="num">1</span><div>Formato de placa colombiana: carro <b>ABC123</b>, moto <b>ABC12D</b>.</div></li>
+        <li><span class="num">2</span><div>Vehículo registrado con <b>mensualidad vigente</b>.</div></li>
+        <li><span class="num">3</span><div>Que el vehículo <b>no esté ya dentro</b> del parqueadero.</div></li>
+        <li><span class="num">4</span><div>Celda <b>libre</b> y del mismo tipo de vehículo.</div></li>
+      </ol>
+    </div>
+    <div class="tarjeta">
+      <div class="tarjeta-cab"><h2>{{ icono('celdas') }} Disponibilidad</h2></div>
+      {% set carros = celdas|selectattr('tipo_vehiculo', 'equalto', 'CARRO')|list|length %}
+      <div class="mini-stats">
+        <div class="mini-stat"><b>{{ carros }}</b><small>Celdas de carro libres</small></div>
+        <div class="mini-stat"><b>{{ celdas|length - carros }}</b><small>Celdas de moto libres</small></div>
+      </div>
+      <p class="ayuda" style="margin-top:12px">{{ icono('reloj', 14) }} La hora de entrada se toma del reloj del sistema.</p>
+    </div>
+  </div>
+</form>
+{% endblock %}

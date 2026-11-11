@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block titulo %}Vehículos dentro{% endblock %}
+{% block subtitulo %}{{ activos|length }} vehículo(s) en el parqueadero ahora mismo{% endblock %}
+{% block contenido %}
+<div class="tarjeta" id="tabla-activos">
+  <div class="tarjeta-cab">
+    <h2>{{ icono('lista') }} Estadías abiertas</h2>
+    <div class="acciones buscador"><div class="con-icono">{{ icono('buscar', 16) }}<input placeholder="Buscar placa, propietario o celda" data-filtrar="#tabla-activos" aria-label="Buscar"></div></div>
+  </div>
+  <div class="tabla-envoltura">
+  <table>
+    <thead><tr><th>Placa</th><th>Tipo</th><th>Propietario</th><th>Celda</th><th>Entrada</th><th>Tiempo</th><th></th></tr></thead>
+    <tbody>
+    {% for r in activos %}
+    <tr data-texto="{{ r.placa }} {{ r.cliente }} {{ r.celda }}">
+      <td><span class="placa">{{ r.placa }}</span></td>
+      <td>{{ icono('carro' if r.tipo == 'CARRO' else 'moto', 16) }} {{ r.tipo|capitalize }}</td>
+      <td>{{ r.cliente }}</td>
+      <td><b>{{ r.celda }}</b></td>
+      <td>{{ r.fecha_entrada[11:16] }}<span class="secundario">{{ r.operador_entrada }}</span></td>
+      <td data-desde="{{ r.fecha_entrada }}">{{ r.fecha_entrada|duracion }}</td>
+      <td style="text-align:right;white-space:nowrap">
+        <a class="btn peq secundario" href="{{ url_for('parqueo.comprobante', registro_id=r.id) }}">Ver</a>
+        <a class="btn peq" href="{{ url_for('parqueo.salida', placa=r.placa) }}">Salida</a>
+      </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="7" class="vacio">{{ icono('carro', 28) }}No hay vehículos dentro del parqueadero.</td></tr>
+    {% endfor %}
+    <tr class="sin-resultados" hidden><td colspan="7" class="vacio">Sin resultados para la búsqueda.</td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+{% endblock %}

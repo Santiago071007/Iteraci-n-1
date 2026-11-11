@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 790" width="1180" height="790" font-family="Segoe UI, Arial, Helvetica, sans-serif"><rect width="100%" height="100%" fill="#fff"/><defs>
+<marker id="flecha" viewBox="0 0 12 12" refX="12" refY="6" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,1 L12,6 L0,11" fill="none" stroke="#1d2b44" stroke-width="1.4"/></marker>
+<marker id="llena" viewBox="0 0 12 12" refX="12" refY="6" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,1 L12,6 L0,11 z" fill="#1d2b44"/></marker>
+<marker id="triangulo" viewBox="0 0 16 16" refX="16" refY="8" markerWidth="16" markerHeight="16" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M1,1 L16,8 L1,15 z" fill="#fff" stroke="#1d2b44" stroke-width="1.3"/></marker>
+<marker id="rombo" viewBox="0 0 20 12" refX="20" refY="6" markerWidth="20" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,6 L10,1 L20,6 L10,11 z" fill="#1d2b44"/></marker>
+<marker id="muchos" viewBox="0 0 16 16" refX="16" refY="8" markerWidth="16" markerHeight="16" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,8 L16,1 M0,8 L16,8 M0,8 L16,15 M3,2 L3,14" fill="none" stroke="#1d2b44" stroke-width="1.3"/></marker>
+<marker id="uno" viewBox="0 0 16 16" refX="16" refY="8" markerWidth="16" markerHeight="16" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M6,1 L6,15 M10,1 L10,15" fill="none" stroke="#1d2b44" stroke-width="1.3"/></marker>
+</defs><rect x="30" y="30" width="210" height="136" rx="0" fill="#fff" stroke="#1d2b44" stroke-width="1.3"/>
+<rect x="30" y="30" width="210" height="26" fill="#dbe6f5" stroke="#1d2b44" stroke-width="1.3"/>
+<text x="135.0" y="43.0" font-size="13" text-anchor="middle" dominant-baseline="central" font-weight="700" fill="#1d2433">Cliente</text>
+<text x="38.0" y="70.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">- id: int</text>
+<text x="38.0" y="88.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">- documento: str</text>
+<text x="38.0" y="106.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">- nombres: str</text>
+<text x="38.0" y="124.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">- telefono: str</text>
+<text x="38.0" y="142.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">- email: str</text>
+<line x1="30" y1="156" x2="240" y2="156" stroke="#1d2b44" stroke-width="1.3"/>
+<rect x="380" y="30" width="220" height="136" rx="0" fill="#fff" stroke="#1d2b44" stroke-width="1.3"/>
+<rect x="380" y="30" width="220" height="26" fill="#dbe6f5" stroke="#1d2b44" stroke-width="1.3"/>
+<text x="490.0" y="43.0" font-size="13" text-anchor="middle" dominant-baseline="central" font-weight="700" fill="#1d2433">Vehiculo</text>
+<text x="388.0" y="70.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">- id: int</text>
+<text x="388.0" y="88.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">- placa: str</text>
+<text x="388.0" y="106.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">- tipo: str</text>
+<text x="388.0" y="124.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">- marca: str</text>
+<text x="388.0" y="142.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">- color: str</text>
+<line x1="380" y1="156" x2="600" y2="156" stroke="#1d2b44" stroke-width="1.3"/>
+<rect x="760" y="30" width="250" height="136" rx="0" fill="#fff" stroke="#1d2b44" stroke-width="1.3"/>
+<rect x="760" y="30" width="250" height="26" fill="#dbe6f5" stroke="#1d2b44" stroke-width="1.3"/>
+<text x="885.0" y="43.0" font-size="13" text-anchor="middle" dominant-baseline="central" font-weight="700" fill="#1d2433">Mensualidad</text>
+<text x="768.0" y="70.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">- id: int</text>
+<text x="768.0" y="88.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">- fecha_inicio: date</text>
+<text x="768.0" y="106.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">- fecha_fin: date</text>
+<text x="768.0" y="124.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">- valor: float</text>
+<line x1="760" y1="138" x2="1010" y2="138" stroke="#1d2b44" stroke-width="1.3"/>
+<text x="768.0" y="152.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">+ esta_vigente(hoy: date): bool</text>
+<rect x="30" y="330" width="220" height="172" rx="0" fill="#fff" stroke="#1d2b44" stroke-width="1.3"/>
+<rect x="30" y="330" width="220" height="26" fill="#dbe6f5" stroke="#1d2b44" stroke-width="1.3"/>
+<text x="140.0" y="343.0" font-size="13" text-anchor="middle" dominant-baseline="central" font-weight="700" fill="#1d2433">Usuario</text>
+<text x="38.0" y="370.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">- id: int</text>
+<text x="38.0" y="388.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">- nombre: str</text>
+<text x="38.0" y="406.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">- username: str</text>
+<text x="38.0" y="424.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">- password_hash: str</text>
+<text x="38.0" y="442.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">- rol: str</text>
+<text x="38.0" y="460.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">- activo: bool</text>
+<line x1="30" y1="474" x2="250" y2="474" stroke="#1d2b44" stroke-width="1.3"/>
+<text x="38.0" y="488.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">+ es_admin(): bool</text>
+<rect x="380" y="330" width="280" height="136" rx="0" fill="#fff" stroke="#1d2b44" stroke-width="1.3"/>
+<rect x="380" y="330" width="280" height="26" fill="#dbe6f5" stroke="#1d2b44" stroke-width="1.3"/>
+<text x="520.0" y="343.0" font-size="13" text-anchor="middle" dominant-baseline="central" font-weight="700" fill="#1d2433">RegistroParqueo</text>
+<text x="388.0" y="370.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">- id: int</text>
+<text x="388.0" y="388.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">- fecha_entrada: datetime</text>
+<text x="388.0" y="406.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">- fecha_salida: datetime</text>
+<line x1="380" y1="420" x2="660" y2="420" stroke="#1d2b44" stroke-width="1.3"/>
+<text x="388.0" y="434.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">+ esta_abierto(): bool</text>
+<text x="388.0" y="452.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">+ tiempo_permanencia(): timedelta</text>
+<rect x="800" y="330" width="210" height="136" rx="0" fill="#fff" stroke="#1d2b44" stroke-width="1.3"/>
+<rect x="800" y="330" width="210" height="26" fill="#dbe6f5" stroke="#1d2b44" stroke-width="1.3"/>
+<text x="905.0" y="343.0" font-size="13" text-anchor="middle" dominant-baseline="central" font-weight="700" fill="#1d2433">Celda</text>
+<text x="808.0" y="370.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">- id: int</text>
+<text x="808.0" y="388.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">- codigo: str</text>
+<text x="808.0" y="406.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">- tipo_vehiculo: str</text>
+<text x="808.0" y="424.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">- estado: str</text>
+<line x1="800" y1="438" x2="1010" y2="438" stroke="#1d2b44" stroke-width="1.3"/>
+<text x="808.0" y="452.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">+ esta_libre(): bool</text>
+<rect x="380" y="600" width="280" height="118" rx="0" fill="#fff" stroke="#1d2b44" stroke-width="1.3"/>
+<rect x="380" y="600" width="280" height="26" fill="#dbe6f5" stroke="#1d2b44" stroke-width="1.3"/>
+<text x="520.0" y="613.0" font-size="13" text-anchor="middle" dominant-baseline="central" font-weight="700" fill="#1d2433">Novedad</text>
+<text x="388.0" y="640.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">- id: int</text>
+<text x="388.0" y="658.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">- fecha: datetime</text>
+<text x="388.0" y="676.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">- tipo: str</text>
+<text x="388.0" y="694.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">- descripcion: str</text>
+<line x1="380" y1="708" x2="660" y2="708" stroke="#1d2b44" stroke-width="1.3"/>
+<rect x="760" y="560" width="400" height="214" rx="0" fill="#fff" stroke="#1d2b44" stroke-width="1.3"/>
+<rect x="760" y="560" width="400" height="32" fill="#dbe6f5" stroke="#1d2b44" stroke-width="1.3"/>
+<text x="960.0" y="570.0" font-size="10.5" text-anchor="middle" dominant-baseline="central" font-weight="normal" fill="#5b6575">«service»</text>
+<text x="960.0" y="583.0" font-size="13" text-anchor="middle" dominant-baseline="central" font-weight="700" fill="#1d2433">ParqueoService</text>
+<text x="768.0" y="606.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">- vehiculos: VehiculoRepository</text>
+<text x="768.0" y="624.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">- celdas: CeldaRepository</text>
+<text x="768.0" y="642.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">- registros: RegistroRepository</text>
+<text x="768.0" y="660.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">- novedades: NovedadRepository</text>
+<line x1="760" y1="674" x2="1160" y2="674" stroke="#1d2b44" stroke-width="1.3"/>
+<text x="768.0" y="688.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">+ registrar_entrada(placa, usuario_id, celda_id): RegistroParqueo</text>
+<text x="768.0" y="706.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">+ registrar_salida(placa, usuario_id): RegistroParqueo</text>
+<text x="768.0" y="724.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">+ registrar_novedad(placa, usuario_id, tipo, desc): int</text>
+<text x="768.0" y="742.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">+ alternar_mantenimiento(celda_id)</text>
+<text x="768.0" y="760.0" font-size="12" text-anchor="start" dominant-baseline="central" font-weight="normal" fill="#1d2433">+ tablero(): dict</text>
+<polyline points="240.0,98.0 380.0,98.0" fill="none" stroke="#1d2b44" stroke-width="1.3"/>
+<rect x="290.0" y="89.0" width="40.0" height="18" fill="#fff"/>
+<text x="310.0" y="98.0" font-size="11.5" text-anchor="middle" dominant-baseline="central" font-weight="normal" fill="#5b6575" font-style="italic">posee</text>
+<text x="260.0" y="109.0" font-size="12" text-anchor="middle" dominant-baseline="central" font-weight="600" fill="#1d2433">1</text>
+<text x="360.0" y="87.0" font-size="12" text-anchor="middle" dominant-baseline="central" font-weight="600" fill="#1d2433">1..*</text>
+<polyline points="600.0,98.0 760.0,98.0" fill="none" stroke="#1d2b44" stroke-width="1.3"/>
+<rect x="660.0" y="89.0" width="40.0" height="18" fill="#fff"/>
+<text x="680.0" y="98.0" font-size="11.5" text-anchor="middle" dominant-baseline="central" font-weight="normal" fill="#5b6575" font-style="italic">tiene</text>
+<text x="620.0" y="109.0" font-size="12" text-anchor="middle" dominant-baseline="central" font-weight="600" fill="#1d2433">1</text>
+<text x="740.0" y="87.0" font-size="12" text-anchor="middle" dominant-baseline="central" font-weight="600" fill="#1d2433">0..*</text>
+<polyline points="468.0,166.0 468.0,330.0" fill="none" stroke="#1d2b44" stroke-width="1.3"/>
+<rect x="441.2" y="239.0" width="53.6" height="18" fill="#fff"/>
+<text x="468.0" y="248.0" font-size="11.5" text-anchor="middle" dominant-baseline="central" font-weight="normal" fill="#5b6575" font-style="italic">ingresa</text>
+<text x="457.0" y="186.0" font-size="12" text-anchor="middle" dominant-baseline="central" font-weight="600" fill="#1d2433">1</text>
+<text x="479.0" y="310.0" font-size="12" text-anchor="middle" dominant-baseline="central" font-weight="600" fill="#1d2433">0..*</text>
+<polyline points="800.0,384.4 660.0,384.4" fill="none" stroke="#1d2b44" stroke-width="1.3"/>
+<rect x="693.0" y="375.4" width="74.0" height="18" fill="#fff"/>
+<text x="730.0" y="384.4" font-size="11.5" text-anchor="middle" dominant-baseline="central" font-weight="normal" fill="#5b6575" font-style="italic">asignada a</text>
+<text x="780.0" y="373.4" font-size="12" text-anchor="middle" dominant-baseline="central" font-weight="600" fill="#1d2433">1</text>
+<text x="680.0" y="395.4" font-size="12" text-anchor="middle" dominant-baseline="central" font-weight="600" fill="#1d2433">0..*</text>
+<polyline points="250.0,381.6 380.0,381.6" fill="none" stroke="#1d2b44" stroke-width="1.3"/>
+<rect x="284.8" y="372.6" width="60.4" height="18" fill="#fff"/>
+<text x="315.0" y="381.6" font-size="11.5" text-anchor="middle" dominant-baseline="central" font-weight="normal" fill="#5b6575" font-style="italic">registra</text>
+<text x="270.0" y="392.6" font-size="12" text-anchor="middle" dominant-baseline="central" font-weight="600" fill="#1d2433">1</text>
+<text x="360.0" y="370.6" font-size="12" text-anchor="middle" dominant-baseline="central" font-weight="600" fill="#1d2433">0..*</text>
+<polyline points="520.0,466.0 520.0,600.0" fill="none" stroke="#1d2b44" stroke-width="1.3" marker-start="url(#rombo)"/>
+<text x="531.0" y="580.0" font-size="12" text-anchor="middle" dominant-baseline="central" font-weight="600" fill="#1d2433">0..*</text>
+<text x="560.0" y="533.0" font-size="11.5" text-anchor="middle" dominant-baseline="central" font-weight="normal" fill="#5b6575" font-style="italic">contiene</text>
+<polyline points="140.0,502.0 140.0,660.0 380.0,660.0" fill="none" stroke="#1d2b44" stroke-width="1.3"/>
+<text x="129.0" y="522.0" font-size="12" text-anchor="middle" dominant-baseline="central" font-weight="600" fill="#1d2433">1</text>
+<text x="360.0" y="649.0" font-size="12" text-anchor="middle" dominant-baseline="central" font-weight="600" fill="#1d2433">0..*</text>
+<text x="250.0" y="648.0" font-size="11.5" text-anchor="middle" dominant-baseline="central" font-weight="normal" fill="#5b6575" font-style="italic">reporta</text>
+<polyline points="760.0,585.7 660.0,585.7" fill="none" stroke="#1d2b44" stroke-width="1.3" stroke-dasharray="6 4" marker-end="url(#flecha)"/>
+<text x="710.0" y="575.7" font-size="11" text-anchor="middle" dominant-baseline="central" font-weight="normal" fill="#5b6575">«use»</text>
+<polyline points="980.0,560.0 980.0,466.0" fill="none" stroke="#1d2b44" stroke-width="1.3" stroke-dasharray="6 4" marker-end="url(#flecha)"/>
+<text x="1008.0" y="538.0" font-size="11" text-anchor="middle" dominant-baseline="central" font-weight="normal" fill="#5b6575">«use»</text></svg>

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block titulo %}Celdas{% endblock %}
+{% block subtitulo %}Estado de las celdas del parqueadero{% endblock %}
+{% block contenido %}
+<div class="grid grid-2" style="margin-bottom:22px">
+  {% for r in resumen %}
+  <div class="tarjeta">
+    <div class="tarjeta-cab"><h2>{{ icono('carro' if r.tipo_vehiculo == 'CARRO' else 'moto') }} {{ 'Carros' if r.tipo_vehiculo == 'CARRO' else 'Motos' }}</h2>
+      <div class="acciones"><span class="etq neutro">{{ r.total }} celdas</span></div></div>
+    <div class="mini-stats">
+      <div class="mini-stat"><b style="color:var(--verde)">{{ r.libres }}</b><small>Libres</small></div>
+      <div class="mini-stat"><b style="color:var(--rojo)">{{ r.ocupadas }}</b><small>Ocupadas</small></div>
+      <div class="mini-stat"><b style="color:var(--suave)">{{ r.mantenimiento }}</b><small>Mantenimiento</small></div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+<div class="tarjeta">
+  <div class="tarjeta-cab"><h2>{{ icono('celdas') }} Mapa</h2>
+    {% if g.usuario.es_admin() %}<div class="acciones ayuda" style="margin:0">Las celdas ocupadas no se pueden poner en mantenimiento.</div>{% endif %}</div>
+  {% with editable=true %}{% include "celdas/_mapa.html" %}{% endwith %}
+</div>
+{% endblock %}

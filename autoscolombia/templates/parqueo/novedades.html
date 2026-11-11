@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block titulo %}Novedades{% endblock %}
+{% block subtitulo %}Daños, objetos olvidados e incidentes durante la estadía{% endblock %}
+{% block contenido %}
+{% set tipo_elegido = request.form.tipo or 'DANO' %}
+<div class="grid grid-5-7">
+  <div class="tarjeta" style="align-self:start">
+    <div class="tarjeta-cab"><h2>{{ icono('alerta') }} Registrar novedad</h2></div>
+    {% if activos %}
+    <form method="post">
+      <div class="campo">
+        <label for="placa">Vehículo dentro del parqueadero</label>
+        <select id="placa" name="placa" required>
+          <option value="">Seleccione…</option>
+          {% for r in activos %}
+          <option value="{{ r.placa }}" {{ 'selected' if r.placa == placa }}>{{ r.placa }} · celda {{ r.celda }} · {{ r.cliente }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="campo">
+        <div class="etiqueta-campo">Tipo de novedad</div>
+        <div class="pills">
+          {% for clave, nombre in tipos.items() %}
+          <label class="pill"><input type="radio" name="tipo" value="{{ clave }}" {{ 'checked' if clave == tipo_elegido }}><span>{{ nombre }}</span></label>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="campo">
+        <label for="descripcion">Descripción</label>
+        <textarea id="descripcion" name="descripcion" rows="4" maxlength="500" minlength="5" required
+                  placeholder="Ej.: rayón en la puerta trasera derecha al ingresar">{{ request.form.descripcion or '' }}</textarea>
+        <div class="ayuda">Mínimo 5 caracteres. Queda registrada con fecha, hora y tu usuario.</div>
+      </div>
+      <button class="btn bloque grande">{{ icono('check') }} Guardar novedad</button>
+    </form>
+    {% else %}
+    <div class="nota">{{ icono('info') }} No hay vehículos dentro. Las novedades solo se registran sobre vehículos que están en el parqueadero.</div>
+    {% endif %}
+  </div>
+  <div class="tarjeta">
+    <div class="tarjeta-cab"><h2>{{ icono('historial') }} Novedades recientes</h2></div>
+    {% for n in novedades %}
+    <div class="novedad">
+      <span class="mov-icono">{{ icono('alerta', 17) }}</span>
+      <div style="flex:1">
+        <div><span class="placa mini">{{ n.placa }}</span> <span class="etq mal">{{ tipos[n.tipo] }}</span> <small>celda {{ n.celda }}</small></div>
+        <p>{{ n.descripcion }}</p>
+        <small>{{ n.fecha }} · {{ n.usuario }}</small>
+      </div>
+    </div>
+    {% else %}
+    <p class="vacio">{{ icono('check', 28) }}Aún no se han registrado novedades.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

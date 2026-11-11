@@ -1,0 +1,27 @@
+{% for tipo, nombre in (('CARRO', 'Zona de carros'), ('MOTO', 'Zona de motos')) %}
+{% set celdas_tipo = mapa|selectattr('tipo_vehiculo', 'equalto', tipo)|list %}
+{% if celdas_tipo %}
+<div class="zona">{{ icono('carro' if tipo == 'CARRO' else 'moto', 16) }} {{ nombre }}</div>
+<div class="mapa">
+  {% for c in celdas_tipo %}
+  <div class="celda {{ c.estado }}" title="{{ c.codigo }} · {{ c.estado|lower }}">
+    <span class="codigo">{{ c.codigo }}</span>
+    {{ icono('carro' if c.tipo_vehiculo == 'CARRO' else 'moto', 22) }}
+    {% if c.placa %}
+      <span class="placa mini">{{ c.placa }}</span>
+      <small data-desde="{{ c.fecha_entrada }}">{{ c.fecha_entrada|duracion }}</small>
+    {% elif c.estado == 'MANTENIMIENTO' %}
+      <small>Mantenimiento</small>
+    {% else %}
+      <small>Disponible</small>
+    {% endif %}
+    {% if editable and g.usuario.es_admin() and c.estado != 'OCUPADA' %}
+    <form method="post" action="{{ url_for('celdas.mantenimiento', celda_id=c.id) }}">
+      <button class="btn secundario peq">{{ icono('check' if c.estado == 'MANTENIMIENTO' else 'llave', 14) }} {{ 'Habilitar' if c.estado == 'MANTENIMIENTO' else 'Mantenim.' }}</button>
+    </form>
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endfor %}

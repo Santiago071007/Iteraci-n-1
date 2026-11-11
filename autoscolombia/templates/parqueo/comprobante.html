@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block titulo %}Registro #{{ r.id }}{% endblock %}
+{% block subtitulo %}{{ 'Comprobante de salida' if r.fecha_salida else 'Comprobante de entrada' }}{% endblock %}
+{% block contenido %}
+{% set salio = r.fecha_salida is not none %}
+<div class="grid grid-5-7">
+  <div class="ticket">
+    <div class="ticket-cab {{ 'salida' if salio }}">
+      <div class="ico-grande">{{ icono('salida' if salio else 'entrada', 24) }}</div>
+      <div><h2>{{ 'Comprobante de salida' if salio else 'Comprobante de entrada' }}</h2><small>Autos Colombia · Registro #{{ r.id }}</small></div>
+    </div>
+    <div class="ticket-cuerpo">
+      <div class="ticket-placa">
+        <span class="placa grande">{{ r.placa }}</span>
+        <div class="secundario">{{ r.tipo|capitalize }} {{ r.marca or '' }} {{ r.color or '' }} · {{ r.cliente }}</div>
+      </div>
+      <dl>
+        <dt>Celda</dt><dd>{{ r.celda }}</dd>
+        <dt>Entrada</dt><dd>{{ r.fecha_entrada }}<br><small style="color:var(--suave);font-weight:400">{{ r.operador_entrada }}</small></dd>
+        {% if salio %}<dt>Salida</dt><dd>{{ r.fecha_salida }}<br><small style="color:var(--suave);font-weight:400">{{ r.operador_salida }}</small></dd>{% endif %}
+        <dt>Estado</dt><dd>{% if salio %}<span class="etq neutro">Finalizado</span>{% else %}<span class="etq ok">Dentro</span>{% endif %}</dd>
+      </dl>
+      <div class="permanencia">
+        {{ icono('reloj', 26) }}
+        <div><b {% if not salio %}data-desde="{{ r.fecha_entrada }}"{% endif %}>{{ r.fecha_entrada|duracion(r.fecha_salida) }}</b>
+          <small>{{ 'Tiempo total de permanencia' if salio else 'Tiempo transcurrido' }}</small></div>
+      </div>
+    </div>
+    <div class="ticket-pie no-imprimir">
+      <a class="btn" href="{{ url_for('parqueo.tablero') }}">Volver al tablero</a>
+      <button class="btn secundario" type="button" onclick="window.print()">{{ icono('imprimir', 16) }} Imprimir</button>
+      {% if not salio %}<a class="btn secundario" href="{{ url_for('parqueo.novedades', placa=r.placa) }}">{{ icono('alerta', 16) }} Novedad</a>{% endif %}
+    </div>
+  </div>
+  <div class="tarjeta no-imprimir" style="align-self:start">
+    <div class="tarjeta-cab"><h2>{{ icono('alerta') }} Novedades del registro</h2></div>
+    {% for n in novedades %}
+      <div class="novedad">
+        <span class="mov-icono">{{ icono('alerta', 17) }}</span>
+        <div><span class="etq mal">{{ tipos[n.tipo] }}</span><p>{{ n.descripcion }}</p><small>{{ n.fecha }} · {{ n.usuario }}</small></div>
+      </div>
+    {% else %}
+      <p class="vacio">{{ icono('check', 28) }}Sin novedades registradas.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

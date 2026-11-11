@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block titulo %}Tablero{% endblock %}
+{% block subtitulo %}Resumen de la operación de hoy{% endblock %}
+{% block contenido %}
+{% set libres = resumen|sum(attribute='libres') %}
+{% set total = resumen|sum(attribute='total') %}
+<div class="grid grid-4" style="margin-bottom:22px">
+  <div class="kpi"><div class="kpi-icono azul">{{ icono('carro', 24) }}</div>
+    <div><div class="valor">{{ dentro }}</div><div class="etiqueta">Vehículos dentro</div></div></div>
+  <div class="kpi"><div class="kpi-icono verde">{{ icono('celdas', 24) }}</div>
+    <div><div class="valor">{{ libres }} <small>/ {{ total }}</small></div><div class="etiqueta">Celdas libres</div></div></div>
+  <div class="kpi"><div class="kpi-icono amarillo">{{ icono('entrada', 24) }}</div>
+    <div><div class="valor">{{ entradas_hoy }}</div><div class="etiqueta">Entradas hoy</div></div></div>
+  <div class="kpi"><div class="kpi-icono rojo">{{ icono('salida', 24) }}</div>
+    <div><div class="valor">{{ salidas_hoy }}</div><div class="etiqueta">Salidas hoy</div></div></div>
+</div>
+
+<div class="grid grid-7-5" style="margin-bottom:22px">
+  <div class="tarjeta">
+    <div class="tarjeta-cab">
+      <h2>{{ icono('celdas') }} Mapa de celdas</h2>
+      <div class="acciones">
+        <a class="btn amarillo peq" href="{{ url_for('parqueo.entrada') }}">{{ icono('entrada', 15) }} Entrada</a>
+        <a class="btn secundario peq" href="{{ url_for('parqueo.salida') }}">{{ icono('salida', 15) }} Salida</a>
+      </div>
+    </div>
+    <div class="leyenda" style="margin-bottom:14px">
+      <span><i style="background:#e4f6ee;border:1px solid #a9dfc6"></i>Libre</span>
+      <span><i style="background:#fdeceb;border:1px solid #f3b8b3"></i>Ocupada</span>
+      <span><i style="background:#e8ecf1;border:1px dashed #b8c0cc"></i>Mantenimiento</span>
+    </div>
+    {% include "celdas/_mapa.html" %}
+  </div>
+  <div class="apilado">
+    <div class="tarjeta">
+      <div class="tarjeta-cab"><h2>{{ icono('tablero') }} Ocupación</h2></div>
+      {% for r in resumen %}
+      {% set pct_ocupado = (r.ocupadas / r.total * 100) if r.total else 0 %}
+      {% set pct_mant = (r.mantenimiento / r.total * 100) if r.total else 0 %}
+      <div class="barra-ocupacion">
+        <div class="fila"><span>{{ icono('carro' if r.tipo_vehiculo == 'CARRO' else 'moto', 16) }} {{ 'Carros' if r.tipo_vehiculo == 'CARRO' else 'Motos' }}</span>
+          <em>{{ r.ocupadas }} ocupadas · {{ r.libres }} libres</em></div>
+        <div class="pista"><i class="ocupado" style="width:{{ pct_ocupado }}%"></i><i class="mant" style="width:{{ pct_mant }}%"></i></div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="tarjeta">
+      <div class="tarjeta-cab"><h2>{{ icono('historial') }} Últimos movimientos</h2>
+        <div class="acciones"><a href="{{ url_for('parqueo.historial') }}">Ver todo</a></div></div>
+      <ul class="movimientos">
+        {% for r in recientes %}
+        {% set salio = r.fecha_salida is not none %}
+        <li>
+          <span class="mov-icono {{ 'salida' if salio else 'entrada' }}">{{ icono('salida' if salio else 'entrada', 17) }}</span>
+          <div class="detalle"><span class="placa mini">{{ r.placa }}</span>
+            <b>{{ 'Salió' if salio else 'Entró' }}</b> · celda {{ r.celda }}</div>
+          <time>{{ (r.fecha_salida or r.fecha_entrada)[11:16] }}</time>
+        </li>
+        {% else %}
+        <li class="vacio" style="display:block">Aún no hay movimientos.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}

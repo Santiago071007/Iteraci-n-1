@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block titulo %}Iniciar sesión{% endblock %}
+{% block cuerpo %}
+<div class="login-pagina">
+  <section class="login-marca">
+    <div class="marca">
+      <div class="logo">P</div>
+      <div><b>Autos <span>Colombia</span></b><small>Parqueadero por mensualidad</small></div>
+    </div>
+    <div>
+      <h2>Control de tu parqueadero <span>en tiempo real</span>.</h2>
+      <p>Registra entradas y salidas en segundos, conoce qué celdas están libres y deja trazabilidad de cada novedad.</p>
+      <ul class="beneficios">
+        <li>{{ icono('check') }} Validación de placa y mensualidad vigente</li>
+        <li>{{ icono('check') }} Asignación automática de celdas por tipo de vehículo</li>
+        <li>{{ icono('check') }} Comprobantes con tiempo de permanencia</li>
+        <li>{{ icono('check') }} Registro de novedades por vehículo</li>
+      </ul>
+    </div>
+    <small style="opacity:.5">IU Digital de Antioquia · Ingeniería de Software</small>
+  </section>
+  <section class="login-form">
+    <div class="login-caja">
+      <h1>Bienvenido</h1>
+      <p>Ingresa con tu usuario para continuar.</p>
+      <form method="post">
+        <div class="campo">
+          <label for="username">Usuario</label>
+          <div class="con-icono">{{ icono('usuario') }}<input id="username" name="username" autocomplete="username" value="{{ request.form.username or '' }}" required autofocus></div>
+        </div>
+        <div class="campo">
+          <label for="password">Contraseña</label>
+          <div class="con-icono">{{ icono('escudo') }}<input id="password" name="password" type="password" autocomplete="current-password" required>
+            <button class="ver" type="button" data-ver-clave="password" aria-label="Mostrar contraseña">{{ icono('ojo') }}</button></div>
+        </div>
+        <button class="btn bloque grande">Ingresar {{ icono('flecha') }}</button>
+      </form>
+      <div class="demo">Usuarios de prueba: <code>admin</code> / <code>admin123</code> · <code>operador</code> / <code>operador123</code></div>
+    </div>
+  </section>
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block titulo %}Registrar salida{% endblock %}
+{% block subtitulo %}Libera la celda y calcula el tiempo de permanencia{% endblock %}
+{% block contenido %}
+<div class="grid grid-5-7">
+  <div class="tarjeta" style="align-self:start">
+    <div class="tarjeta-cab"><h2>{{ icono('salida') }} Vehículo que sale</h2></div>
+    <form method="post">
+      <label for="placa">Placa del vehículo</label>
+      <div class="placa-campo">
+        <input id="placa" name="placa" class="placa-input" maxlength="7" placeholder="ABC123" autocomplete="off"
+               data-estado="placa-estado" value="{{ request.values.placa or '' }}" required autofocus>
+      </div>
+      <div id="placa-estado" class="placa-estado">Carro ABC123 · Moto ABC12D</div>
+      <button class="btn bloque grande" style="margin-top:18px">{{ icono('salida') }} Registrar salida</button>
+    </form>
+  </div>
+  <div class="tarjeta" id="tabla-dentro">
+    <div class="tarjeta-cab">
+      <h2>{{ icono('lista') }} Vehículos dentro <span class="etq info">{{ activos|length }}</span></h2>
+      <div class="acciones buscador"><div class="con-icono">{{ icono('buscar', 16) }}<input placeholder="Buscar placa o celda" data-filtrar="#tabla-dentro" aria-label="Buscar"></div></div>
+    </div>
+    <div class="tabla-envoltura">
+    <table>
+      <thead><tr><th>Placa</th><th>Celda</th><th>Entrada</th><th>Tiempo</th><th></th></tr></thead>
+      <tbody>
+      {% for r in activos %}
+      <tr data-texto="{{ r.placa }} {{ r.celda }} {{ r.cliente }}">
+        <td><span class="placa">{{ r.placa }}</span><span class="secundario">{{ r.cliente }}</span></td>
+        <td>{{ r.celda }}</td>
+        <td>{{ r.fecha_entrada[11:16] }}</td>
+        <td data-desde="{{ r.fecha_entrada }}">{{ r.fecha_entrada|duracion }}</td>
+        <td style="text-align:right"><form method="post"><input type="hidden" name="placa" value="{{ r.placa }}"><button class="btn peq">Dar salida</button></form></td>
+      </tr>
+      {% else %}
+      <tr><td colspan="5" class="vacio">{{ icono('carro', 28) }}No hay vehículos dentro del parqueadero.</td></tr>
+      {% endfor %}
+      <tr class="sin-resultados" hidden><td colspan="5" class="vacio">Sin resultados para la búsqueda.</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

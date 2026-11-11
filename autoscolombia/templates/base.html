@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titulo %}{% endblock %} · Autos Colombia</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23f6c343'/%3E%3Ctext x='16' y='23' font-family='Arial' font-weight='900' font-size='20' text-anchor='middle' fill='%230b1f3f'%3EP%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+  <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+</head>
+<body {% if g.usuario %}data-sesion="1"{% endif %}>
+<div class="avisos" aria-live="polite">
+  {% for categoria, mensaje in get_flashed_messages(with_categories=true) %}
+  <div class="aviso {{ categoria }}" role="status">
+    {{ icono('check' if categoria == 'ok' else 'alerta', 20, 'ico-estado') }}
+    <div><b>{{ 'Listo' if categoria == 'ok' else 'No se pudo completar' }}</b><p>{{ mensaje }}</p></div>
+    <button class="aviso-cerrar" type="button" aria-label="Cerrar">{{ icono('x', 16) }}</button>
+  </div>
+  {% endfor %}
+</div>
+{% block cuerpo %}
+{% set ep = request.endpoint or '' %}
+<div class="layout">
+  <nav class="menu" aria-label="Menú principal">
+    <div class="marca">
+      <div class="logo">P</div>
+      <div><b>Autos <span>Colombia</span></b><small>Parqueadero por mensualidad</small></div>
+    </div>
+    <a href="{{ url_for('parqueo.tablero') }}" class="{{ 'activo' if ep == 'parqueo.tablero' }}">{{ icono('tablero') }} Tablero</a>
+    <div class="seccion">Operación</div>
+    <a href="{{ url_for('parqueo.entrada') }}" class="{{ 'activo' if ep == 'parqueo.entrada' }}">{{ icono('entrada') }} Registrar entrada <kbd>Alt E</kbd></a>
+    <a href="{{ url_for('parqueo.salida') }}" class="{{ 'activo' if ep == 'parqueo.salida' }}">{{ icono('salida') }} Registrar salida <kbd>Alt S</kbd></a>
+    <a href="{{ url_for('parqueo.activos') }}" class="{{ 'activo' if ep == 'parqueo.activos' }}">{{ icono('lista') }} Vehículos dentro</a>
+    <a href="{{ url_for('parqueo.novedades') }}" class="{{ 'activo' if ep == 'parqueo.novedades' }}">{{ icono('alerta') }} Novedades <kbd>Alt N</kbd></a>
+    <a href="{{ url_for('parqueo.historial') }}" class="{{ 'activo' if ep in ('parqueo.historial', 'parqueo.comprobante') }}">{{ icono('historial') }} Historial</a>
+    <div class="seccion">Configuración</div>
+    <a href="{{ url_for('vehiculos.listar') }}" class="{{ 'activo' if ep.startswith('vehiculos.') }}">{{ icono('vehiculos') }} Vehículos</a>
+    <a href="{{ url_for('celdas.listar') }}" class="{{ 'activo' if ep.startswith('celdas.') }}">{{ icono('celdas') }} Celdas</a>
+    <div class="menu-pie">Iteración 1 · Entrada y salida</div>
+  </nav>
+  <main class="contenido">
+    <header class="barra">
+      <button class="btn-icono boton-menu" type="button" data-menu aria-label="Abrir menú">{{ icono('menu') }}</button>
+      <div>
+        <h1>{{ self.titulo() }}</h1>
+        <div class="subtitulo">{% block subtitulo %}{% endblock %}</div>
+      </div>
+      <div class="derecha">
+        <span id="reloj"></span>
+        <div class="chip-usuario">
+          <span class="avatar">{{ g.usuario.nombre.split()[:2]|map('first')|join|upper }}</span>
+          <div><b>{{ g.usuario.nombre }}</b><small>{{ 'Administrador' if g.usuario.es_admin() else 'Operador' }}</small></div>
+        </div>
+        <a class="btn-icono" href="{{ url_for('auth.logout') }}" title="Cerrar sesión" aria-label="Cerrar sesión">{{ icono('salir', 17) }}</a>
+      </div>
+    </header>
+    <div class="pagina">
+      {% block contenido %}{% endblock %}
+    </div>
+  </main>
+</div>
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Autos Colombia · Iteración 1</title>
+<style>
+  @page { size: Letter; margin: 2.2cm 2cm 2cm 2cm; }
+  body { font-family: "Segoe UI", Arial, sans-serif; font-size: 11pt; color: #1d2433; line-height: 1.45; }
+  h1 { font-size: 19pt; color: #12305a; border-bottom: 3px solid #f6c343; padding-bottom: 6px; margin: 0 0 14px; break-before: page; }
+  h2 { font-size: 14pt; color: #12305a; margin: 22px 0 8px; }
+  h3 { font-size: 12pt; margin: 16px 0 6px; }
+  p { margin: 6px 0; text-align: justify; }
+  table { width: 100%; border-collapse: collapse; margin: 8px 0 14px; font-size: 9.5pt; }
+  th, td { border: 1px solid #b9c3d3; padding: 5px 7px; vertical-align: top; text-align: left; }
+  th { background: #dbe6f5; color: #12305a; }
+  tr { break-inside: avoid; }
+  figure { margin: 10px 0 16px; text-align: center; break-inside: avoid; }
+  figure img { max-width: 100%; border: 1px solid #dfe3ea; }
+  figure img.diagrama { border: 0; }
+  figcaption { font-size: 9.5pt; color: #5b6575; margin-top: 4px; font-style: italic; }
+  pre { background: #f5f7fa; border: 1px solid #dfe3ea; padding: 10px; font-size: 8pt; line-height: 1.3; white-space: pre-wrap; font-family: Consolas, monospace; }
+  code { font-family: Consolas, monospace; font-size: 9.5pt; background: #f2f4f7; padding: 0 3px; }
+  .hu { border: 1px solid #b9c3d3; border-left: 5px solid #1d4a85; padding: 8px 12px; margin: 10px 0; break-inside: avoid; }
+  .hu .titulo { font-weight: 700; color: #12305a; }
+  .hu ul { margin: 4px 0 0; padding-left: 20px; }
+  .meta { color: #5b6575; font-size: 9.5pt; }
+  .portada { height: 23cm; display: flex; flex-direction: column; justify-content: space-between; text-align: center; }
+  .portada .inst { font-size: 13pt; font-weight: 600; color: #12305a; }
+  .portada .titulo { font-size: 30pt; font-weight: 800; color: #12305a; margin-top: 3cm; }
+  .portada .titulo span { color: #d4a017; }
+  .portada .sub { font-size: 15pt; margin-top: 10px; }
+  .portada .datos { font-size: 12pt; line-height: 1.9; }
+  .indice { list-style: none; padding: 0; font-size: 11.5pt; line-height: 1.9; }
+  .indice ul { list-style: none; padding-left: 22px; font-size: 10.5pt; line-height: 1.7; }
+  .nota { background: #fff8e1; border: 1px solid #f0d78c; padding: 8px 12px; font-size: 10pt; margin: 10px 0; }
+  .dos { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+</style>
+</head>
+<body>
+
+<section class="portada">
+  <div class="inst">IU Digital de Antioquia<br>Tecnología en Desarrollo de Software · Ingeniería de Software</div>
+  <div>
+    <div class="titulo">Autos <span>Colombia</span></div>
+    <div class="sub">Sistema de gestión de parqueadero por mensualidad</div>
+    <div class="sub" style="font-size:13pt;color:#5b6575">Iteración 1: Gestión de la entrada y salida de vehículos</div>
+  </div>
+  <div class="datos">
+    Presentado por:<br><b>David Santiago Cantor Torres</b><br>
+    <br>25 de octubre de 2026
+  </div>
+</section>
+
+<h1>Contenido</h1>
+<ul class="indice">
+  <li>1. Introducción</li>
+  <li>2. Entregables de la iteración 1
+    <ul>
+      <li>2.1 Requerimientos funcionales y no funcionales</li>
+      <li>2.2 Historias de usuario</li>
+      <li>2.3 Arquitectura del sistema</li>
+      <li>2.4 Mockups de las historias de usuario</li>
+      <li>2.5 Modelo entidad–relación, modelo relacional y modelo físico</li>
+      <li>2.6 Diagrama de casos de uso</li>
+      <li>2.7 Diagrama de clases</li>
+      <li>2.8 Diagrama de paquetes</li>
+      <li>2.9 Código fuente y repositorio</li>
+    </ul>
+  </li>
+  <li>3. Conclusiones</li>
+  <li>4. Referencias</li>
+</ul>
+
+<h1>1. Introducción</h1>
+<p>El parqueadero <b>Autos Colombia</b> presta el servicio de estacionamiento a clientes que pagan una mensualidad. Hoy la operación diaria (quién entra, a qué celda se asigna, cuánto tiempo permanece y qué novedades se presentan con cada vehículo) se controla de forma manual, lo que dificulta saber en tiempo real qué celdas están disponibles, verificar si un cliente tiene su mensualidad al día y responder ante reclamaciones por daños.</p>
+<p>Este documento presenta el análisis, diseño e implementación de la <b>primera iteración</b> del sistema de información, enfocada en la <b>gestión de la entrada y salida de vehículos</b>. El alcance completo del proyecto se divide en tres iteraciones:</p>
+<table>
+  <tr><th style="width:18%">Iteración</th><th>Alcance</th><th style="width:22%">Estado</th></tr>
+  <tr><td>Iteración 1</td><td>Entrada y salida de vehículos, asignación y liberación de celdas, registro de novedades durante la estadía, consulta de vehículos dentro e historial.</td><td>Desarrollada (este documento)</td></tr>
+  <tr><td>Iteración 2</td><td>Gestión completa de usuarios (clientes y empleados) y de celdas.</td><td>Planeada</td></tr>
+  <tr><td>Iteración 3</td><td>Gestión de pagos de mensualidades.</td><td>Planeada</td></tr>
+</table>
+<p>Para que la iteración 1 pueda operar de punta a punta se incluyó un soporte mínimo de las otras áreas: inicio de sesión con dos roles (administrador y operador), registro básico de vehículos de mensualidad con su periodo vigente y la posibilidad de poner celdas en mantenimiento. Estas funciones se ampliarán en las iteraciones siguientes.</p>
+<p>La solución se construyó como una aplicación web en <b>Python 3 con Flask</b> y base de datos <b>SQLite</b>, organizada en una arquitectura por capas (presentación, lógica de negocio y acceso a datos). El documento recorre los nueve entregables solicitados: requerimientos, historias de usuario, arquitectura, mockups, modelos de datos, casos de uso, diagrama de clases, diagrama de paquetes y código fuente.</p>
+
+<h1>2. Entregables de la iteración 1</h1>
+<h2>2.1 Requerimientos funcionales y no funcionales</h2>
+<h3>Actores del sistema</h3>
+<table>
+  <tr><th style="width:22%">Actor</th><th>Descripción</th></tr>
+  <tr><td>Operador</td><td>Empleado de portería. Registra entradas, salidas y novedades, y consulta el estado del parqueadero.</td></tr>
+  <tr><td>Administrador</td><td>Encargado del parqueadero. Puede hacer todo lo del operador y además registrar vehículos de mensualidad y cambiar el estado de las celdas.</td></tr>
+</table>
+
+<h3>Requerimientos funcionales</h3>
+<table>
+  <tr><th style="width:9%">ID</th><th style="width:24%">Nombre</th><th>Descripción</th><th style="width:10%">Prioridad</th></tr>
+  <tr><td>RF01</td><td>Autenticar usuario</td><td>El sistema debe permitir el ingreso con usuario y contraseña y restringir las opciones según el rol (administrador u operador).</td><td>Alta</td></tr>
+  <tr><td>RF02</td><td>Registrar entrada de vehículo</td><td>El sistema debe registrar la entrada de un vehículo a partir de su placa, guardando fecha y hora del sistema, la celda asignada y el operador que la registró.</td><td>Alta</td></tr>
+  <tr><td>RF03</td><td>Validar placa</td><td>El sistema debe validar el formato de placa colombiana: carro <code>ABC123</code>, moto <code>ABC12D</code>, sin importar mayúsculas, espacios o guiones.</td><td>Alta</td></tr>
+  <tr><td>RF04</td><td>Validar mensualidad vigente</td><td>El sistema solo debe permitir la entrada de vehículos registrados que tengan una mensualidad vigente en la fecha actual.</td><td>Alta</td></tr>
+  <tr><td>RF05</td><td>Evitar doble entrada</td><td>El sistema no debe permitir registrar la entrada de un vehículo que ya está dentro del parqueadero (entrada sin salida).</td><td>Alta</td></tr>
+  <tr><td>RF06</td><td>Asignar celda</td><td>El sistema debe asignar automáticamente la primera celda libre correspondiente al tipo de vehículo (carro o moto) o permitir que el operador elija una celda libre compatible; la celda queda en estado OCUPADA.</td><td>Alta</td></tr>
+  <tr><td>RF07</td><td>Registrar salida de vehículo</td><td>El sistema debe registrar la salida de un vehículo que esté dentro, guardando fecha y hora y el operador, y liberar la celda (estado LIBRE).</td><td>Alta</td></tr>
+  <tr><td>RF08</td><td>Calcular tiempo de permanencia</td><td>El sistema debe calcular y mostrar el tiempo de permanencia (días, horas y minutos) en el comprobante de salida y en los listados.</td><td>Media</td></tr>
+  <tr><td>RF09</td><td>Generar comprobante</td><td>El sistema debe mostrar un comprobante de entrada y de salida con placa, vehículo, propietario, celda, fechas, operador y permanencia.</td><td>Media</td></tr>
+  <tr><td>RF10</td><td>Registrar novedad</td><td>El sistema debe permitir registrar novedades (daño, objeto olvidado, incidente, otro) con descripción sobre un vehículo que se encuentre dentro del parqueadero.</td><td>Alta</td></tr>
+  <tr><td>RF11</td><td>Consultar vehículos dentro</td><td>El sistema debe listar los vehículos que están dentro con su celda, hora de entrada y tiempo transcurrido.</td><td>Media</td></tr>
+  <tr><td>RF12</td><td>Consultar mapa de ocupación</td><td>El sistema debe mostrar el mapa de celdas con su estado (libre, ocupada, mantenimiento), la placa que ocupa cada celda e indicadores del día (entradas, salidas, celdas libres).</td><td>Media</td></tr>
+  <tr><td>RF13</td><td>Consultar historial</td><td>El sistema debe permitir consultar el historial de entradas y salidas filtrando por placa y por fecha.</td><td>Media</td></tr>
+  <tr><td>RF14</td><td>Registrar vehículo de mensualidad</td><td>El administrador debe poder registrar un vehículo (placa, tipo, marca, color), su propietario y el periodo y valor de la mensualidad. <i>(Soporte para la iteración 1.)</i></td><td>Media</td></tr>
+  <tr><td>RF15</td><td>Cambiar estado de celda</td><td>El administrador debe poder poner en mantenimiento o habilitar una celda que no esté ocupada. <i>(Soporte para la iteración 1.)</i></td><td>Baja</td></tr>
+</table>
+
+<h3>Requerimientos no funcionales</h3>
+<table>
+  <tr><th style="width:9%">ID</th><th style="width:18%">Tipo</th><th>Descripción</th></tr>
+  <tr><td>RNF01</td><td>Rendimiento</td><td>El registro de una entrada o salida debe completarse en menos de 2 segundos en condiciones normales de operación.</td></tr>
+  <tr><td>RNF02</td><td>Usabilidad</td><td>Un operador debe poder registrar una entrada o salida en máximo 3 interacciones (escribir placa, confirmar). Los mensajes de error deben estar en español y explicar la causa.</td></tr>
+  <tr><td>RNF03</td><td>Seguridad</td><td>Las contraseñas se almacenan con hash (PBKDF2/scrypt de Werkzeug), nunca en texto plano. Todas las pantallas, salvo el inicio de sesión, requieren sesión activa; las funciones administrativas requieren rol ADMIN.</td></tr>
+  <tr><td>RNF04</td><td>Integridad de datos</td><td>La base de datos debe garantizar mediante restricciones (llaves foráneas, CHECK e índices únicos parciales) que un vehículo no tenga dos entradas abiertas y que una celda no tenga dos vehículos. Entrada y ocupación de celda se registran en una sola transacción.</td></tr>
+  <tr><td>RNF05</td><td>Trazabilidad</td><td>Toda entrada, salida y novedad debe guardar el usuario que la registró y la fecha y hora.</td></tr>
+  <tr><td>RNF06</td><td>Compatibilidad</td><td>La aplicación debe funcionar en navegadores modernos (Chrome, Edge, Firefox) y adaptarse a pantallas desde 1024 px de ancho; en pantallas pequeñas el menú se reorganiza.</td></tr>
+  <tr><td>RNF07</td><td>Mantenibilidad</td><td>El código debe organizarse en capas (controladores, servicios, repositorios, modelos) y contar con pruebas automatizadas de las reglas de negocio.</td></tr>
+  <tr><td>RNF08</td><td>Portabilidad</td><td>La aplicación debe instalarse con Python 3.10+ y una sola dependencia (Flask), sin servidor de base de datos externo.</td></tr>
+  <tr><td>RNF09</td><td>Disponibilidad</td><td>El sistema debe estar disponible durante todo el horario de atención del parqueadero.</td></tr>
+</table>
+
+<h3>Reglas de negocio</h3>
+<table>
+  <tr><th style="width:9%">ID</th><th>Regla</th></tr>
+  <tr><td>RN01</td><td>Solo ingresan vehículos registrados con mensualidad vigente (fecha_inicio ≤ hoy ≤ fecha_fin).</td></tr>
+  <tr><td>RN02</td><td>Las celdas son de tipo CARRO o MOTO y solo reciben vehículos de su tipo.</td></tr>
+  <tr><td>RN03</td><td>Una celda en MANTENIMIENTO u OCUPADA no se puede asignar; una celda OCUPADA no se puede poner en mantenimiento.</td></tr>
+  <tr><td>RN04</td><td>Las novedades solo se registran sobre vehículos que están dentro del parqueadero y quedan asociadas a esa estadía.</td></tr>
+</table>
+
+<h2 style="break-before:page">2.2 Historias de usuario</h2>
+<p>Las historias se escriben con el formato <i>Como [rol] quiero [funcionalidad] para [beneficio]</i>, con criterios de aceptación verificables. La estimación está en puntos de historia (escala Fibonacci).</p>
+
+<div class="hu"><div class="titulo">HU01 · Iniciar sesión</div>
+<p>Como <b>empleado del parqueadero</b> quiero <b>ingresar con mi usuario y contraseña</b> para <b>que solo personal autorizado opere el sistema</b>.</p>
+<ul><li>Dado un usuario y contraseña válidos, cuando ingreso, entonces veo el tablero y mi nombre y rol en la parte superior.</li>
+<li>Dada una contraseña incorrecta, se muestra “Usuario o contraseña incorrectos” y no se inicia sesión.</li>
+<li>Si intento abrir una pantalla sin sesión, soy redirigido al inicio de sesión.</li></ul>
+<div class="meta">Prioridad: Alta · Estimación: 2 pts · RF01, RNF03 · Mockup: figura 2</div></div>
+
+<div class="hu"><div class="titulo">HU02 · Registrar entrada de vehículo</div>
+<p>Como <b>operador</b> quiero <b>registrar la entrada de un vehículo con su placa</b> para <b>llevar el control de quién está dentro y en qué celda</b>.</p>
+<ul><li>Dada una placa registrada con mensualidad vigente y celdas libres de su tipo, al registrar la entrada se guarda la fecha y hora actual, se asigna una celda, la celda queda OCUPADA y se muestra el comprobante.</li>
+<li>Puedo dejar la asignación automática o escoger una celda libre de la lista.</li>
+<li>La placa se acepta en minúsculas, con espacios o guion (p. ej. “abc-123”).</li></ul>
+<div class="meta">Prioridad: Alta · Estimación: 5 pts · RF02, RF06, RF09 · Mockups: figuras 4 y 6</div></div>
+
+<div class="hu"><div class="titulo">HU03 · Validar el ingreso</div>
+<p>Como <b>administrador</b> quiero <b>que el sistema rechace ingresos no válidos</b> para <b>no prestar el servicio a vehículos sin mensualidad ni duplicar registros</b>.</p>
+<ul><li>Si la placa no tiene formato válido, se muestra el formato esperado.</li>
+<li>Si el vehículo no está registrado o su mensualidad está vencida, se informa y no se registra la entrada.</li>
+<li>Si el vehículo ya está dentro, se informa “ya se encuentra dentro del parqueadero”.</li>
+<li>Si no hay celdas libres para el tipo de vehículo o la celda elegida no es compatible, se informa.</li></ul>
+<div class="meta">Prioridad: Alta · Estimación: 3 pts · RF03, RF04, RF05, RN01–RN03 · Mockup: figura 5</div></div>
+
+<div class="hu"><div class="titulo">HU04 · Registrar salida de vehículo</div>
+<p>Como <b>operador</b> quiero <b>registrar la salida de un vehículo</b> para <b>liberar su celda y conocer cuánto tiempo permaneció</b>.</p>
+<ul><li>Dada una placa que está dentro, al registrar la salida se guarda la fecha y hora, la celda queda LIBRE y se muestra el comprobante de salida con el tiempo de permanencia.</li>
+<li>Puedo dar salida escribiendo la placa o con el botón “Dar salida” de la lista de vehículos dentro.</li>
+<li>Si la placa no está dentro, se informa y no se modifica nada.</li></ul>
+<div class="meta">Prioridad: Alta · Estimación: 3 pts · RF07, RF08, RF09 · Mockups: figuras 7 y 8</div></div>
+
+<div class="hu"><div class="titulo">HU05 · Registrar novedad de un vehículo</div>
+<p>Como <b>operador</b> quiero <b>registrar novedades sobre un vehículo que está en el parqueadero</b> para <b>dejar evidencia de daños, objetos olvidados o incidentes</b>.</p>
+<ul><li>Solo puedo seleccionar vehículos que están dentro.</li>
+<li>Debo elegir el tipo (daño, objeto olvidado, incidente, otro) y escribir una descripción de al menos 5 caracteres.</li>
+<li>La novedad queda con fecha, hora y usuario, y aparece en el comprobante del registro.</li></ul>
+<div class="meta">Prioridad: Alta · Estimación: 3 pts · RF10, RN04 · Mockup: figura 10</div></div>
+
+<div class="hu"><div class="titulo">HU06 · Ver ocupación del parqueadero</div>
+<p>Como <b>operador</b> quiero <b>ver el mapa de celdas y los vehículos que están dentro</b> para <b>saber rápidamente dónde hay espacio y dónde está cada vehículo</b>.</p>
+<ul><li>El tablero muestra vehículos dentro, celdas libres/total, entradas y salidas del día.</li>
+<li>Cada celda se ve en verde (libre), rojo (ocupada, con la placa) o gris (mantenimiento).</li>
+<li>La lista de vehículos dentro muestra placa, propietario, celda, hora de entrada y tiempo transcurrido.</li></ul>
+<div class="meta">Prioridad: Media · Estimación: 3 pts · RF11, RF12 · Mockups: figuras 3 y 9</div></div>
+
+<div class="hu"><div class="titulo">HU07 · Consultar historial de movimientos</div>
+<p>Como <b>administrador</b> quiero <b>consultar el historial de entradas y salidas</b> para <b>atender reclamaciones y revisar la operación</b>.</p>
+<ul><li>Puedo filtrar por placa (parcial) y por fecha.</li>
+<li>Cada fila muestra entrada, salida, permanencia y estado, y enlaza al comprobante con sus novedades.</li></ul>
+<div class="meta">Prioridad: Media · Estimación: 2 pts · RF13 · Mockup: figura 11</div></div>
+
+<div class="hu"><div class="titulo">HU08 · Registrar vehículo de mensualidad</div>
+<p>Como <b>administrador</b> quiero <b>registrar un vehículo, su propietario y el periodo de la mensualidad</b> para <b>que pueda ingresar al parqueadero</b>.</p>
+<ul><li>La placa se valida según el tipo (carro ABC123, moto ABC12D) y no puede repetirse.</li>
+<li>Si el documento del propietario ya existe, el vehículo se asocia a ese cliente.</li>
+<li>La fecha final de la mensualidad no puede ser anterior a la inicial. Un operador no puede acceder a esta opción.</li></ul>
+<div class="meta">Prioridad: Media · Estimación: 3 pts · RF14 · Mockup: figura 13</div></div>
+
+<div class="hu"><div class="titulo">HU09 · Poner celdas en mantenimiento</div>
+<p>Como <b>administrador</b> quiero <b>poner una celda en mantenimiento o habilitarla</b> para <b>que no se asignen celdas que no se pueden usar</b>.</p>
+<ul><li>Solo se puede cambiar el estado de celdas que no estén ocupadas.</li>
+<li>Una celda en mantenimiento no aparece en la lista de celdas libres al registrar una entrada.</li></ul>
+<div class="meta">Prioridad: Baja · Estimación: 1 pt · RF15 · Mockup: figura 14</div></div>
+
+<h2 style="break-before:page">2.3 Arquitectura del sistema</h2>
+<p>Se eligió una <b>arquitectura web en capas</b> con patrón <b>MVC</b> (Modelo–Vista–Controlador) complementado con una capa de servicios y el patrón <b>Repositorio</b>. El navegador del equipo de portería se comunica por HTTP con el servidor Flask; cada capa solo conoce a la capa inmediatamente inferior, lo que facilita cambiar la base de datos o la interfaz sin tocar las reglas de negocio.</p>
+<figure><img class="diagrama" src="../img/staruml/arquitectura.png" style="width:100%"><figcaption>Figura 1. Arquitectura del sistema (diagrama de despliegue en StarUML).</figcaption></figure>
+<table>
+  <tr><th style="width:24%">Capa</th><th>Responsabilidad</th><th style="width:28%">Elementos</th></tr>
+  <tr><td>Presentación</td><td>Recibe las peticiones HTTP, valida la sesión y el rol, invoca los servicios y renderiza las vistas HTML.</td><td><code>controllers/</code>, <code>templates/</code>, <code>static/</code></td></tr>
+  <tr><td>Lógica de negocio</td><td>Aplica las reglas de negocio (RN01–RN04), coordina repositorios y define las transacciones.</td><td><code>services/</code></td></tr>
+  <tr><td>Acceso a datos</td><td>Encapsula las consultas SQL de cada tabla y convierte filas en objetos del dominio.</td><td><code>repositories/</code></td></tr>
+  <tr><td>Dominio</td><td>Entidades del negocio con su comportamiento propio (vigencia, celda libre, permanencia).</td><td><code>models.py</code></td></tr>
+  <tr><td>Persistencia</td><td>Base de datos relacional embebida.</td><td>SQLite 3 (<code>db.py</code>)</td></tr>
+</table>
+<p><b>Tecnologías:</b> Python 3.13, Flask 3.1 (servidor web, enrutamiento, sesiones), Jinja2 (plantillas), Werkzeug (hash de contraseñas), SQLite 3, HTML5 y CSS3, unittest (pruebas), Git y GitHub (control de versiones).</p>
+
+<h2 style="break-before:page">2.4 Mockups de las historias de usuario</h2>
+<p>Los mockups muestran las pantallas asociadas a cada historia de usuario. Corresponden al prototipo funcional de la aplicación, construido con la misma paleta (azul institucional y amarillo de placa) y la misma estructura: menú lateral de operación y configuración, barra superior con el usuario y área de contenido.</p>
+<div class="nota"><b>Archivo en Figma:</b> <a href="https://www.figma.com/design/YRxaNlDggnoAjB02jzHuaY/Autos-Colombia---mockup">https://www.figma.com/design/YRxaNlDggnoAjB02jzHuaY/Autos-Colombia---mockup</a><br>Cada marco está nombrado con su historia de usuario (HU01–HU09). Las imágenes también están en <code>docs/img/mockups/</code>.</div>
+<figure><img src="../img/mockups/01_login.png" style="width:100%"><figcaption>Figura 2. Inicio de sesión (HU01).</figcaption></figure>
+<figure><img src="../img/mockups/02_tablero.png" style="width:100%"><figcaption>Figura 3. Tablero con indicadores y mapa de celdas (HU06).</figcaption></figure>
+<figure><img src="../img/mockups/03_entrada.png" style="width:100%"><figcaption>Figura 4. Registrar entrada (HU02).</figcaption></figure>
+<figure><img src="../img/mockups/04_entrada_error.png" style="width:100%"><figcaption>Figura 5. Entrada rechazada por mensualidad vencida (HU03).</figcaption></figure>
+<figure><img src="../img/mockups/05_comprobante_entrada.png" style="width:100%"><figcaption>Figura 6. Comprobante de entrada (HU02).</figcaption></figure>
+<figure><img src="../img/mockups/06_salida.png" style="width:100%"><figcaption>Figura 7. Registrar salida (HU04).</figcaption></figure>
+<figure><img src="../img/mockups/07_comprobante_salida.png" style="width:100%"><figcaption>Figura 8. Comprobante de salida con tiempo de permanencia (HU04).</figcaption></figure>
+<figure><img src="../img/mockups/08_activos.png" style="width:100%"><figcaption>Figura 9. Vehículos dentro del parqueadero (HU06).</figcaption></figure>
+<figure><img src="../img/mockups/09_novedades.png" style="width:100%"><figcaption>Figura 10. Registro y consulta de novedades (HU05).</figcaption></figure>
+<figure><img src="../img/mockups/10_historial.png" style="width:100%"><figcaption>Figura 11. Historial de movimientos con filtros (HU07).</figcaption></figure>
+<figure><img src="../img/mockups/11_vehiculos.png" style="width:100%"><figcaption>Figura 12. Vehículos de mensualidad (HU08).</figcaption></figure>
+<figure><img src="../img/mockups/12_vehiculo_nuevo.png" style="width:100%"><figcaption>Figura 13. Registrar vehículo de mensualidad (HU08).</figcaption></figure>
+<figure><img src="../img/mockups/13_celdas.png" style="width:100%"><figcaption>Figura 14. Gestión del estado de las celdas (HU09).</figcaption></figure>
+
+<h2 style="break-before:page">2.5 Modelo entidad–relación (MER)</h2>
+<p>El MER identifica siete entidades. Un CLIENTE posee uno o varios VEHÍCULOS; cada vehículo tiene mensualidades (periodos pagados) y genera REGISTROS_PARQUEO cada vez que ingresa. Cada registro ocupa una CELDA, es registrado por un USUARIO del sistema y puede contener varias NOVEDADES.</p>
+<figure><img class="diagrama" src="../img/diagramas/mer.svg" style="width:100%"><figcaption>Figura 15. Modelo entidad–relación (notación de Chen).</figcaption></figure>
+<table>
+  <tr><th>Relación</th><th>Entidades</th><th style="width:14%">Cardinalidad</th><th>Significado</th></tr>
+  <tr><td>posee</td><td>CLIENTE – VEHÍCULO</td><td>1 : N</td><td>Un cliente puede tener varios vehículos en mensualidad.</td></tr>
+  <tr><td>tiene</td><td>VEHÍCULO – MENSUALIDAD</td><td>1 : N</td><td>Un vehículo acumula un periodo de mensualidad por cada mes contratado.</td></tr>
+  <tr><td>ingresa</td><td>VEHÍCULO – REGISTRO_PARQUEO</td><td>1 : N</td><td>Cada entrada del vehículo genera un registro.</td></tr>
+  <tr><td>asigna</td><td>CELDA – REGISTRO_PARQUEO</td><td>1 : N</td><td>Una celda es usada en muchos registros a lo largo del tiempo (uno abierto a la vez).</td></tr>
+  <tr><td>registra</td><td>USUARIO – REGISTRO_PARQUEO</td><td>1 : N</td><td>El operador que registra la entrada (y la salida).</td></tr>
+  <tr><td>contiene</td><td>REGISTRO_PARQUEO – NOVEDAD</td><td>1 : N</td><td>Novedades ocurridas durante esa estadía.</td></tr>
+  <tr><td>reporta</td><td>USUARIO – NOVEDAD</td><td>1 : N</td><td>Usuario que anotó la novedad.</td></tr>
+</table>
+
+<h2 style="break-before:page">Modelo relacional (MR)</h2>
+<p>Cada entidad se transforma en una tabla y cada relación 1:N en una llave foránea del lado N. La relación <i>registra</i> se materializa con dos llaves foráneas (usuario que registra la entrada y usuario que registra la salida). El esquema está en tercera forma normal: los datos del propietario solo se guardan en <code>cliente</code> y los de la celda solo en <code>celda</code>.</p>
+<figure><img class="diagrama" src="../img/diagramas/modelo_relacional.svg" style="width:100%"><figcaption>Figura 16. Modelo relacional.</figcaption></figure>
+<pre>cliente (<u>id</u>, documento, nombres, telefono, email)
+vehiculo (<u>id</u>, placa, tipo, marca, color, <i>cliente_id</i> → cliente)
+mensualidad (<u>id</u>, <i>vehiculo_id</i> → vehiculo, fecha_inicio, fecha_fin, valor)
+usuario (<u>id</u>, nombre, username, password_hash, rol, activo)
+celda (<u>id</u>, codigo, tipo_vehiculo, estado)
+registro_parqueo (<u>id</u>, <i>vehiculo_id</i> → vehiculo, <i>celda_id</i> → celda, fecha_entrada, fecha_salida,
+                  <i>usuario_entrada_id</i> → usuario, <i>usuario_salida_id</i> → usuario)
+novedad (<u>id</u>, <i>registro_id</i> → registro_parqueo, <i>usuario_id</i> → usuario, fecha, tipo, descripcion)</pre>
+
+<h2 style="break-before:page">Modelo físico</h2>
+<p>El modelo físico se implementa en SQLite 3. Además de tipos y llaves, incluye restricciones <code>CHECK</code> para dominios (tipo de vehículo, estado de celda, rol, tipo de novedad, fechas coherentes) e <b>índices únicos parciales</b> que impiden a nivel de base de datos que un vehículo tenga dos entradas abiertas o que una celda tenga dos vehículos al mismo tiempo.</p>
+<figure><img class="diagrama" src="../img/diagramas/modelo_fisico.svg" style="width:100%"><figcaption>Figura 17. Modelo físico (tipos de datos y restricciones).</figcaption></figure>
+<h3>Script DDL (<code>database/schema.sql</code>)</h3>
+<pre>PRAGMA foreign_keys = ON;
+
+DROP TABLE IF EXISTS novedad;
+DROP TABLE IF EXISTS registro_parqueo;
+DROP TABLE IF EXISTS mensualidad;
+DROP TABLE IF EXISTS vehiculo;
+DROP TABLE IF EXISTS cliente;
+DROP TABLE IF EXISTS celda;
+DROP TABLE IF EXISTS usuario;
+
+CREATE TABLE usuario (
+    id             INTEGER PRIMARY KEY AUTOINCREMENT,
+    nombre         VARCHAR(100) NOT NULL,
+    username       VARCHAR(40)  NOT NULL UNIQUE,
+    password_hash  VARCHAR(255) NOT NULL,
+    rol            VARCHAR(15)  NOT NULL CHECK (rol IN (&#x27;ADMIN&#x27;, &#x27;OPERADOR&#x27;)),
+    activo         INTEGER      NOT NULL DEFAULT 1 CHECK (activo IN (0, 1))
+);
+
+CREATE TABLE cliente (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    documento  VARCHAR(20)  NOT NULL UNIQUE,
+    nombres    VARCHAR(120) NOT NULL,
+    telefono   VARCHAR(20),
+    email      VARCHAR(120)
+);
+
+CREATE TABLE vehiculo (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    placa       VARCHAR(6)  NOT NULL UNIQUE,
+    tipo        VARCHAR(10) NOT NULL CHECK (tipo IN (&#x27;CARRO&#x27;, &#x27;MOTO&#x27;)),
+    marca       VARCHAR(40),
+    color       VARCHAR(30),
+    cliente_id  INTEGER     NOT NULL REFERENCES cliente (id) ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+CREATE TABLE mensualidad (
+    id            INTEGER PRIMARY KEY AUTOINCREMENT,
+    vehiculo_id   INTEGER       NOT NULL REFERENCES vehiculo (id) ON DELETE CASCADE,
+    fecha_inicio  DATE          NOT NULL,
+    fecha_fin     DATE          NOT NULL,
+    valor         DECIMAL(12,2) NOT NULL CHECK (valor &gt;= 0),
+    CHECK (fecha_fin &gt;= fecha_inicio)
+);
+
+CREATE TABLE celda (
+    id             INTEGER PRIMARY KEY AUTOINCREMENT,
+    codigo         VARCHAR(10) NOT NULL UNIQUE,
+    tipo_vehiculo  VARCHAR(10) NOT NULL CHECK (tipo_vehiculo IN (&#x27;CARRO&#x27;, &#x27;MOTO&#x27;)),
+    estado         VARCHAR(15) NOT NULL DEFAULT &#x27;LIBRE&#x27;
+                   CHECK (estado IN (&#x27;LIBRE&#x27;, &#x27;OCUPADA&#x27;, &#x27;MANTENIMIENTO&#x27;))
+);
+
+CREATE TABLE registro_parqueo (
+    id                  INTEGER PRIMARY KEY AUTOINCREMENT,
+    vehiculo_id         INTEGER  NOT NULL REFERENCES vehiculo (id) ON DELETE RESTRICT,
+    celda_id            INTEGER  NOT NULL REFERENCES celda (id)    ON DELETE RESTRICT,
+    fecha_entrada       DATETIME NOT NULL,
+    fecha_salida        DATETIME,
+    usuario_entrada_id  INTEGER  NOT NULL REFERENCES usuario (id),
+    usuario_salida_id   INTEGER  REFERENCES usuario (id),
+    CHECK (fecha_salida IS NULL OR fecha_salida &gt;= fecha_entrada)
+);
+
+CREATE UNIQUE INDEX ux_registro_vehiculo_abierto ON registro_parqueo (vehiculo_id) WHERE fecha_salida IS NULL;
+CREATE UNIQUE INDEX ux_registro_celda_abierta    ON registro_parqueo (celda_id)    WHERE fecha_salida IS NULL;
+CREATE INDEX ix_registro_fecha_entrada ON registro_parqueo (fecha_entrada);
+
+CREATE TABLE novedad (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    registro_id  INTEGER      NOT NULL REFERENCES registro_parqueo (id) ON DELETE CASCADE,
+    usuario_id   INTEGER      NOT NULL REFERENCES usuario (id),
+    fecha        DATETIME     NOT NULL,
+    tipo         VARCHAR(20)  NOT NULL CHECK (tipo IN (&#x27;DANO&#x27;, &#x27;OBJETO&#x27;, &#x27;INCIDENTE&#x27;, &#x27;OTRO&#x27;)),
+    descripcion  VARCHAR(500) NOT NULL
+);
+</pre>
+
+<h2 style="break-before:page">2.6 Diagrama de casos de uso</h2>
+<p>El administrador hereda todos los casos de uso del operador (generalización) y además registra vehículos y cambia el estado de las celdas. Registrar entrada incluye la validación y la asignación de celda; registrar salida incluye liberar la celda y calcular la permanencia.</p>
+<figure><img class="diagrama" src="../img/staruml/casos_de_uso.png" style="width:90%"><figcaption>Figura 18. Diagrama de casos de uso de la iteración 1 (StarUML).</figcaption></figure>
+<h3>Especificación UC02 · Registrar entrada</h3>
+<table>
+  <tr><th style="width:24%">Actor</th><td>Operador (o Administrador)</td></tr>
+  <tr><th>Precondición</th><td>El usuario inició sesión.</td></tr>
+  <tr><th>Flujo principal</th><td>1. El operador abre “Registrar entrada”.<br>2. Escribe la placa y, opcionalmente, elige una celda.<br>3. El sistema normaliza y valida la placa (RF03).<br>4. Verifica que el vehículo esté registrado y con mensualidad vigente (RF04).<br>5. Verifica que no tenga una entrada abierta (RF05).<br>6. Asigna la celda libre compatible (RF06).<br>7. Guarda el registro y marca la celda como OCUPADA en una transacción.<br>8. Muestra el comprobante de entrada.</td></tr>
+  <tr><th>Flujos alternos</th><td>3a. Formato inválido → mensaje con el formato esperado.<br>4a. Vehículo no registrado o mensualidad vencida → mensaje y no se registra.<br>5a. Vehículo ya dentro → mensaje.<br>6a. Sin celdas libres o celda incompatible → mensaje.</td></tr>
+  <tr><th>Postcondición</th><td>Existe un registro abierto para el vehículo y la celda queda OCUPADA.</td></tr>
+</table>
+<h3>Especificación UC03 · Registrar salida</h3>
+<table>
+  <tr><th style="width:24%">Actor</th><td>Operador (o Administrador)</td></tr>
+  <tr><th>Precondición</th><td>El usuario inició sesión y el vehículo está dentro.</td></tr>
+  <tr><th>Flujo principal</th><td>1. El operador escribe la placa o pulsa “Dar salida” en la lista.<br>2. El sistema busca el registro abierto del vehículo.<br>3. Guarda la fecha y hora de salida y el usuario, y deja la celda LIBRE en una transacción.<br>4. Calcula la permanencia y muestra el comprobante de salida con las novedades.</td></tr>
+  <tr><th>Flujos alternos</th><td>2a. El vehículo no está dentro → mensaje “no se encuentra dentro del parqueadero”.</td></tr>
+  <tr><th>Postcondición</th><td>El registro queda cerrado y la celda disponible.</td></tr>
+</table>
+
+<h2 style="break-before:page">2.7 Diagrama de clases</h2>
+<p>Las clases del dominio corresponden a <code>models.py</code>. <code>RegistroParqueo</code> es la clase central: une vehículo, celda y usuario, y se compone de novedades (composición: si se elimina el registro, se eliminan sus novedades). <code>ParqueoService</code> concentra las operaciones de la iteración y usa los repositorios para leer y escribir las entidades.</p>
+<figure><img class="diagrama" src="../img/staruml/clases.png" style="width:100%"><figcaption>Figura 19. Diagrama de clases (StarUML).</figcaption></figure>
+
+<h2 style="break-before:page">2.8 Diagrama de paquetes</h2>
+<p>El paquete <code>autoscolombia</code> agrupa los subpaquetes por capa. Las dependencias van siempre hacia abajo: <code>controllers</code> usa <code>services</code>, <code>services</code> usa <code>repositories</code> y <code>models</code>; ningún paquete inferior depende de uno superior. El paquete <code>tests</code> depende de la aplicación para probarla.</p>
+<figure><img class="diagrama" src="../img/staruml/paquetes.png" style="width:95%"><figcaption>Figura 20. Diagrama de paquetes (StarUML).</figcaption></figure>
+<table>
+  <tr><th style="width:22%">Paquete</th><th>Contenido</th></tr>
+  <tr><td>controllers</td><td><code>auth_controller</code> (login, roles), <code>parqueo_controller</code> (tablero, entrada, salida, comprobante, activos, historial, novedades), <code>vehiculo_controller</code>, <code>celda_controller</code>.</td></tr>
+  <tr><td>services</td><td><code>ParqueoService</code>, <code>VehiculoService</code>, <code>AuthService</code>, <code>ReglaNegocioError</code>.</td></tr>
+  <tr><td>repositories</td><td>Un repositorio por tabla: Usuario, Cliente, Vehiculo, Mensualidad, Celda, Registro, Novedad.</td></tr>
+  <tr><td>models</td><td>Entidades del dominio (dataclasses).</td></tr>
+  <tr><td>db</td><td>Conexión SQLite, creación del esquema y datos iniciales; comando <code>flask init-db</code>.</td></tr>
+  <tr><td>templates / static</td><td>Vistas Jinja2 y hoja de estilos.</td></tr>
+</table>
+
+<h2 style="break-before:page">2.9 Código fuente y repositorio</h2>
+<p><b>Repositorio GitHub:</b> https://github.com/Santiago071007/Iteraci-n-1</p>
+<h3>Estructura del proyecto</h3>
+<pre>autos-colombia/
+├── app.py                      punto de entrada
+├── requirements.txt            dependencias (Flask)
+├── autoscolombia/
+│   ├── __init__.py             fábrica de la aplicación (create_app)
+│   ├── db.py                   conexión e inicialización de SQLite
+│   ├── models.py               entidades del dominio
+│   ├── controllers/            capa de presentación (Blueprints)
+│   ├── services/               lógica de negocio
+│   ├── repositories/           acceso a datos
+│   ├── templates/              vistas Jinja2
+│   └── static/css/app.css      estilos
+├── database/
+│   ├── schema.sql              modelo físico (DDL)
+│   └── seed.sql                datos de ejemplo
+├── tests/test_parqueo.py       pruebas automatizadas
+└── docs/                       informe, diagramas y mockups</pre>
+<h3>Ejecución</h3>
+<pre>python -m venv .venv
+.venv\Scripts\activate          (Windows)   |   source .venv/bin/activate   (Linux/Mac)
+pip install -r requirements.txt
+flask --app app run             → abrir http://127.0.0.1:5000
+Usuarios de prueba:  admin / admin123   ·   operador / operador123</pre>
+<p>La base de datos se crea automáticamente con datos de ejemplo la primera vez (en <code>instance/</code>). Para reiniciarla: <code>flask --app app init-db</code>. Los datos de ejemplo incluyen cinco vehículos, uno de ellos (QRS234) con mensualidad vencida para demostrar la validación, y doce celdas (ocho de carro, una en mantenimiento, y cuatro de moto).</p>
+<h3>Fragmento principal: registro de entrada (<code>services/parqueo_service.py</code>)</h3>
+<pre>    def registrar_entrada(
+        self, placa: str, usuario_id: int, celda_id: Optional[int] = None, ahora: Optional[datetime] = None
+    ) -&gt; RegistroParqueo:
+        ahora = ahora or datetime.now()
+        placa = normalizar_placa(placa)
+        validar_placa(placa)
+
+        vehiculo = self.vehiculos.buscar_por_placa(placa)
+        if not vehiculo:
+            raise ReglaNegocioError(f&quot;El vehículo {placa} no está registrado como mensualidad.&quot;)
+        if not self.mensualidades.vigente(vehiculo.id, ahora.date()):
+            raise ReglaNegocioError(f&quot;El vehículo {placa} no tiene una mensualidad vigente.&quot;)
+        if self.registros.abierto_por_vehiculo(vehiculo.id):
+            raise ReglaNegocioError(f&quot;El vehículo {placa} ya se encuentra dentro del parqueadero.&quot;)
+
+        if celda_id:
+            celda = self.celdas.obtener(celda_id)
+            if not celda or not celda.esta_libre():
+                raise ReglaNegocioError(&quot;La celda seleccionada no está disponible.&quot;)
+            if celda.tipo_vehiculo != vehiculo.tipo:
+                raise ReglaNegocioError(f&quot;La celda {celda.codigo} no corresponde a un vehículo tipo {vehiculo.tipo}.&quot;)
+        else:
+            libres = self.celdas.libres(vehiculo.tipo)
+            if not libres:
+                raise ReglaNegocioError(f&quot;No hay celdas libres para vehículos tipo {vehiculo.tipo}.&quot;)
+            celda = libres[0]
+
+        with self.db:
+            registro_id = self.registros.crear_entrada(
+                vehiculo.id, celda.id, ahora.strftime(FORMATO_FECHA_HORA), usuario_id
+            )
+            self.celdas.cambiar_estado(celda.id, &quot;OCUPADA&quot;)
+        return self.registros.obtener(registro_id)</pre>
+<h3>Pruebas automatizadas</h3>
+<p>El proyecto incluye 15 pruebas (<code>python -m unittest discover -s tests -t .</code>) que verifican las reglas de negocio y el flujo web: asignación de celda por tipo, rechazo de doble entrada, placa inválida, vehículo no registrado, mensualidad vencida, celda ocupada o incompatible, falta de celdas, cálculo de permanencia y liberación de celda en la salida, novedades solo para vehículos dentro, registro de vehículos, protección de rutas por sesión y por rol. Resultado de la última ejecución: <b>15 pruebas, resultado OK</b>.</p>
+
+<h1>3. Conclusiones</h1>
+<ul>
+  <li><p>La primera iteración entrega un sistema funcional que reemplaza el control manual de entradas y salidas: el operador registra un movimiento con solo escribir la placa, el sistema asigna la celda y deja trazabilidad de quién, cuándo y dónde.</p></li>
+  <li><p>Trasladar las reglas de negocio (mensualidad vigente, celda compatible, una sola entrada abierta) tanto a la capa de servicios como a restricciones de la base de datos protege la integridad de la información incluso ante errores de programación o accesos concurrentes.</p></li>
+  <li><p>La arquitectura en capas con repositorios y servicios permitió probar las reglas de negocio de forma aislada y deja el sistema preparado para las iteraciones 2 (usuarios y celdas) y 3 (pagos): el modelo de datos ya contempla clientes, celdas y mensualidades, por lo que estas iteraciones amplían funcionalidad sin rediseñar lo construido.</p></li>
+  <li><p>Partir de requerimientos, historias de usuario con criterios de aceptación y modelos UML/ER antes de programar hizo que el código fuera trazable: cada pantalla corresponde a una historia, cada historia a requerimientos y cada regla a una prueba automatizada.</p></li>
+  <li><p>El registro de novedades asociado a cada estadía da al parqueadero evidencia con fecha, hora y responsable para atender reclamaciones de los clientes.</p></li>
+</ul>
+
+<h1 style="break-before:auto;margin-top:30px">4. Referencias</h1>
+<ul>
+  <li>Pallets Projects. <i>Flask Documentation (3.1.x)</i>. https://flask.palletsprojects.com/</li>
+  <li>SQLite Consortium. <i>SQLite Documentation: Partial Indexes, Foreign Key Support</i>. https://www.sqlite.org/docs.html</li>
+  <li>Object Management Group. <i>Unified Modeling Language (UML) Specification, v2.5.1</i>. 2017.</li>
+  <li>Cohn, M. <i>User Stories Applied: For Agile Software Development</i>. Addison-Wesley, 2004.</li>
+  <li>Elmasri, R. y Navathe, S. <i>Fundamentos de Sistemas de Bases de Datos</i>. 5.ª ed. Pearson, 2007.</li>
+  <li>Sommerville, I. <i>Ingeniería de Software</i>. 9.ª ed. Pearson, 2011.</li>
+</ul>
+</body>
+</html>

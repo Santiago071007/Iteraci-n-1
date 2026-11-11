@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block titulo %}Vehículos{% endblock %}
+{% block subtitulo %}Vehículos registrados en el servicio de mensualidad{% endblock %}
+{% block contenido %}
+<div class="tarjeta" id="tabla-vehiculos">
+  <div class="tarjeta-cab">
+    <div class="buscador" style="flex:1"><div class="con-icono">{{ icono('buscar', 16) }}<input placeholder="Buscar placa, propietario o documento" data-filtrar="#tabla-vehiculos" aria-label="Buscar"></div></div>
+    {% if g.usuario.es_admin() %}<div class="acciones"><a class="btn" href="{{ url_for('vehiculos.nuevo') }}">{{ icono('mas', 16) }} Registrar vehículo</a></div>{% endif %}
+  </div>
+  <div class="tabla-envoltura">
+  <table>
+    <thead><tr><th>Placa</th><th>Vehículo</th><th>Propietario</th><th>Mensualidad</th><th>Ubicación</th></tr></thead>
+    <tbody>
+    {% for v in vehiculos %}
+    {% set vigente = v.mensualidad_hasta and v.mensualidad_hasta >= hoy %}
+    <tr data-texto="{{ v.placa }} {{ v.cliente }} {{ v.documento }} {{ v.marca }}">
+      <td><span class="placa">{{ v.placa }}</span></td>
+      <td>{{ icono('carro' if v.tipo == 'CARRO' else 'moto', 16) }} {{ v.marca or '' }} <span class="secundario">{{ v.tipo|capitalize }} · {{ v.color or 'sin color' }}</span></td>
+      <td>{{ v.cliente }}<span class="secundario">CC {{ v.documento }}</span></td>
+      <td>{% if vigente %}<span class="etq ok">Vigente</span><span class="secundario">hasta {{ v.mensualidad_hasta }}</span>
+          {% else %}<span class="etq mal">Vencida</span><span class="secundario">{{ v.mensualidad_hasta or 'sin mensualidad' }}</span>{% endif %}</td>
+      <td>{% if v.dentro %}<span class="etq info">Dentro</span>{% else %}<span class="etq neutro">Fuera</span>{% endif %}</td>
+    </tr>
+    {% endfor %}
+    <tr class="sin-resultados" hidden><td colspan="5" class="vacio">Sin resultados para la búsqueda.</td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+{% endblock %}
