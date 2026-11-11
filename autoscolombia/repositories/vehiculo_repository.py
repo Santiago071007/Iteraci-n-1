@@ -1,22 +1,6 @@
 from typing import Optional
 
-from ..models import Cliente, Vehiculo
-
-
-class ClienteRepository:
-    def __init__(self, db):
-        self.db = db
-
-    def buscar_por_documento(self, documento: str) -> Optional[Cliente]:
-        fila = self.db.execute("SELECT * FROM cliente WHERE documento = ?", (documento,)).fetchone()
-        return Cliente(**fila) if fila else None
-
-    def crear(self, documento, nombres, telefono, email) -> int:
-        cursor = self.db.execute(
-            "INSERT INTO cliente (documento, nombres, telefono, email) VALUES (?, ?, ?, ?)",
-            (documento, nombres, telefono, email),
-        )
-        return cursor.lastrowid
+from ..models import Vehiculo
 
 
 class VehiculoRepository:
@@ -37,7 +21,7 @@ class VehiculoRepository:
     def listar_con_cliente(self):
         return self.db.execute(
             """
-            SELECT v.*, c.nombres AS cliente, c.documento,
+            SELECT v.*, c.nombres AS cliente, c.documento, c.activo AS cliente_activo,
                    (SELECT MAX(m.fecha_fin) FROM mensualidad m WHERE m.vehiculo_id = v.id) AS mensualidad_hasta,
                    EXISTS (SELECT 1 FROM registro_parqueo r
                            WHERE r.vehiculo_id = v.id AND r.fecha_salida IS NULL) AS dentro

@@ -328,6 +328,25 @@ td .secundario { display: block; color: var(--suave); font-size: 12.5px; }
 .demo { margin-top: 22px; padding: 12px 14px; border-radius: 12px; background: #f8fafc; border: 1px dashed #cfd6e0; font-size: 13px; color: var(--suave); }
 .demo code { background: #fff; border: 1px solid var(--borde); border-radius: 5px; padding: 1px 6px; color: var(--texto); }
 
+/* Iteración 2: usuarios, clientes y celdas */
+.acciones-fila { display: flex; gap: 6px; justify-content: flex-end; flex-wrap: nowrap; }
+.acciones-fila form { margin: 0; }
+a.celda.enlace { color: inherit; text-decoration: none; cursor: pointer; }
+a.celda.enlace:focus-visible { outline: 2px solid var(--azul-600); outline-offset: 2px; }
+tr.inactivo td { color: var(--muy-suave); }
+tr.inactivo td b, tr.inactivo td a b { color: var(--suave); }
+.lista-reglas { margin: 0; padding-left: 20px; color: #344054; font-size: 14px; }
+.lista-reglas li { margin-bottom: 8px; }
+dl.datos { display: grid; grid-template-columns: 110px 1fr; gap: 10px 14px; margin: 0; font-size: 14px; }
+dl.datos dt { color: var(--suave); }
+dl.datos dd { margin: 0; font-weight: 600; word-break: break-word; }
+.zona-peligro { border-color: var(--rojo-borde); }
+.btn[disabled], fieldset[disabled] .btn { opacity: .45; cursor: not-allowed; pointer-events: none; }
+fieldset[disabled] input { background: #f8fafc; }
+.cliente-existente { display: flex; gap: 12px; align-items: center; background: var(--azul-100); border-radius: 12px; padding: 12px 14px; margin-bottom: 14px; }
+.cliente-existente .ico { color: var(--azul-600); }
+
+
 @media (max-width: 1150px) {
   .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .grid-7-5, .grid-5-7, .grid-3 { grid-template-columns: 1fr; }

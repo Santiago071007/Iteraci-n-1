@@ -17,9 +17,13 @@ class Usuario:
     password_hash: str
     rol: str
     activo: int = 1
+    creado_en: Optional[str] = None
 
     def es_admin(self) -> bool:
         return self.rol == "ADMIN"
+
+    def esta_activo(self) -> bool:
+        return bool(self.activo)
 
 
 @dataclass
@@ -29,6 +33,10 @@ class Cliente:
     nombres: str
     telefono: Optional[str]
     email: Optional[str]
+    activo: int = 1
+
+    def esta_activo(self) -> bool:
+        return bool(self.activo)
 
 
 @dataclass
@@ -59,9 +67,13 @@ class Celda:
     codigo: str
     tipo_vehiculo: str
     estado: str
+    observacion: Optional[str] = None
 
     def esta_libre(self) -> bool:
         return self.estado == "LIBRE"
+
+    def esta_ocupada(self) -> bool:
+        return self.estado == "OCUPADA"
 
 
 @dataclass

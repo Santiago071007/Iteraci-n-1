@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block titulo %}Celdas{% endblock %}
-{% block subtitulo %}Estado de las celdas del parqueadero{% endblock %}
+{% block subtitulo %}Capacidad, estado y configuración de las celdas del parqueadero{% endblock %}
 {% block contenido %}
 <div class="grid grid-2" style="margin-bottom:22px">
   {% for r in resumen %}
@@ -17,7 +17,33 @@
 </div>
 <div class="tarjeta">
   <div class="tarjeta-cab"><h2>{{ icono('celdas') }} Mapa</h2>
-    {% if g.usuario.es_admin() %}<div class="acciones ayuda" style="margin:0">Las celdas ocupadas no se pueden poner en mantenimiento.</div>{% endif %}</div>
+    <div class="acciones">
+      <span class="leyenda"><span><i style="background:var(--verde)"></i>Libre</span><span><i style="background:var(--rojo)"></i>Ocupada</span><span><i style="background:var(--muy-suave)"></i>Mantenimiento</span></span>
+      {% if g.usuario.es_admin() %}<a class="btn" href="{{ url_for('celdas.nueva') }}">{{ icono('mas', 16) }} Nueva celda</a>{% endif %}
+    </div></div>
+  <p class="ayuda" style="margin-top:-6px">Haga clic en una celda para ver su detalle{% if g.usuario.es_admin() %}, editarla, ponerla en mantenimiento o eliminarla{% endif %}.</p>
   {% with editable=true %}{% include "celdas/_mapa.html" %}{% endwith %}
+</div>
+<div class="tarjeta" id="tabla-celdas">
+  <div class="tarjeta-cab"><h2>{{ icono('lista') }} Listado</h2>
+    <div class="buscador" style="margin-left:auto;min-width:260px"><div class="con-icono">{{ icono('buscar', 16) }}<input placeholder="Buscar código, estado o placa" data-filtrar="#tabla-celdas" aria-label="Buscar"></div></div></div>
+  <div class="tabla-envoltura">
+  <table>
+    <thead><tr><th>Código</th><th>Tipo</th><th>Estado</th><th>Vehículo / observación</th><th>Usos</th><th></th></tr></thead>
+    <tbody>
+    {% for c in mapa %}
+    <tr data-texto="{{ c.codigo }} {{ c.tipo_vehiculo }} {{ c.estado }} {{ c.placa or '' }} {{ c.observacion or '' }}">
+      <td><b>{{ c.codigo }}</b></td>
+      <td>{{ icono('carro' if c.tipo_vehiculo == 'CARRO' else 'moto', 16) }} {{ c.tipo_vehiculo|capitalize }}</td>
+      <td>{% if c.estado == 'LIBRE' %}<span class="etq ok">Libre</span>{% elif c.estado == 'OCUPADA' %}<span class="etq mal">Ocupada</span>{% else %}<span class="etq neutro">Mantenimiento</span>{% endif %}</td>
+      <td>{% if c.placa %}<span class="placa mini">{{ c.placa }}</span>{% elif c.observacion %}<span class="secundario" style="display:inline">{{ c.observacion }}</span>{% else %}—{% endif %}</td>
+      <td>{{ c.usos }}</td>
+      <td style="text-align:right"><a class="btn secundario peq" href="{{ url_for('celdas.detalle', celda_id=c.id) }}">{{ icono('ojo', 14) }} Ver</a></td>
+    </tr>
+    {% endfor %}
+    <tr class="sin-resultados" hidden><td colspan="6" class="vacio">Sin resultados para la búsqueda.</td></tr>
+    </tbody>
+  </table>
+  </div>
 </div>
 {% endblock %}

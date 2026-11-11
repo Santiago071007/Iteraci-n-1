@@ -1,6 +1,7 @@
 from datetime import date
 
 from ..repositories import ClienteRepository, MensualidadRepository, VehiculoRepository
+from .cliente_service import limpiar_cliente, normalizar_documento
 from .errores import ReglaNegocioError
 from .parqueo_service import normalizar_placa, validar_placa
 
@@ -21,10 +22,12 @@ class VehiculoService:
         if self.vehiculos.buscar_por_placa(placa):
             raise ReglaNegocioError(f"Ya existe un vehículo con placa {placa}.")
 
-        documento = (datos.get("documento") or "").strip()
-        nombres = (datos.get("nombres") or "").strip()
-        if not documento.isdigit() or not nombres:
-            raise ReglaNegocioError("Ingrese el documento (solo números) y el nombre del propietario.")
+        cliente = self.clientes.buscar_por_documento(normalizar_documento(datos.get("documento")))
+        if cliente and not cliente.esta_activo():
+            raise ReglaNegocioError(
+                f"El cliente {cliente.nombres} está inactivo; actívelo antes de registrarle vehículos."
+            )
+        nuevo_cliente = None if cliente else limpiar_cliente(datos)
 
         try:
             inicio = date.fromisoformat(datos.get("fecha_inicio") or "")
@@ -36,9 +39,8 @@ class VehiculoService:
             raise ReglaNegocioError("La fecha final debe ser posterior a la inicial y el valor no negativo.")
 
         with self.db:
-            cliente = self.clientes.buscar_por_documento(documento)
             cliente_id = cliente.id if cliente else self.clientes.crear(
-                documento, nombres, datos.get("telefono") or None, datos.get("email") or None
+                nuevo_cliente["documento"], nuevo_cliente["nombres"], nuevo_cliente["telefono"], nuevo_cliente["email"]
             )
             vehiculo_id = self.vehiculos.crear(
                 placa, tipo, datos.get("marca") or None, datos.get("color") or None, cliente_id

@@ -3,7 +3,7 @@ from datetime import date, timedelta
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 
 from ..db import get_db
-from ..repositories import VehiculoRepository
+from ..repositories import ClienteRepository, VehiculoRepository
 from ..services import ReglaNegocioError, VehiculoService
 from .auth_controller import admin_requerido, login_requerido
 
@@ -27,12 +27,17 @@ def nuevo():
         "fecha_inicio": date.today().isoformat(),
         "fecha_fin": (date.today() + timedelta(days=30)).isoformat(),
         "valor": "180000",
+        "documento": request.args.get("documento", ""),
     }
     if request.method == "POST":
         try:
             VehiculoService(get_db()).registrar(datos)
             flash("Vehículo registrado.", "ok")
+            cliente = ClienteRepository(get_db()).buscar_por_documento(request.args.get("documento", ""))
+            if cliente:
+                return redirect(url_for("clientes.detalle", cliente_id=cliente.id))
             return redirect(url_for("vehiculos.listar"))
         except ReglaNegocioError as error:
             flash(str(error), "error")
-    return render_template("vehiculos/nuevo.html", d=datos)
+    cliente = ClienteRepository(get_db()).buscar_por_documento(datos.get("documento") or "")
+    return render_template("vehiculos/nuevo.html", d=datos, cliente=cliente)

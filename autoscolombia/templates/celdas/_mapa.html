@@ -4,7 +4,8 @@
 <div class="zona">{{ icono('carro' if tipo == 'CARRO' else 'moto', 16) }} {{ nombre }}</div>
 <div class="mapa">
   {% for c in celdas_tipo %}
-  <div class="celda {{ c.estado }}" title="{{ c.codigo }} · {{ c.estado|lower }}">
+  {% set titulo = c.codigo ~ ' · ' ~ c.estado|lower ~ (' · ' ~ c.observacion if c.observacion else '') %}
+  {% if editable %}<a class="celda {{ c.estado }} enlace" href="{{ url_for('celdas.detalle', celda_id=c.id) }}" title="{{ titulo }}">{% else %}<div class="celda {{ c.estado }}" title="{{ titulo }}">{% endif %}
     <span class="codigo">{{ c.codigo }}</span>
     {{ icono('carro' if c.tipo_vehiculo == 'CARRO' else 'moto', 22) }}
     {% if c.placa %}
@@ -15,12 +16,7 @@
     {% else %}
       <small>Disponible</small>
     {% endif %}
-    {% if editable and g.usuario.es_admin() and c.estado != 'OCUPADA' %}
-    <form method="post" action="{{ url_for('celdas.mantenimiento', celda_id=c.id) }}">
-      <button class="btn secundario peq">{{ icono('check' if c.estado == 'MANTENIMIENTO' else 'llave', 14) }} {{ 'Habilitar' if c.estado == 'MANTENIMIENTO' else 'Mantenim.' }}</button>
-    </form>
-    {% endif %}
-  </div>
+  {% if editable %}</a>{% else %}</div>{% endif %}
   {% endfor %}
 </div>
 {% endif %}

@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Autos Colombia · Iteración 2</title>
+<style>
+  @page { size: Letter; margin: 2.2cm 2cm 2cm 2cm; }
+  @page horizontal { size: Letter landscape; margin: 1.6cm 1.6cm; }
+  body { font-family: "Segoe UI", Arial, sans-serif; font-size: 11pt; color: #1d2433; line-height: 1.45; }
+  h1 { font-size: 19pt; color: #12305a; border-bottom: 3px solid #f6c343; padding-bottom: 6px; margin: 0 0 14px; break-before: page; }
+  h2 { font-size: 14pt; color: #12305a; margin: 22px 0 8px; break-after: avoid; }
+  h3 { font-size: 12pt; margin: 16px 0 6px; break-after: avoid; }
+  p { margin: 6px 0; text-align: justify; }
+  table { width: 100%; border-collapse: collapse; margin: 8px 0 14px; font-size: 9.5pt; }
+  th, td { border: 1px solid #b9c3d3; padding: 5px 7px; vertical-align: top; text-align: left; }
+  th { background: #dbe6f5; color: #12305a; }
+  tr { break-inside: avoid; }
+  figure { margin: 10px 0 16px; text-align: center; break-inside: avoid; }
+  figure img { max-width: 100%; border: 1px solid #dfe3ea; }
+  figure img.diagrama { border: 0; }
+  figcaption { font-size: 9.5pt; color: #5b6575; margin-top: 4px; font-style: italic; }
+  pre { background: #f5f7fa; border: 1px solid #dfe3ea; padding: 10px; font-size: 8pt; line-height: 1.3; white-space: pre-wrap; font-family: Consolas, monospace; }
+  code { font-family: Consolas, monospace; font-size: 9pt; background: #f2f4f7; padding: 0 3px; }
+  .hu { border: 1px solid #b9c3d3; border-left: 5px solid #1d4a85; padding: 8px 12px; margin: 10px 0; break-inside: avoid; }
+  .hu .titulo { font-weight: 700; color: #12305a; }
+  .hu ul { margin: 4px 0 0; padding-left: 20px; }
+  .meta { color: #5b6575; font-size: 9pt; }
+  .portada { height: 23cm; display: flex; flex-direction: column; justify-content: space-between; text-align: center; }
+  .portada .inst { font-size: 13pt; font-weight: 600; color: #12305a; }
+  .portada .titulo { font-size: 30pt; font-weight: 800; color: #12305a; margin-top: 3cm; }
+  .portada .titulo span { color: #d4a017; }
+  .portada .sub { font-size: 15pt; margin-top: 10px; }
+  .portada .datos { font-size: 12pt; line-height: 1.9; }
+  .indice { list-style: none; padding: 0; font-size: 11.5pt; line-height: 1.9; }
+  .indice ul { list-style: none; padding-left: 22px; font-size: 10.5pt; line-height: 1.7; }
+  .nota { background: #fff8e1; border: 1px solid #f0d78c; padding: 8px 12px; font-size: 10pt; margin: 10px 0; }
+  .horizontal { page: horizontal; }
+  .horizontal figure img { max-height: 15.2cm; width: auto; max-width: 100%; }
+  .seccion-horizontal { break-before: page; }
+  .ok { color: #12805c; }
+  .mal { color: #c4372f; }
+  .tabla-cp { font-size: 8.4pt; table-layout: fixed; }
+  .tabla-cp td { padding: 4px 5px; }
+  .tabla-cp code { font-size: 7.2pt; word-break: break-all; background: none; padding: 0; }
+  .resumen { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 10px 0; }
+  .resumen div { border: 1px solid #b9c3d3; border-radius: 6px; padding: 8px; text-align: center; }
+  .resumen b { display: block; font-size: 17pt; color: #12305a; }
+  .resumen span { font-size: 9pt; color: #5b6575; }
+</style>
+</head>
+<body>
+
+<section class="portada">
+  <div class="inst">IU Digital de Antioquia<br>Tecnología en Desarrollo de Software · Ingeniería de Software</div>
+  <div>
+    <div class="titulo">Autos <span>Colombia</span></div>
+    <div class="sub">Sistema de gestión de parqueadero por mensualidad</div>
+    <div class="sub" style="font-size:13pt;color:#5b6575">Iteración 2: Gestión de usuarios y gestión de celdas</div>
+  </div>
+  <div class="datos">
+    Presentado por:<br><b>David Santiago Cantor Torres</b><br>
+    <br>{{FECHA}}
+  </div>
+</section>
+
+<h1>Contenido</h1>
+<ul class="indice">
+  <li>1. Introducción</li>
+  <li>2. Entregables de la iteración 2
+    <ul>
+      <li>2.1 Requerimientos funcionales y no funcionales</li>
+      <li>2.2 Diagramas de casos de uso de gestión de usuarios y de celdas</li>
+      <li>2.3 Historias de usuario</li>
+      <li>2.4 Mockups de las historias de usuario</li>
+      <li>2.5 Diagramas de secuencia de las iteraciones 1 y 2</li>
+      <li>2.6 Diagrama de componentes de las iteraciones 1 y 2</li>
+      <li>2.7 Plan de pruebas resumido</li>
+      <li>2.8 Código fuente y repositorio</li>
+    </ul>
+  </li>
+  <li>3. Conclusiones</li>
+  <li>4. Referencias</li>
+</ul>
+
+<h1>1. Introducción</h1>
+<p>El parqueadero <b>Autos Colombia</b> presta el servicio de estacionamiento por mensualidad. En la <b>iteración 1</b> se construyó la gestión de la entrada y salida de vehículos: el operador registra cada movimiento con la placa, el sistema valida la mensualidad, asigna y libera celdas y deja trazabilidad de quién, cuándo y dónde. Para que esa iteración funcionara de punta a punta se incluyó solo un soporte mínimo de usuarios y celdas: dos usuarios fijos, registro de vehículos con su propietario y la opción de poner una celda en mantenimiento.</p>
+<p>Este documento presenta la <b>iteración 2: gestión de usuarios y gestión de celdas</b>. En el sistema existen dos clases de usuarios, y ambas se gestionan en esta iteración:</p>
+<table>
+  <tr><th style="width:24%">Tipo de usuario</th><th>Qué se gestiona</th></tr>
+  <tr><td>Usuarios del sistema (empleados)</td><td>Administradores y operadores que inician sesión: creación, edición de datos y rol, activación y desactivación, restablecimiento y cambio de contraseña, con reglas que impiden dejar el sistema sin administrador.</td></tr>
+  <tr><td>Clientes (usuarios del servicio)</td><td>Personas que pagan la mensualidad: registro, consulta, edición, activación y desactivación, y asociación de sus vehículos. Un cliente inactivo no puede ingresar vehículos.</td></tr>
+</table>
+<p>La <b>gestión de celdas</b> pasa de un simple cambio de estado a una administración completa: crear celdas individuales o por rangos, editar código y tipo, ponerlas en mantenimiento indicando el motivo, habilitarlas, eliminar las que nunca se usaron y consultar su historial de uso.</p>
+<table>
+  <tr><th style="width:18%">Iteración</th><th>Alcance</th><th style="width:20%">Estado</th></tr>
+  <tr><td>Iteración 1</td><td>Entrada y salida de vehículos, asignación y liberación de celdas, novedades, vehículos dentro e historial.</td><td>Entregada</td></tr>
+  <tr><td>Iteración 2</td><td>Gestión de usuarios del sistema, de clientes y de celdas.</td><td>Desarrollada (este documento)</td></tr>
+  <tr><td>Iteración 3</td><td>Gestión de pagos de mensualidades.</td><td>Planeada</td></tr>
+</table>
+<p>La solución mantiene la arquitectura de la iteración 1 (aplicación web en <b>Python 3 con Flask</b> y <b>SQLite</b>, organizada en controladores, servicios, repositorios y modelo de dominio). Se agregaron tres servicios (<code>UsuarioService</code>, <code>ClienteService</code> y <code>CeldaService</code>), sus controladores y vistas, y la base de datos de la iteración 1 se actualiza automáticamente sin perder información. El documento recorre los entregables solicitados: requerimientos, casos de uso, historias de usuario, mockups, diagramas de secuencia de ambas iteraciones, diagrama de componentes, plan de pruebas y repositorio.</p>
+
+<h1>2. Entregables de la iteración 2</h1>
+<h2>2.1 Requerimientos funcionales y no funcionales</h2>
+<h3>Actores</h3>
+<table>
+  <tr><th style="width:22%">Actor</th><th>Participación en la iteración 2</th></tr>
+  <tr><td>Operador</td><td>Empleado de portería. Consulta clientes y celdas (mapa, listado, detalle e historial) y cambia su propia contraseña.</td></tr>
+  <tr><td>Administrador</td><td>Hereda lo del operador. Gestiona los usuarios del sistema, los clientes y sus vehículos, y las celdas.</td></tr>
+</table>
+
+<h3>Requerimientos funcionales · Gestión de usuarios del sistema</h3>
+<table>
+  <tr><th style="width:8%">ID</th><th style="width:23%">Nombre</th><th>Descripción</th><th style="width:9%">Prioridad</th></tr>
+  <tr><td>RF16</td><td>Crear usuario del sistema</td><td>El administrador debe poder crear un usuario con nombre completo, nombre de usuario, rol (Administrador u Operador) y contraseña con confirmación. El usuario queda activo.</td><td>Alta</td></tr>
+  <tr><td>RF17</td><td>Validar credenciales</td><td>El nombre de usuario debe ser único, de 4 a 20 caracteres (minúsculas, números, punto o guion bajo) y empezar por letra. La contraseña debe tener mínimo 8 caracteres con letras y números y coincidir con su confirmación.</td><td>Alta</td></tr>
+  <tr><td>RF18</td><td>Editar usuario</td><td>El administrador debe poder modificar el nombre y el rol de un usuario. El nombre de usuario no se puede cambiar.</td><td>Media</td></tr>
+  <tr><td>RF19</td><td>Activar o desactivar usuario</td><td>El administrador debe poder desactivar un usuario (no podrá iniciar sesión) y volver a activarlo. Los usuarios no se eliminan para conservar la trazabilidad.</td><td>Alta</td></tr>
+  <tr><td>RF20</td><td>Proteger a los administradores</td><td>Un administrador no puede desactivarse ni quitarse el rol a sí mismo, y el sistema debe conservar siempre al menos un administrador activo.</td><td>Alta</td></tr>
+  <tr><td>RF21</td><td>Restablecer contraseña</td><td>El administrador debe poder asignar una nueva contraseña a un usuario que la olvidó.</td><td>Media</td></tr>
+  <tr><td>RF22</td><td>Cambiar mi contraseña</td><td>Todo usuario debe poder cambiar su contraseña indicando la actual; la nueva debe ser diferente y cumplir la política de RF17.</td><td>Media</td></tr>
+  <tr><td>RF23</td><td>Consultar usuarios</td><td>El sistema debe listar los usuarios con nombre, usuario, rol, estado y número de movimientos registrados, con búsqueda e indicadores de usuarios activos por rol.</td><td>Media</td></tr>
+</table>
+
+<h3>Requerimientos funcionales · Gestión de clientes</h3>
+<table>
+  <tr><th style="width:8%">ID</th><th style="width:23%">Nombre</th><th>Descripción</th><th style="width:9%">Prioridad</th></tr>
+  <tr><td>RF24</td><td>Registrar cliente</td><td>El administrador debe poder registrar un cliente con documento, nombre completo, teléfono y correo.</td><td>Alta</td></tr>
+  <tr><td>RF25</td><td>Validar datos del cliente</td><td>El documento debe ser único y tener de 5 a 15 dígitos; el teléfono de 7 a 10 dígitos y el correo un formato válido (ambos opcionales). Los datos se normalizan: sin puntos ni espacios en el documento, nombre sin espacios sobrantes y correo en minúsculas.</td><td>Alta</td></tr>
+  <tr><td>RF26</td><td>Editar cliente</td><td>El administrador debe poder modificar los datos de un cliente sin repetir el documento de otro.</td><td>Media</td></tr>
+  <tr><td>RF27</td><td>Consultar clientes</td><td>El sistema debe listar los clientes con búsqueda, número de vehículos, estado de sus mensualidades y vehículos dentro, y mostrar el detalle de cada cliente con sus vehículos, vigencia de la mensualidad y ubicación.</td><td>Media</td></tr>
+  <tr><td>RF28</td><td>Activar o desactivar cliente</td><td>El administrador debe poder desactivar un cliente. Sus vehículos no podrán ingresar ni se le podrán asociar vehículos nuevos. No se puede desactivar un cliente con un vehículo dentro.</td><td>Alta</td></tr>
+  <tr><td>RF29</td><td>Asociar vehículo a cliente</td><td>Desde el detalle de un cliente activo, el administrador debe poder registrarle un vehículo con su mensualidad (amplía RF14 de la iteración 1).</td><td>Media</td></tr>
+</table>
+
+<h3>Requerimientos funcionales · Gestión de celdas</h3>
+<table>
+  <tr><th style="width:8%">ID</th><th style="width:23%">Nombre</th><th>Descripción</th><th style="width:9%">Prioridad</th></tr>
+  <tr><td>RF30</td><td>Crear celda</td><td>El administrador debe poder crear una celda con código único (formato <code>A-09</code>: letra(s), guion y número) y tipo de vehículo (carro o moto). La celda queda LIBRE.</td><td>Alta</td></tr>
+  <tr><td>RF31</td><td>Crear celdas por rango</td><td>El administrador debe poder crear varias celdas indicando zona, número inicial y final (máximo 50). Si algún código ya existe, no se crea ninguna.</td><td>Media</td></tr>
+  <tr><td>RF32</td><td>Editar celda</td><td>El administrador debe poder cambiar el código y el tipo de una celda que no esté ocupada, sin repetir códigos.</td><td>Media</td></tr>
+  <tr><td>RF33</td><td>Mantenimiento de celda</td><td>El administrador debe poder poner en mantenimiento una celda libre indicando el motivo, y habilitarla después. Una celda en mantenimiento no se asigna a ningún ingreso. <i>(Amplía RF15.)</i></td><td>Alta</td></tr>
+  <tr><td>RF34</td><td>Eliminar celda</td><td>El administrador debe poder eliminar una celda que no esté ocupada y que nunca se haya usado; si tiene historial, el sistema indica usar mantenimiento.</td><td>Baja</td></tr>
+  <tr><td>RF35</td><td>Consultar celdas</td><td>El sistema debe mostrar el resumen por tipo (libres, ocupadas, mantenimiento), el mapa y un listado filtrable con estado, placa u observación y número de usos, y el detalle de cada celda con sus últimos usos.</td><td>Media</td></tr>
+</table>
+
+<h3>Requerimientos no funcionales</h3>
+<table>
+  <tr><th style="width:8%">ID</th><th style="width:18%">Tipo</th><th>Descripción</th></tr>
+  <tr><td>RNF10</td><td>Seguridad · autorización</td><td>Las operaciones de gestión (crear, editar, activar, desactivar, eliminar) solo están disponibles para el rol Administrador, validado en el servidor; si un operador intenta acceder por URL es redirigido sin ejecutar la acción. Las consultas están disponibles para ambos roles.</td></tr>
+  <tr><td>RNF11</td><td>Seguridad · contraseñas</td><td>Las contraseñas se almacenan solo como hash (scrypt de Werkzeug), cumplen una política mínima (8 caracteres, letras y números) y nunca se muestran. Un usuario desactivado recibe el mismo mensaje que unas credenciales incorrectas.</td></tr>
+  <tr><td>RNF12</td><td>Integridad de datos</td><td>El nombre de usuario, el documento del cliente y el código de la celda son únicos en la base de datos (UNIQUE) y en la capa de servicios. La creación de celdas por rango es atómica (todo o nada).</td></tr>
+  <tr><td>RNF13</td><td>Trazabilidad</td><td>Usuarios y clientes se desactivan en lugar de borrarse, y las celdas con historial no se eliminan, para conservar las entradas, salidas y novedades asociadas.</td></tr>
+  <tr><td>RNF14</td><td>Usabilidad</td><td>Las acciones que restringen o borran (desactivar, eliminar) piden confirmación; los formularios muestran las reglas, conservan lo digitado ante un error y los mensajes explican la causa en español. Los listados tienen búsqueda inmediata.</td></tr>
+  <tr><td>RNF15</td><td>Compatibilidad de datos</td><td>Al iniciar, la aplicación actualiza automáticamente una base de datos creada en la iteración 1 (nuevas columnas) sin perder información.</td></tr>
+  <tr><td>RNF16</td><td>Mantenibilidad</td><td>Cada área nueva tiene su servicio, controlador y pruebas automatizadas; las reglas de negocio se prueban sin interfaz.</td></tr>
+  <tr><td>RNF17</td><td>Rendimiento</td><td>Los listados de clientes, usuarios y celdas deben cargar en menos de 1 segundo con hasta 500 clientes y 200 celdas.</td></tr>
+</table>
+
+<h3>Reglas de negocio</h3>
+<table>
+  <tr><th style="width:8%">ID</th><th>Regla</th></tr>
+  <tr><td>RN05</td><td>Siempre debe existir al menos un administrador activo; nadie puede desactivarse ni quitarse el rol de administrador a sí mismo.</td></tr>
+  <tr><td>RN06</td><td>Un usuario del sistema inactivo no puede iniciar sesión.</td></tr>
+  <tr><td>RN07</td><td>Un cliente inactivo no puede ingresar vehículos ni recibir vehículos nuevos; no se puede desactivar un cliente con un vehículo dentro.</td></tr>
+  <tr><td>RN08</td><td>Una celda OCUPADA no se puede editar, poner en mantenimiento ni eliminar.</td></tr>
+  <tr><td>RN09</td><td>Solo se eliminan celdas sin historial de uso; las demás se retiran poniéndolas en mantenimiento.</td></tr>
+  <tr><td>RN10</td><td>Toda celda en mantenimiento registra su motivo.</td></tr>
+</table>
+
+<h2 style="break-before:page">2.2 Diagramas de casos de uso</h2>
+<p>Los diagramas se elaboraron en <b>StarUML</b> (archivo <code>docs/AutosColombia.mdj</code>, paquete <i>Autos Colombia - Iteración 2</i>). Como en la iteración 1, el Administrador hereda los casos de uso del Operador. Las relaciones «include» representan pasos obligatorios que el sistema siempre ejecuta (validar datos, cifrar la contraseña, verificar que la celda no esté ocupada) y las «extend» comportamientos opcionales (asociar un vehículo al registrar un cliente, crear celdas por rango).</p>
+<figure data-fig="uc_usuarios"><img class="diagrama" src="../img/staruml/casos_de_uso_gestion_de_usuarios.png" style="width:100%"><figcaption>Diagrama de casos de uso de gestión de usuarios: usuarios del sistema y clientes (StarUML).</figcaption></figure>
+<figure data-fig="uc_celdas"><img class="diagrama" src="../img/staruml/casos_de_uso_gestion_de_celdas.png" style="width:100%"><figcaption>Diagrama de casos de uso de gestión de celdas (StarUML).</figcaption></figure>
+
+<h3>Especificación UC12 · Activar o desactivar usuario</h3>
+<table>
+  <tr><th style="width:24%">Actor</th><td>Administrador</td></tr>
+  <tr><th>Precondición</th><td>El administrador inició sesión y el usuario existe.</td></tr>
+  <tr><th>Flujo principal</th><td>1. El administrador abre “Usuarios del sistema” y pulsa “Desactivar” sobre un usuario.<br>2. El sistema pide confirmación.<br>3. El sistema verifica que no sea su propio usuario y que quede otro administrador activo (include).<br>4. Marca el usuario como inactivo y muestra el mensaje “ya no podrá iniciar sesión”.</td></tr>
+  <tr><th>Flujos alternos</th><td>3a. Es el mismo administrador → “No puede desactivar su propio usuario”.<br>3b. Es el último administrador activo → “Debe existir al menos un administrador activo”.<br>1a. El usuario está inactivo → “Activar” lo deja activo de nuevo.</td></tr>
+  <tr><th>Postcondición</th><td>El usuario no puede iniciar sesión; sus registros históricos se conservan.</td></tr>
+</table>
+<h3>Especificación UC26 · Poner celda en mantenimiento</h3>
+<table>
+  <tr><th style="width:24%">Actor</th><td>Administrador</td></tr>
+  <tr><th>Precondición</th><td>El administrador inició sesión.</td></tr>
+  <tr><th>Flujo principal</th><td>1. El administrador selecciona una celda en el mapa o el listado.<br>2. Escribe el motivo del mantenimiento y confirma.<br>3. El sistema verifica que la celda no esté ocupada (include) y registra el motivo (include).<br>4. La celda queda en MANTENIMIENTO y deja de ofrecerse al registrar entradas.</td></tr>
+  <tr><th>Flujos alternos</th><td>3a. La celda está ocupada → “registre primero la salida”.<br>3b. Motivo con menos de 5 caracteres → se solicita el motivo.<br>4a. Cuando la celda se repara, el administrador la habilita (UC27) y vuelve a LIBRE.</td></tr>
+  <tr><th>Postcondición</th><td>La celda no se asigna a ningún vehículo hasta ser habilitada.</td></tr>
+</table>
+
+<h2 style="break-before:page">2.3 Historias de usuario</h2>
+<p>Formato <i>Como [rol] quiero [funcionalidad] para [beneficio]</i>, con criterios de aceptación verificables y estimación en puntos de historia (Fibonacci). La numeración continúa la de la iteración 1 (HU01–HU09).</p>
+
+<div class="hu"><div class="titulo">HU10 · Crear usuarios del sistema</div>
+<p>Como <b>administrador</b> quiero <b>crear cuentas para los empleados con su rol</b> para <b>que cada persona ingrese con su propio usuario y quede registrado lo que hace</b>.</p>
+<ul><li>Ingreso nombre, usuario, rol y contraseña con confirmación; el usuario se guarda en minúsculas y queda activo.</li>
+<li>Si el nombre de usuario ya existe o no cumple el formato, se informa y no se crea.</li>
+<li>Si la contraseña tiene menos de 8 caracteres, no tiene letras y números o no coincide con la confirmación, se informa.</li>
+<li>La contraseña nunca se muestra ni se guarda en texto plano.</li></ul>
+<div class="meta">Prioridad: Alta · Estimación: 3 pts · RF16, RF17, RNF11 · UC10 · Mockups: figuras {{fig:15_usuario_nuevo}} y {{fig:16_usuario_error}}</div></div>
+
+<div class="hu"><div class="titulo">HU11 · Editar usuario y su rol</div>
+<p>Como <b>administrador</b> quiero <b>cambiar el nombre y el rol de un empleado</b> para <b>ajustar sus permisos cuando cambian sus funciones</b>.</p>
+<ul><li>Puedo cambiar nombre y rol; el nombre de usuario se muestra pero no se edita.</li>
+<li>No puedo quitarme a mí mismo el rol de administrador.</li>
+<li>Si el usuario es el último administrador activo, no se le puede quitar el rol.</li></ul>
+<div class="meta">Prioridad: Media · Estimación: 2 pts · RF18, RF20 · UC11 · Mockup: figura {{fig:17_usuario_editar}}</div></div>
+
+<div class="hu"><div class="titulo">HU12 · Activar y desactivar usuarios</div>
+<p>Como <b>administrador</b> quiero <b>desactivar a los empleados que ya no trabajan en el parqueadero</b> para <b>que no puedan ingresar sin perder el historial de lo que registraron</b>.</p>
+<ul><li>La lista muestra rol, estado y movimientos de cada usuario, con búsqueda e indicadores de activos.</li>
+<li>Al desactivar se pide confirmación; el usuario desactivado no puede iniciar sesión y puede reactivarse.</li>
+<li>No puedo desactivarme a mí mismo ni dejar el sistema sin administradores activos.</li></ul>
+<div class="meta">Prioridad: Alta · Estimación: 3 pts · RF19, RF20, RF23, RN05, RN06 · UC12, UC15 · Mockup: figura {{fig:14_usuarios}}</div></div>
+
+<div class="hu"><div class="titulo">HU13 · Restablecer contraseña de un empleado</div>
+<p>Como <b>administrador</b> quiero <b>asignar una nueva contraseña a un empleado que la olvidó</b> para <b>que pueda seguir trabajando sin crear otra cuenta</b>.</p>
+<ul><li>Desde la edición del usuario escribo la nueva contraseña y su confirmación.</li>
+<li>La nueva contraseña cumple la misma política; la anterior deja de funcionar.</li></ul>
+<div class="meta">Prioridad: Media · Estimación: 1 pt · RF21 · UC13 · Mockup: figura {{fig:17_usuario_editar}}</div></div>
+
+<div class="hu"><div class="titulo">HU14 · Cambiar mi contraseña</div>
+<p>Como <b>empleado del parqueadero</b> quiero <b>cambiar mi contraseña</b> para <b>mantener segura mi cuenta</b>.</p>
+<ul><li>Accedo desde el ícono de llave de la barra superior.</li>
+<li>Debo escribir la contraseña actual correcta; la nueva debe ser diferente y cumplir la política.</li></ul>
+<div class="meta">Prioridad: Media · Estimación: 1 pt · RF22 · UC14 · Mockup: figura {{fig:18_mi_clave}}</div></div>
+
+<div class="hu"><div class="titulo">HU15 · Registrar cliente</div>
+<p>Como <b>administrador</b> quiero <b>registrar a los clientes de mensualidad con sus datos de contacto</b> para <b>tener su información antes de asociarles vehículos</b>.</p>
+<ul><li>Ingreso documento, nombre, teléfono y correo; el documento se guarda sin puntos ni espacios.</li>
+<li>Si el documento ya existe o algún dato no tiene el formato esperado, se informa y no se registra.</li>
+<li>Al guardar veo el detalle del cliente con la opción de asociar vehículos.</li></ul>
+<div class="meta">Prioridad: Alta · Estimación: 2 pts · RF24, RF25 · UC16 · Mockup: figura {{fig:20_cliente_nuevo}}</div></div>
+
+<div class="hu"><div class="titulo">HU16 · Consultar y editar clientes</div>
+<p>Como <b>operador o administrador</b> quiero <b>buscar un cliente y ver sus vehículos y mensualidades</b> para <b>atender sus consultas en portería</b>.</p>
+<ul><li>El listado permite buscar por nombre, documento, teléfono o correo y muestra si las mensualidades están al día y cuántos vehículos están dentro.</li>
+<li>El detalle muestra los vehículos con vigencia de la mensualidad y su ubicación (dentro con la celda, o fuera).</li>
+<li>Solo el administrador puede editar los datos; el documento no puede repetirse.</li></ul>
+<div class="meta">Prioridad: Media · Estimación: 3 pts · RF26, RF27 · UC17, UC19 · Mockups: figuras {{fig:19_clientes}} y {{fig:21_cliente_detalle}}</div></div>
+
+<div class="hu"><div class="titulo">HU17 · Activar y desactivar clientes</div>
+<p>Como <b>administrador</b> quiero <b>desactivar a un cliente que se retira del servicio</b> para <b>que sus vehículos no puedan ingresar</b>.</p>
+<ul><li>Al desactivar se pide confirmación; los vehículos del cliente son rechazados en la entrada con el mensaje “cliente inactivo”.</li>
+<li>No puedo desactivar un cliente que tiene un vehículo dentro.</li>
+<li>Puedo reactivarlo y sus vehículos vuelven a ingresar si tienen mensualidad vigente.</li></ul>
+<div class="meta">Prioridad: Alta · Estimación: 2 pts · RF28, RN07 · UC18 · Mockup: figura {{fig:21_cliente_detalle}}</div></div>
+
+<div class="hu"><div class="titulo">HU18 · Asociar vehículos a un cliente</div>
+<p>Como <b>administrador</b> quiero <b>registrar un vehículo desde el detalle del cliente</b> para <b>no volver a escribir los datos del propietario</b>.</p>
+<ul><li>El formulario muestra el cliente ya seleccionado y solo pide placa, tipo, marca, color y mensualidad.</li>
+<li>Al guardar regreso al detalle del cliente con el vehículo en la lista.</li>
+<li>No se pueden asociar vehículos a un cliente inactivo.</li></ul>
+<div class="meta">Prioridad: Media · Estimación: 2 pts · RF29 · UC20 · Mockups: figuras {{fig:21_cliente_detalle}} y {{fig:22_cliente_vehiculo}}</div></div>
+
+<div class="hu"><div class="titulo">HU19 · Crear celdas</div>
+<p>Como <b>administrador</b> quiero <b>crear celdas una por una o por rangos</b> para <b>ampliar la capacidad del parqueadero sin depender de un programador</b>.</p>
+<ul><li>Para una celda indico código y tipo; para un rango indico zona, desde, hasta y tipo, y veo una vista previa de los códigos.</li>
+<li>Los códigos deben tener el formato <code>A-09</code> y no repetirse; si alguno del rango existe, no se crea ninguno.</li>
+<li>Las celdas nuevas quedan libres y aparecen en el mapa y en la lista de la entrada.</li></ul>
+<div class="meta">Prioridad: Alta · Estimación: 3 pts · RF30, RF31 · UC23, UC24 · Mockups: figuras {{fig:23_celdas}} y {{fig:24_celda_nueva}}</div></div>
+
+<div class="hu"><div class="titulo">HU20 · Editar celda</div>
+<p>Como <b>administrador</b> quiero <b>corregir el código o el tipo de una celda</b> para <b>reflejar cambios en la demarcación del parqueadero</b>.</p>
+<ul><li>Edito desde el detalle de la celda.</li>
+<li>Si la celda está ocupada el formulario se deshabilita; un código repetido se rechaza.</li></ul>
+<div class="meta">Prioridad: Media · Estimación: 1 pt · RF32, RN08 · UC25 · Mockup: figura {{fig:25_celda_detalle}}</div></div>
+
+<div class="hu"><div class="titulo">HU21 · Mantenimiento de celdas</div>
+<p>Como <b>administrador</b> quiero <b>poner una celda en mantenimiento indicando el motivo y habilitarla después</b> para <b>no asignar espacios que no se pueden usar y saber por qué están fuera de servicio</b>.</p>
+<ul><li>Debo escribir el motivo (mínimo 5 caracteres); se muestra en el detalle, en el listado y al pasar el cursor por el mapa.</li>
+<li>Una celda ocupada no se puede poner en mantenimiento.</li>
+<li>Al habilitarla vuelve a estar libre y disponible.</li></ul>
+<div class="meta">Prioridad: Alta · Estimación: 2 pts · RF33, RN08, RN10 · UC26, UC27 · Mockups: figuras {{fig:25_celda_detalle}} y {{fig:26_celda_mantenimiento}}</div></div>
+
+<div class="hu"><div class="titulo">HU22 · Eliminar celdas creadas por error</div>
+<p>Como <b>administrador</b> quiero <b>eliminar una celda que creé por error</b> para <b>mantener el mapa limpio</b>.</p>
+<ul><li>Se pide confirmación antes de eliminar.</li>
+<li>Solo se eliminan celdas sin historial y no ocupadas; en otro caso se informa que debe usarse mantenimiento.</li></ul>
+<div class="meta">Prioridad: Baja · Estimación: 1 pt · RF34, RN09 · UC28 · Mockup: figura {{fig:27_celda_error}}</div></div>
+
+<div class="hu"><div class="titulo">HU23 · Consultar celdas y su historial</div>
+<p>Como <b>operador</b> quiero <b>ver el estado de todas las celdas y el historial de cada una</b> para <b>responder dónde estuvo un vehículo y planear el uso del espacio</b>.</p>
+<ul><li>Veo el resumen por tipo, el mapa con colores por estado y un listado que puedo filtrar por código, estado o placa.</li>
+<li>El detalle de una celda muestra sus últimos usos con placa, cliente, entrada, salida y permanencia.</li></ul>
+<div class="meta">Prioridad: Media · Estimación: 2 pts · RF35 · UC21, UC22 · Mockups: figuras {{fig:23_celdas}} y {{fig:25_celda_detalle}}</div></div>
+
+<h2 style="break-before:page">2.4 Mockups de las historias de usuario</h2>
+<p>Los mockups se construyeron como <b>prototipo navegable en HTML y CSS</b> (herramienta alternativa a Figma permitida en la actividad), con la misma línea gráfica de la iteración 1: menú lateral, barra superior con el usuario y área de contenido. Las imágenes corresponden a las pantallas del prototipo con datos de ejemplo y están en <code>docs/img/mockups/</code> (archivos 14 a 27). El menú incorpora la sección <i>Gestión</i> (Clientes, Vehículos, Celdas) y la sección <i>Administración</i> (Usuarios del sistema), visible solo para el administrador; el ícono de llave en la barra superior abre “Cambiar mi contraseña”.</p>
+{{MOCKUPS}}
+
+<div class="horizontal">
+<h2 class="seccion-horizontal" style="margin-top:0">2.5 Diagramas de secuencia de las iteraciones 1 y 2</h2>
+<p>Los diagramas de secuencia se elaboraron en StarUML y muestran la colaboración entre las capas de la arquitectura: el actor envía una petición HTTP al <b>controlador</b> (Blueprint de Flask), este invoca al <b>servicio</b> que aplica las reglas de negocio y el servicio usa los <b>repositorios</b>, que ejecutan las consultas SQL sobre SQLite. Se usan fragmentos <b>alt</b> (alternativas), <b>opt</b> (opcional), <b>loop</b> (repetición) y <b>break</b> (interrupción por error). Las flechas punteadas son respuestas.</p>
+<table>
+  <tr><th style="width:12%">Diagrama</th><th style="width:12%">Iteración</th><th>Escenario</th><th style="width:24%">Casos de uso / historias</th></tr>
+  <tr><td>SD01</td><td>1</td><td>Iniciar sesión (incluye la validación de usuario activo de la iteración 2)</td><td>UC01 · HU01</td></tr>
+  <tr><td>SD02</td><td>1</td><td>Registrar entrada de vehículo (incluye la validación de cliente activo)</td><td>UC02 · HU02, HU03</td></tr>
+  <tr><td>SD03</td><td>1</td><td>Registrar salida de vehículo</td><td>UC03 · HU04</td></tr>
+  <tr><td>SD04</td><td>1</td><td>Registrar novedad</td><td>UC04 · HU05</td></tr>
+  <tr><td>SD05</td><td>2</td><td>Crear usuario del sistema</td><td>UC10 · HU10</td></tr>
+  <tr><td>SD06</td><td>2</td><td>Activar o desactivar usuario</td><td>UC12 · HU12</td></tr>
+  <tr><td>SD07</td><td>2</td><td>Registrar cliente y asociar vehículo</td><td>UC16, UC20 · HU15, HU18</td></tr>
+  <tr><td>SD08</td><td>2</td><td>Crear celdas por rango</td><td>UC24 · HU19</td></tr>
+  <tr><td>SD09</td><td>2</td><td>Mantenimiento y habilitación de celda</td><td>UC26, UC27 · HU21</td></tr>
+  <tr><td>SD10</td><td>2</td><td>Eliminar celda</td><td>UC28 · HU22</td></tr>
+</table>
+<h3 style="break-before:page">Iteración 1</h3>
+<figure data-fig="sd01"><img class="diagrama" src="../img/staruml/sd01_iniciar_sesion.png"><figcaption>SD01 · Iniciar sesión.</figcaption></figure>
+<figure data-fig="sd02" style="break-before:page"><img class="diagrama" src="../img/staruml/sd02_registrar_entrada_de_vehiculo.png"><figcaption>SD02 · Registrar entrada de vehículo.</figcaption></figure>
+<figure data-fig="sd03" style="break-before:page"><img class="diagrama" src="../img/staruml/sd03_registrar_salida_de_vehiculo.png"><figcaption>SD03 · Registrar salida de vehículo.</figcaption></figure>
+<figure data-fig="sd04" style="break-before:page"><img class="diagrama" src="../img/staruml/sd04_registrar_novedad.png"><figcaption>SD04 · Registrar novedad.</figcaption></figure>
+<h3 style="break-before:page">Iteración 2</h3>
+<figure data-fig="sd05"><img class="diagrama" src="../img/staruml/sd05_crear_usuario_del_sistema.png"><figcaption>SD05 · Crear usuario del sistema.</figcaption></figure>
+<figure data-fig="sd06" style="break-before:page"><img class="diagrama" src="../img/staruml/sd06_activar_o_desactivar_usuario.png"><figcaption>SD06 · Activar o desactivar usuario.</figcaption></figure>
+<figure data-fig="sd07" style="break-before:page"><img class="diagrama" src="../img/staruml/sd07_registrar_cliente_y_asociar_vehiculo.png"><figcaption>SD07 · Registrar cliente y asociar vehículo.</figcaption></figure>
+<figure data-fig="sd08" style="break-before:page"><img class="diagrama" src="../img/staruml/sd08_crear_celdas_por_rango.png"><figcaption>SD08 · Crear celdas por rango.</figcaption></figure>
+<figure data-fig="sd09" style="break-before:page"><img class="diagrama" src="../img/staruml/sd09_mantenimiento_y_habilitacion_de_celda.png"><figcaption>SD09 · Poner celda en mantenimiento y habilitarla.</figcaption></figure>
+<figure data-fig="sd10" style="break-before:page"><img class="diagrama" src="../img/staruml/sd10_eliminar_celda.png"><figcaption>SD10 · Eliminar celda.</figcaption></figure>
+
+<h2 style="break-before:page">2.6 Diagrama de componentes de las iteraciones 1 y 2</h2>
+<figure data-fig="componentes"><img class="diagrama" src="../img/staruml/diagrama_de_componentes.png"><figcaption>Diagrama de componentes (StarUML). En amarillo, los componentes nuevos o ampliados en la iteración 2.</figcaption></figure>
+</div>
+<p>El sistema se organiza en tres subsistemas que se comunican mediante interfaces. La capa de <b>presentación</b> expone la interfaz HTTP al navegador del equipo de portería; cada controlador depende de la interfaz que ofrece su servicio (<i>IAutenticacion, IParqueo, IVehiculos, IClientes, ICeldas, IUsuarios</i>), de modo que los controladores no conocen la base de datos. La <b>lógica de negocio</b> usa la interfaz <i>IRepositorios</i> de la capa de <b>acceso a datos</b>, que trabaja con el modelo de dominio y con la conexión SQLite.</p>
+<table>
+  <tr><th style="width:24%">Componente</th><th>Responsabilidad</th><th style="width:13%">Iteración</th></tr>
+  <tr><td>AuthController / AuthService</td><td>Inicio y cierre de sesión, control de acceso por rol; rechaza usuarios inactivos.</td><td>1 (ajustado en 2)</td></tr>
+  <tr><td>ParqueoController / ParqueoService</td><td>Entradas, salidas, novedades, tablero e historial; valida además que el cliente esté activo.</td><td>1 (ajustado en 2)</td></tr>
+  <tr><td>VehiculoController / VehiculoService</td><td>Registro de vehículos de mensualidad; ahora también desde el detalle de un cliente.</td><td>1 (ajustado en 2)</td></tr>
+  <tr><td>UsuarioController / UsuarioService</td><td>Gestión de usuarios del sistema y contraseñas.</td><td>2</td></tr>
+  <tr><td>ClienteController / ClienteService</td><td>Gestión de clientes y su estado.</td><td>2</td></tr>
+  <tr><td>CeldaController / CeldaService</td><td>Creación, edición, mantenimiento, habilitación, eliminación y consulta de celdas.</td><td>2</td></tr>
+  <tr><td>Repositorios</td><td>Un repositorio por tabla; <code>ClienteRepository</code> se separó y <code>CeldaRepository</code> se amplió.</td><td>1 y 2</td></tr>
+  <tr><td>db.py</td><td>Conexión, creación del esquema, datos de ejemplo y migración automática de la base de datos de la iteración 1.</td><td>1 (ampliado en 2)</td></tr>
+</table>
+
+<h2 style="break-before:page">2.7 Plan de pruebas resumido · Gestión de usuarios y gestión de celdas</h2>
+<table>
+  <tr><th style="width:24%">Proyecto</th><td>Autos Colombia · Sistema de gestión de parqueadero por mensualidad</td></tr>
+  <tr><th>Iteración / versión</th><td>Iteración 2 · Gestión de usuarios y gestión de celdas</td></tr>
+  <tr><th>Responsable</th><td>David Santiago Cantor Torres</td></tr>
+  <tr><th>Fecha de ejecución</th><td>{{FECHA}}</td></tr>
+</table>
+<h3>1. Objetivo y alcance</h3>
+<p>Verificar que las funciones de gestión de usuarios del sistema, de clientes y de celdas cumplen los requerimientos RF16–RF35, las reglas RN05–RN10 y los requerimientos no funcionales de seguridad e integridad, y que la iteración 1 sigue funcionando. <b>Incluye:</b> reglas de negocio de los servicios, pantallas y rutas web, control de acceso por rol y migración de datos. <b>No incluye:</b> pagos (iteración 3), pruebas de carga ni compatibilidad con navegadores antiguos.</p>
+<h3>2. Estrategia</h3>
+<table>
+  <tr><th style="width:24%">Tipo de prueba</th><th>Cómo se realiza</th></tr>
+  <tr><td>Unitarias de servicio</td><td>Cada regla de negocio se prueba sobre <code>UsuarioService</code>, <code>ClienteService</code> y <code>CeldaService</code> con una base de datos SQLite en memoria (<code>unittest</code>).</td></tr>
+  <tr><td>Integración web</td><td>Con el cliente de pruebas de Flask se recorren las pantallas y se envían formularios como administrador y como operador.</td></tr>
+  <tr><td>Seguridad</td><td>Acceso por URL a funciones administrativas con un operador; inicio de sesión de un usuario desactivado.</td></tr>
+  <tr><td>Regresión</td><td>Se ejecutan de nuevo las {{N_ITER1}} pruebas de la iteración 1 (entradas, salidas, novedades).</td></tr>
+  <tr><td>Exploratoria</td><td>Revisión visual de las pantallas en Microsoft Edge (capturas de la sección 2.4).</td></tr>
+</table>
+<h3>3. Ambiente y datos de prueba</h3>
+<p>Windows 11, Python 3.13, Flask 3.1.2, SQLite 3, Microsoft Edge. Datos de ejemplo de <code>database/seed.sql</code>: 5 clientes, 5 vehículos (QRS234 con mensualidad vencida), 12 celdas (A-08 en mantenimiento) y 4 usuarios: <code>admin</code>, <code>operador</code>, <code>ltorres</code> (operadora) y <code>mdiaz</code> (inactivo).</p>
+<h3>4. Criterios</h3>
+<p><b>Entrada:</b> código integrado y base de datos de ejemplo cargada. <b>Aceptación:</b> el 100 % de los casos de prioridad alta aprobados, ninguna falla en la regresión de la iteración 1 y ningún defecto abierto de severidad alta. <b>Suspensión:</b> si la aplicación no inicia o la base de datos no se puede migrar.</p>
+<h3>5. Casos de prueba y resultados</h3>
+<table class="tabla-cp">
+  <tr><th style="width:7%">ID</th><th style="width:10%">HU / requisito</th><th style="width:17%">Caso y precondición</th><th style="width:20%">Datos y pasos</th><th style="width:21%">Resultado esperado</th><th style="width:14%">Resultado obtenido</th><th style="width:11%">Estado</th></tr>
+  {{CASOS_PRUEBA}}
+</table>
+<h3>6. Resumen de la ejecución</h3>
+<div class="resumen">
+  <div><b>{{N_APROBADOS}}/{{N_CASOS}}</b><span>casos de prueba aprobados</span></div>
+  <div><b>{{N_ITER2}}</b><span>pruebas automatizadas nuevas</span></div>
+  <div><b>{{N_ITER1_OK}}/{{N_ITER1}}</b><span>pruebas de regresión iteración 1</span></div>
+  <div><b>{{N_FALLAS}}</b><span>fallas en la última ejecución</span></div>
+</div>
+<p>Comando: <code>python -m unittest discover -s tests -t . -v</code> · {{N_PRUEBAS}} pruebas, {{RESULTADO}}.</p>
+<h3>7. Defectos encontrados</h3>
+<table>
+  <tr><th style="width:9%">ID</th><th>Descripción</th><th style="width:13%">Severidad</th><th style="width:22%">Estado</th></tr>
+  <tr><td>DEF-01</td><td>La prueba de regresión <code>test_salida_libera_celda_y_calcula_permanencia</code> usaba una fecha fija (20/10/2026) mientras las mensualidades de ejemplo son relativas a la fecha actual; al pasar los días la entrada se rechazaba por mensualidad vencida.</td><td>Media (prueba)</td><td>Corregido: la prueba usa la fecha del día.</td></tr>
+</table>
+<p>Se verificó además la migración (RNF15): una base de datos creada con el esquema de la iteración 1 se abrió con la versión nueva; las columnas <code>cliente.activo</code>, <code>celda.observacion</code> y <code>usuario.creado_en</code> se agregaron automáticamente, todas las pantallas respondieron correctamente y la desactivación de un cliente se guardó sin perder datos.</p>
+
+<h2 style="break-before:page">2.8 Código fuente y repositorio</h2>
+<p><b>Repositorio GitHub:</b> {{REPO}}</p>
+<p>El repositorio contiene el código de las dos iteraciones, la base de datos de ejemplo, las pruebas, el proyecto StarUML (<code>docs/AutosColombia.mdj</code>), las imágenes de los diagramas y mockups, y los generadores de esta documentación.</p>
+<h3>Cambios de la iteración 2</h3>
+<table>
+  <tr><th style="width:34%">Archivo</th><th>Cambio</th></tr>
+  <tr><td><code>services/usuario_service.py</code></td><td>Nuevo. Crear, editar, activar/desactivar, restablecer y cambiar contraseña; política de contraseñas y protección del último administrador.</td></tr>
+  <tr><td><code>services/cliente_service.py</code></td><td>Nuevo. Validación y normalización de clientes, edición y cambio de estado.</td></tr>
+  <tr><td><code>services/celda_service.py</code></td><td>Nuevo. Crear (una o por rango), editar, mantenimiento con motivo, habilitar y eliminar celdas.</td></tr>
+  <tr><td><code>services/parqueo_service.py</code></td><td>La entrada rechaza vehículos de clientes inactivos; el mantenimiento de celdas pasó a <code>CeldaService</code>.</td></tr>
+  <tr><td><code>controllers/usuario_controller.py</code>, <code>cliente_controller.py</code>, <code>celda_controller.py</code></td><td>Rutas nuevas protegidas por rol (<code>/usuarios</code>, <code>/clientes</code>, <code>/celdas</code>).</td></tr>
+  <tr><td><code>repositories/</code></td><td><code>ClienteRepository</code> en archivo propio; nuevos métodos en <code>UsuarioRepository</code> y <code>CeldaRepository</code>.</td></tr>
+  <tr><td><code>templates/usuarios</code>, <code>clientes</code>, <code>celdas</code></td><td>Vistas nuevas; menú con secciones Gestión y Administración.</td></tr>
+  <tr><td><code>database/schema.sql</code>, <code>db.py</code></td><td>Columnas <code>usuario.creado_en</code>, <code>cliente.activo</code> y <code>celda.observacion</code>; migración automática.</td></tr>
+  <tr><td><code>tests/test_usuarios_celdas.py</code></td><td>Nuevo. {{N_ITER2}} pruebas que automatizan los casos CP-01 a CP-21.</td></tr>
+</table>
+<h3>Ejecución</h3>
+<pre>python -m venv .venv
+.venv\Scripts\activate          (Windows)   |   source .venv/bin/activate   (Linux/Mac)
+pip install -r requirements.txt
+flask --app app run             → abrir http://127.0.0.1:5000
+Usuarios de prueba:  admin / admin123   ·   operador / operador123   ·   ltorres / Turno2026</pre>
+<h3>Fragmento: protección de administradores (<code>services/usuario_service.py</code>)</h3>
+<pre>{{CODIGO_USUARIO}}</pre>
+<h3>Fragmento: eliminación de celdas (<code>services/celda_service.py</code>)</h3>
+<pre>{{CODIGO_CELDA}}</pre>
+
+<h1>3. Conclusiones</h1>
+<ul>
+  <li><p>La iteración 2 completa la administración del parqueadero: el administrador ya no depende de cambios en la base de datos para crear empleados, registrar clientes o ampliar el número de celdas, y el operador tiene acceso de consulta a la información que necesita en portería.</p></li>
+  <li><p>Separar los usuarios del sistema (quién opera) de los clientes (quién recibe el servicio) aclaró las reglas de cada uno: los empleados se controlan con roles y contraseñas, y los clientes con su estado, que repercute directamente en la entrada de vehículos construida en la iteración 1.</p></li>
+  <li><p>Desactivar en lugar de borrar, y eliminar celdas solo cuando no tienen historial, preserva la trazabilidad lograda en la iteración 1: cada entrada, salida y novedad sigue apuntando a un usuario, un cliente y una celda existentes.</p></li>
+  <li><p>Los diagramas de secuencia de ambas iteraciones confirmaron que la arquitectura en capas se mantuvo: todos los escenarios siguen el mismo recorrido controlador → servicio → repositorio, y el diagrama de componentes muestra que la iteración 2 agregó componentes sin modificar las interfaces existentes.</p></li>
+  <li><p>El plan de pruebas, automatizado con {{N_PRUEBAS}} pruebas, permitió detectar y corregir una prueba de la iteración 1 dependiente de la fecha y verificar que las nuevas reglas no rompieron la operación existente. La base queda lista para la iteración 3 (pagos), que podrá apoyarse en los clientes y mensualidades ya gestionados.</p></li>
+</ul>
+
+<h1 style="break-before:auto;margin-top:30px">4. Referencias</h1>
+<ul>
+  <li>Pallets Projects. <i>Flask Documentation (3.1.x)</i>. https://flask.palletsprojects.com/</li>
+  <li>Pallets Projects. <i>Werkzeug: Utilities · Password hashing</i>. https://werkzeug.palletsprojects.com/</li>
+  <li>MKLabs. <i>StarUML Documentation</i>. https://docs.staruml.io/</li>
+  <li>Object Management Group. <i>Unified Modeling Language (UML) Specification, v2.5.1</i>. 2017.</li>
+  <li>Cohn, M. <i>User Stories Applied: For Agile Software Development</i>. Addison-Wesley, 2004.</li>
+  <li>Sommerville, I. <i>Ingeniería de Software</i>. 9.ª ed. Pearson, 2011.</li>
+  <li>ISO/IEC/IEEE 29119-3:2021. <i>Software and systems engineering — Software testing — Part 3: Test documentation</i>.</li>
+</ul>
+</body>
+</html>

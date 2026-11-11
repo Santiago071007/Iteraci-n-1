@@ -5,6 +5,7 @@ from typing import Optional
 from ..models import FORMATO_FECHA_HORA, RegistroParqueo
 from ..repositories import (
     CeldaRepository,
+    ClienteRepository,
     MensualidadRepository,
     NovedadRepository,
     RegistroRepository,
@@ -43,6 +44,7 @@ class ParqueoService:
     def __init__(self, db):
         self.db = db
         self.vehiculos = VehiculoRepository(db)
+        self.clientes = ClienteRepository(db)
         self.mensualidades = MensualidadRepository(db)
         self.celdas = CeldaRepository(db)
         self.registros = RegistroRepository(db)
@@ -67,6 +69,8 @@ class ParqueoService:
         vehiculo = self.vehiculos.buscar_por_placa(placa)
         if not vehiculo:
             raise ReglaNegocioError(f"El vehículo {placa} no está registrado como mensualidad.")
+        if not self.clientes.obtener(vehiculo.cliente_id).esta_activo():
+            raise ReglaNegocioError(f"El cliente propietario del vehículo {placa} está inactivo.")
         if not self.mensualidades.vigente(vehiculo.id, ahora.date()):
             raise ReglaNegocioError(f"El vehículo {placa} no tiene una mensualidad vigente.")
         if self.registros.abierto_por_vehiculo(vehiculo.id):
@@ -113,15 +117,6 @@ class ParqueoService:
             return self.novedades.crear(
                 registro.id, usuario_id, ahora.strftime(FORMATO_FECHA_HORA), tipo, descripcion[:500]
             )
-
-    def alternar_mantenimiento(self, celda_id: int):
-        celda = self.celdas.obtener(celda_id)
-        if not celda:
-            raise ReglaNegocioError("La celda no existe.")
-        if celda.estado == "OCUPADA":
-            raise ReglaNegocioError(f"La celda {celda.codigo} está ocupada; registre primero la salida.")
-        with self.db:
-            self.celdas.cambiar_estado(celda.id, "LIBRE" if celda.estado == "MANTENIMIENTO" else "MANTENIMIENTO")
 
     def tablero(self, hoy: Optional[datetime] = None) -> dict:
         hoy = (hoy or datetime.now()).date().isoformat()

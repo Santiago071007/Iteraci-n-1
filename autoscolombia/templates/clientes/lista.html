@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block titulo %}Clientes{% endblock %}
+{% block subtitulo %}Usuarios del servicio de mensualidad{% endblock %}
+{% block contenido %}
+<div class="tarjeta" id="tabla-clientes">
+  <div class="tarjeta-cab">
+    <div class="buscador" style="flex:1"><div class="con-icono">{{ icono('buscar', 16) }}<input placeholder="Buscar por nombre, documento, teléfono o correo" data-filtrar="#tabla-clientes" aria-label="Buscar"></div></div>
+    {% if g.usuario.es_admin() %}<div class="acciones"><a class="btn" href="{{ url_for('clientes.nuevo') }}">{{ icono('mas', 16) }} Nuevo cliente</a></div>{% endif %}
+  </div>
+  <div class="tabla-envoltura">
+  <table>
+    <thead><tr><th>Cliente</th><th>Contacto</th><th>Vehículos</th><th>Mensualidades</th><th>Estado</th><th></th></tr></thead>
+    <tbody>
+    {% for c in clientes %}
+    <tr data-texto="{{ c.nombres }} {{ c.documento }} {{ c.telefono }} {{ c.email }}" {% if not c.activo %}class="inactivo"{% endif %}>
+      <td><a href="{{ url_for('clientes.detalle', cliente_id=c.id) }}"><b>{{ c.nombres }}</b></a><span class="secundario">CC {{ c.documento }}</span></td>
+      <td>{{ c.telefono or '—' }}<span class="secundario">{{ c.email or 'sin correo' }}</span></td>
+      <td>{{ c.vehiculos }}{% if c.dentro %} <span class="etq info">{{ c.dentro }} dentro</span>{% endif %}</td>
+      <td>{% if not c.vehiculos %}<span class="secundario">—</span>{% elif c.vigentes == c.vehiculos %}<span class="etq ok">Al día</span>{% elif c.vigentes %}<span class="etq neutro">{{ c.vigentes }} de {{ c.vehiculos }} vigentes</span>{% else %}<span class="etq mal">Vencidas</span>{% endif %}</td>
+      <td>{% if c.activo %}<span class="etq ok">Activo</span>{% else %}<span class="etq mal">Inactivo</span>{% endif %}</td>
+      <td style="text-align:right"><a class="btn secundario peq" href="{{ url_for('clientes.detalle', cliente_id=c.id) }}">{{ icono('ojo', 14) }} Ver</a></td>
+    </tr>
+    {% else %}
+    <tr><td colspan="6" class="vacio">{{ icono('clientes', 28) }}Aún no hay clientes registrados.</td></tr>
+    {% endfor %}
+    <tr class="sin-resultados" hidden><td colspan="6" class="vacio">Sin resultados para la búsqueda.</td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block titulo %}Cambiar mi contraseña{% endblock %}
+{% block subtitulo %}{{ g.usuario.nombre }} · {{ g.usuario.username }}{% endblock %}
+{% block contenido %}
+<form method="post" class="tarjeta" style="max-width:520px">
+  <div class="tarjeta-cab"><h2>{{ icono('llave') }} Nueva contraseña</h2></div>
+  <div class="campo"><label for="actual">Contraseña actual</label><div class="con-icono">{{ icono('candado', 16) }}<input id="actual" name="actual" type="password" autocomplete="current-password" required autofocus></div></div>
+  <div class="campo"><label for="password">Nueva contraseña</label><div class="con-icono">{{ icono('candado', 16) }}<input id="password" name="password" type="password" minlength="8" autocomplete="new-password" required></div></div>
+  <div class="campo"><label for="confirmacion">Confirmar nueva contraseña</label><div class="con-icono">{{ icono('candado', 16) }}<input id="confirmacion" name="confirmacion" type="password" minlength="8" autocomplete="new-password" required></div></div>
+  <p class="ayuda">Mínimo 8 caracteres, con letras y números, y diferente a la actual.</p>
+  <div style="display:flex;gap:10px;margin-top:8px">
+    <button class="btn exito grande" style="flex:1">{{ icono('check') }} Cambiar contraseña</button>
+    <a class="btn secundario grande" href="{{ url_for('parqueo.tablero') }}">Cancelar</a>
+  </div>
+</form>
+{% endblock %}

@@ -1,6 +1,6 @@
 import tempfile
 import unittest
-from datetime import datetime, timedelta
+from datetime import date, datetime, time, timedelta
 from pathlib import Path
 
 from autoscolombia import create_app
@@ -58,7 +58,7 @@ class ParqueoServiceTest(unittest.TestCase):
             self.servicio.registrar_entrada("XYZ78D", OPERADOR)
 
     def test_salida_libera_celda_y_calcula_permanencia(self):
-        entrada = datetime(2026, 10, 20, 8, 0, 0)
+        entrada = datetime.combine(date.today(), time(8, 0))
         registro = self.servicio.registrar_entrada("ABC123", OPERADOR, ahora=entrada)
         salida = self.servicio.registrar_salida("ABC123", OPERADOR, ahora=entrada + timedelta(hours=2, minutes=15))
         self.assertFalse(salida.esta_abierto())

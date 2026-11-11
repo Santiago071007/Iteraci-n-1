@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block titulo %}{{ c.nombres }}{% endblock %}
+{% block subtitulo %}Cliente · CC {{ c.documento }}{% endblock %}
+{% block contenido %}
+<div class="grid grid-5-7">
+  <div class="tarjeta" style="align-self:start">
+    <div class="tarjeta-cab"><h2>{{ icono('clientes') }} Datos</h2>
+      <div class="acciones">{% if c.activo %}<span class="etq ok">Activo</span>{% else %}<span class="etq mal">Inactivo</span>{% endif %}</div></div>
+    <dl class="datos">
+      <dt>Documento</dt><dd>{{ c.documento }}</dd>
+      <dt>Nombre</dt><dd>{{ c.nombres }}</dd>
+      <dt>Teléfono</dt><dd>{{ c.telefono or '—' }}</dd>
+      <dt>Correo</dt><dd>{{ c.email or '—' }}</dd>
+      <dt>Vehículos</dt><dd>{{ vehiculos|length }}</dd>
+    </dl>
+    {% if g.usuario.es_admin() %}
+    <div style="display:flex;gap:10px;margin-top:18px;flex-wrap:wrap">
+      <a class="btn secundario" href="{{ url_for('clientes.editar', cliente_id=c.id) }}">{{ icono('editar', 16) }} Editar datos</a>
+      <form method="post" action="{{ url_for('clientes.estado', cliente_id=c.id) }}"
+            data-confirmar="{{ '¿Desactivar a ' ~ c.nombres ~ '? Sus vehículos no podrán ingresar.' if c.activo else '' }}">
+        <button class="btn {{ 'peligro' if c.activo else 'exito' }}">{{ icono('candado' if c.activo else 'check', 16) }} {{ 'Desactivar' if c.activo else 'Activar' }}</button>
+      </form>
+    </div>
+    {% endif %}
+  </div>
+  <div class="tarjeta">
+    <div class="tarjeta-cab"><h2>{{ icono('vehiculos') }} Vehículos del cliente</h2>
+      {% if g.usuario.es_admin() and c.activo %}<div class="acciones"><a class="btn" href="{{ url_for('vehiculos.nuevo', documento=c.documento) }}">{{ icono('mas', 16) }} Asociar vehículo</a></div>{% endif %}</div>
+    <div class="tabla-envoltura">
+    <table>
+      <thead><tr><th>Placa</th><th>Vehículo</th><th>Mensualidad</th><th>Ubicación</th></tr></thead>
+      <tbody>
+      {% for v in vehiculos %}
+      <tr>
+        <td><span class="placa">{{ v.placa }}</span></td>
+        <td>{{ icono('carro' if v.tipo == 'CARRO' else 'moto', 16) }} {{ v.marca or '' }}<span class="secundario">{{ v.tipo|capitalize }} · {{ v.color or 'sin color' }}</span></td>
+        <td>{% if v.mensualidad_hasta and v.mensualidad_hasta >= hoy %}<span class="etq ok">Vigente</span><span class="secundario">hasta {{ v.mensualidad_hasta }}</span>
+            {% else %}<span class="etq mal">Vencida</span><span class="secundario">{{ v.mensualidad_hasta or 'sin mensualidad' }}</span>{% endif %}</td>
+        <td>{% if v.celda_actual %}<span class="etq info">Dentro · {{ v.celda_actual }}</span>{% else %}<span class="etq neutro">Fuera</span>{% endif %}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="4" class="vacio">{{ icono('carro', 28) }}El cliente aún no tiene vehículos asociados.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

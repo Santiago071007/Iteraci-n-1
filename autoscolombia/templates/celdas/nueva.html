@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block titulo %}Nueva celda{% endblock %}
+{% block subtitulo %}Ampliar la capacidad del parqueadero{% endblock %}
+{% block contenido %}
+<div class="grid grid-2">
+  <form method="post" class="tarjeta" style="align-self:start" data-modo-celda>
+    <div class="tarjeta-cab"><h2>{{ icono('celdas') }} Datos de la celda</h2></div>
+    <div class="campo">
+      <div class="etiqueta-campo">¿Cuántas celdas?</div>
+      <div class="pills">
+        <label class="pill"><input type="radio" name="modo" value="una" {{ 'checked' if d.modo != 'lote' }}><span>Una celda</span></label>
+        <label class="pill"><input type="radio" name="modo" value="lote" {{ 'checked' if d.modo == 'lote' }}><span>Varias (rango)</span></label>
+      </div>
+    </div>
+    <div class="campo">
+      <div class="etiqueta-campo">Tipo de vehículo</div>
+      <div class="pills">
+        {% for clave, nombre in tipos.items() %}
+        <label class="pill"><input type="radio" name="tipo" value="{{ clave }}" {{ 'checked' if d.tipo == clave }}><span>{{ icono('carro' if clave == 'CARRO' else 'moto', 16) }} {{ nombre }}</span></label>
+        {% endfor %}
+      </div>
+    </div>
+    <div data-solo="una" class="campo"><label for="codigo">Código</label><input id="codigo" name="codigo" maxlength="7" value="{{ d.codigo or '' }}" placeholder="A-09" style="text-transform:uppercase">
+      <div class="ayuda">Letra(s), guion y número: A-09, M-05, B-101.</div></div>
+    <div data-solo="lote">
+      <div class="grid grid-3" style="gap:14px">
+        <div class="campo"><label for="prefijo">Zona (letra)</label><input id="prefijo" name="prefijo" maxlength="2" value="{{ d.prefijo or '' }}" placeholder="A" style="text-transform:uppercase"></div>
+        <div class="campo"><label for="desde">Desde</label><input id="desde" name="desde" type="number" min="1" max="999" value="{{ d.desde or '' }}" placeholder="9"></div>
+        <div class="campo"><label for="hasta">Hasta</label><input id="hasta" name="hasta" type="number" min="1" max="999" value="{{ d.hasta or '' }}" placeholder="12"></div>
+      </div>
+      <div class="ayuda" id="vista-previa-lote">Se crearán las celdas A-09, A-10, A-11 y A-12 (máximo 50 por vez).</div>
+    </div>
+    <p class="ayuda">Las celdas nuevas quedan en estado <b>Libre</b> y disponibles para asignar.</p>
+    <div style="display:flex;gap:10px;margin-top:8px">
+      <button class="btn exito grande" style="flex:1">{{ icono('check') }} Crear</button>
+      <a class="btn secundario grande" href="{{ url_for('celdas.listar') }}">Cancelar</a>
+    </div>
+  </form>
+  <div class="tarjeta" style="align-self:start">
+    <div class="tarjeta-cab"><h2>{{ icono('info') }} Reglas de las celdas</h2></div>
+    <ul class="lista-reglas">
+      <li>El código de cada celda es único.</li>
+      <li>Cada celda recibe un solo tipo de vehículo: carro o moto.</li>
+      <li>Una celda ocupada no se puede editar, poner en mantenimiento ni eliminar.</li>
+      <li>Solo se eliminan celdas que nunca se han usado; las demás se ponen en mantenimiento para conservar el historial.</li>
+    </ul>
+  </div>
+</div>
+{% endblock %}

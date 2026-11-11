@@ -122,7 +122,43 @@
     });
   }
 
+  function confirmaciones() {
+    document.querySelectorAll("form[data-confirmar]").forEach((form) =>
+      form.addEventListener("submit", (ev) => {
+        if (form.dataset.confirmar && !confirm(form.dataset.confirmar)) ev.preventDefault();
+      })
+    );
+  }
+
+  function modoCeldas() {
+    const form = document.querySelector("[data-modo-celda]");
+    if (!form) return;
+    const vista = document.getElementById("vista-previa-lote");
+    const actualizar = () => {
+      const modo = form.querySelector("input[name=modo]:checked").value;
+      form.querySelectorAll("[data-solo]").forEach((bloque) => {
+        const visible = bloque.dataset.solo === modo;
+        bloque.hidden = !visible;
+        bloque.querySelectorAll("input").forEach((i) => { i.required = visible; });
+      });
+      const prefijo = (form.prefijo.value || "A").toUpperCase();
+      const desde = parseInt(form.desde.value, 10);
+      const hasta = parseInt(form.hasta.value, 10);
+      if (vista && desde > 0 && hasta >= desde) {
+        const n = hasta - desde + 1;
+        const cod = (x) => prefijo + "-" + String(x).padStart(2, "0");
+        vista.textContent = n > 50 ? "Máximo 50 celdas por vez." :
+          "Se crearán " + n + " celda(s): " + cod(desde) + (n > 1 ? " a " + cod(hasta) : "") + ".";
+      }
+    };
+    form.addEventListener("input", actualizar);
+    form.addEventListener("change", actualizar);
+    actualizar();
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
+    confirmaciones();
+    modoCeldas();
     reloj();
     cronometros();
     avisos();

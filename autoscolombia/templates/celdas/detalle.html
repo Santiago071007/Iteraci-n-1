@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block titulo %}Celda {{ celda.codigo }}{% endblock %}
+{% block subtitulo %}{{ 'Carro' if celda.tipo_vehiculo == 'CARRO' else 'Moto' }} · {{ usos }} uso(s) registrados{% endblock %}
+{% block contenido %}
+{% set admin = g.usuario.es_admin() %}
+<div class="grid grid-5-7">
+  <div class="apilado" style="align-self:start">
+    <div class="tarjeta">
+      <div class="tarjeta-cab"><h2>{{ icono('celdas') }} Estado</h2>
+        <div class="acciones">{% if celda.estado == 'LIBRE' %}<span class="etq ok">Libre</span>{% elif celda.estado == 'OCUPADA' %}<span class="etq mal">Ocupada</span>{% else %}<span class="etq neutro">Mantenimiento</span>{% endif %}</div></div>
+      {% if celda.estado == 'OCUPADA' %}
+        <p style="margin:0">Ocupada por <span class="placa mini">{{ historial[0].placa }}</span> desde {{ historial[0].fecha_entrada }}.</p>
+        <p class="ayuda">Mientras esté ocupada no se puede editar, poner en mantenimiento ni eliminar.</p>
+      {% elif celda.estado == 'MANTENIMIENTO' %}
+        <p style="margin:0"><b>Motivo:</b> {{ celda.observacion or 'sin observación' }}</p>
+        {% if admin %}
+        <form method="post" action="{{ url_for('celdas.habilitar', celda_id=celda.id) }}" style="margin-top:14px">
+          <button class="btn exito">{{ icono('check', 16) }} Habilitar celda</button>
+        </form>
+        {% endif %}
+      {% else %}
+        <p style="margin:0">Disponible para asignar a un {{ 'carro' if celda.tipo_vehiculo == 'CARRO' else 'moto' }}.</p>
+        {% if admin %}
+        <form method="post" action="{{ url_for('celdas.mantenimiento', celda_id=celda.id) }}" style="margin-top:14px">
+          <div class="campo"><label for="observacion">Motivo del mantenimiento</label>
+            <textarea id="observacion" name="observacion" rows="2" maxlength="200" minlength="5" required placeholder="Ej.: demarcación borrada, pintura del piso"></textarea></div>
+          <button class="btn amarillo">{{ icono('llave', 16) }} Poner en mantenimiento</button>
+        </form>
+        {% endif %}
+      {% endif %}
+    </div>
+    {% if admin %}
+    <form method="post" action="{{ url_for('celdas.editar', celda_id=celda.id) }}" class="tarjeta">
+      <div class="tarjeta-cab"><h2>{{ icono('editar') }} Editar celda</h2></div>
+      <fieldset {{ 'disabled' if celda.estado == 'OCUPADA' }} style="border:0;padding:0;margin:0">
+        <div class="campo"><label for="codigo">Código</label><input id="codigo" name="codigo" maxlength="7" value="{{ d.codigo }}" required style="text-transform:uppercase"></div>
+        <div class="campo">
+          <div class="etiqueta-campo">Tipo de vehículo</div>
+          <div class="pills">
+            {% for clave, nombre in tipos.items() %}
+            <label class="pill"><input type="radio" name="tipo" value="{{ clave }}" {{ 'checked' if d.tipo == clave }}><span>{{ icono('carro' if clave == 'CARRO' else 'moto', 16) }} {{ nombre }}</span></label>
+            {% endfor %}
+          </div>
+        </div>
+        <button class="btn">{{ icono('check', 16) }} Guardar cambios</button>
+      </fieldset>
+    </form>
+    <form method="post" action="{{ url_for('celdas.eliminar', celda_id=celda.id) }}" class="tarjeta zona-peligro"
+          data-confirmar="¿Eliminar definitivamente la celda {{ celda.codigo }}?">
+      <div class="tarjeta-cab"><h2>{{ icono('basura') }} Eliminar celda</h2></div>
+      <p class="ayuda" style="margin-top:0">Solo se pueden eliminar celdas sin movimientos. Si la celda ya se usó, póngala en mantenimiento.</p>
+      <button class="btn peligro" {{ 'disabled' if usos or celda.estado == 'OCUPADA' }}>{{ icono('basura', 16) }} Eliminar</button>
+    </form>
+    {% endif %}
+  </div>
+  <div class="tarjeta">
+    <div class="tarjeta-cab"><h2>{{ icono('historial') }} Últimos usos de la celda</h2></div>
+    <div class="tabla-envoltura">
+    <table>
+      <thead><tr><th>Placa</th><th>Entrada</th><th>Salida</th><th>Permanencia</th></tr></thead>
+      <tbody>
+      {% for r in historial %}
+      <tr>
+        <td><a href="{{ url_for('parqueo.comprobante', registro_id=r.id) }}"><span class="placa">{{ r.placa }}</span></a><span class="secundario">{{ r.cliente }}</span></td>
+        <td>{{ r.fecha_entrada }}</td>
+        <td>{{ r.fecha_salida or '—' }}</td>
+        <td {% if not r.fecha_salida %}data-desde="{{ r.fecha_entrada }}"{% endif %}>{{ r.fecha_entrada|duracion(r.fecha_salida) }}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="4" class="vacio">{{ icono('historial', 28) }}Esta celda aún no se ha usado.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

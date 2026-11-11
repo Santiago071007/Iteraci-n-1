@@ -33,10 +33,15 @@
     <a href="{{ url_for('parqueo.activos') }}" class="{{ 'activo' if ep == 'parqueo.activos' }}">{{ icono('lista') }} Vehículos dentro</a>
     <a href="{{ url_for('parqueo.novedades') }}" class="{{ 'activo' if ep == 'parqueo.novedades' }}">{{ icono('alerta') }} Novedades <kbd>Alt N</kbd></a>
     <a href="{{ url_for('parqueo.historial') }}" class="{{ 'activo' if ep in ('parqueo.historial', 'parqueo.comprobante') }}">{{ icono('historial') }} Historial</a>
-    <div class="seccion">Configuración</div>
+    <div class="seccion">Gestión</div>
+    <a href="{{ url_for('clientes.listar') }}" class="{{ 'activo' if ep.startswith('clientes.') }}">{{ icono('clientes') }} Clientes</a>
     <a href="{{ url_for('vehiculos.listar') }}" class="{{ 'activo' if ep.startswith('vehiculos.') }}">{{ icono('vehiculos') }} Vehículos</a>
     <a href="{{ url_for('celdas.listar') }}" class="{{ 'activo' if ep.startswith('celdas.') }}">{{ icono('celdas') }} Celdas</a>
-    <div class="menu-pie">Iteración 1 · Entrada y salida</div>
+    {% if g.usuario.es_admin() %}
+    <div class="seccion">Administración</div>
+    <a href="{{ url_for('usuarios.listar') }}" class="{{ 'activo' if ep.startswith('usuarios.') and ep != 'usuarios.mi_clave' }}">{{ icono('escudo') }} Usuarios del sistema</a>
+    {% endif %}
+    <div class="menu-pie">Iteración 2 · Usuarios y celdas</div>
   </nav>
   <main class="contenido">
     <header class="barra">
@@ -51,6 +56,7 @@
           <span class="avatar">{{ g.usuario.nombre.split()[:2]|map('first')|join|upper }}</span>
           <div><b>{{ g.usuario.nombre }}</b><small>{{ 'Administrador' if g.usuario.es_admin() else 'Operador' }}</small></div>
         </div>
+        <a class="btn-icono" href="{{ url_for('usuarios.mi_clave') }}" title="Cambiar mi contraseña" aria-label="Cambiar mi contraseña">{{ icono('llave', 17) }}</a>
         <a class="btn-icono" href="{{ url_for('auth.logout') }}" title="Cerrar sesión" aria-label="Cerrar sesión">{{ icono('salir', 17) }}</a>
       </div>
     </header>

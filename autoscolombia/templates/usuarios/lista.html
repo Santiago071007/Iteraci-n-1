@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block titulo %}Usuarios del sistema{% endblock %}
+{% block subtitulo %}Empleados que operan el parqueadero y sus permisos{% endblock %}
+{% block contenido %}
+{% set activos = usuarios|selectattr('activo')|list %}
+<div class="grid grid-3" style="margin-bottom:22px">
+  <div class="tarjeta kpi"><div class="kpi-icono azul">{{ icono('usuario', 22) }}</div><div><div class="valor">{{ activos|length }}<small> / {{ usuarios|length }}</small></div><div class="etiqueta">Usuarios activos</div></div></div>
+  <div class="tarjeta kpi"><div class="kpi-icono amarillo">{{ icono('escudo', 22) }}</div><div><div class="valor">{{ activos|selectattr('rol', 'equalto', 'ADMIN')|list|length }}</div><div class="etiqueta">Administradores activos</div></div></div>
+  <div class="tarjeta kpi"><div class="kpi-icono verde">{{ icono('entrada', 22) }}</div><div><div class="valor">{{ activos|selectattr('rol', 'equalto', 'OPERADOR')|list|length }}</div><div class="etiqueta">Operadores activos</div></div></div>
+</div>
+<div class="tarjeta" id="tabla-usuarios">
+  <div class="tarjeta-cab">
+    <div class="buscador" style="flex:1"><div class="con-icono">{{ icono('buscar', 16) }}<input placeholder="Buscar por nombre o usuario" data-filtrar="#tabla-usuarios" aria-label="Buscar"></div></div>
+    <div class="acciones"><a class="btn" href="{{ url_for('usuarios.nuevo') }}">{{ icono('mas', 16) }} Nuevo usuario</a></div>
+  </div>
+  <div class="tabla-envoltura">
+  <table>
+    <thead><tr><th>Nombre</th><th>Usuario</th><th>Rol</th><th>Estado</th><th>Movimientos</th><th style="text-align:right">Acciones</th></tr></thead>
+    <tbody>
+    {% for u in usuarios %}
+    <tr data-texto="{{ u.nombre }} {{ u.username }} {{ roles[u.rol] }}" {% if not u.activo %}class="inactivo"{% endif %}>
+      <td><b>{{ u.nombre }}</b>{% if u.id == g.usuario.id %}<span class="secundario">Tu usuario</span>{% endif %}</td>
+      <td><code>{{ u.username }}</code></td>
+      <td>{% if u.rol == 'ADMIN' %}<span class="etq info">Administrador</span>{% else %}<span class="etq neutro">Operador</span>{% endif %}</td>
+      <td>{% if u.activo %}<span class="etq ok">Activo</span>{% else %}<span class="etq mal">Inactivo</span>{% endif %}</td>
+      <td>{{ u.movimientos }}</td>
+      <td><div class="acciones-fila">
+        <a class="btn secundario peq" href="{{ url_for('usuarios.editar', usuario_id=u.id) }}">{{ icono('editar', 14) }} Editar</a>
+        {% if u.id != g.usuario.id %}
+        <form method="post" action="{{ url_for('usuarios.estado', usuario_id=u.id) }}"
+              data-confirmar="{{ '¿Desactivar a ' ~ u.nombre ~ '? No podrá iniciar sesión.' if u.activo else '' }}">
+          <button class="btn peq {{ 'peligro' if u.activo else 'exito' }}">{{ icono('candado' if u.activo else 'check', 14) }} {{ 'Desactivar' if u.activo else 'Activar' }}</button>
+        </form>
+        {% endif %}
+      </div></td>
+    </tr>
+    {% endfor %}
+    <tr class="sin-resultados" hidden><td colspan="6" class="vacio">Sin resultados para la búsqueda.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="ayuda">Los usuarios no se eliminan para conservar la trazabilidad de entradas, salidas y novedades; se desactivan.</p>
+</div>
+{% endblock %}

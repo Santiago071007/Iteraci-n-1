@@ -14,7 +14,8 @@ CREATE TABLE usuario (
     username       VARCHAR(40)  NOT NULL UNIQUE,
     password_hash  VARCHAR(255) NOT NULL,
     rol            VARCHAR(15)  NOT NULL CHECK (rol IN ('ADMIN', 'OPERADOR')),
-    activo         INTEGER      NOT NULL DEFAULT 1 CHECK (activo IN (0, 1))
+    activo         INTEGER      NOT NULL DEFAULT 1 CHECK (activo IN (0, 1)),
+    creado_en      DATETIME     NOT NULL DEFAULT (datetime('now', 'localtime'))
 );
 
 CREATE TABLE cliente (
@@ -22,7 +23,8 @@ CREATE TABLE cliente (
     documento  VARCHAR(20)  NOT NULL UNIQUE,
     nombres    VARCHAR(120) NOT NULL,
     telefono   VARCHAR(20),
-    email      VARCHAR(120)
+    email      VARCHAR(120),
+    activo     INTEGER      NOT NULL DEFAULT 1 CHECK (activo IN (0, 1))
 );
 
 CREATE TABLE vehiculo (
@@ -48,7 +50,8 @@ CREATE TABLE celda (
     codigo         VARCHAR(10) NOT NULL UNIQUE,
     tipo_vehiculo  VARCHAR(10) NOT NULL CHECK (tipo_vehiculo IN ('CARRO', 'MOTO')),
     estado         VARCHAR(15) NOT NULL DEFAULT 'LIBRE'
-                   CHECK (estado IN ('LIBRE', 'OCUPADA', 'MANTENIMIENTO'))
+                   CHECK (estado IN ('LIBRE', 'OCUPADA', 'MANTENIMIENTO')),
+    observacion    VARCHAR(200)
 );
 
 CREATE TABLE registro_parqueo (

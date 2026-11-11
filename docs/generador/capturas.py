@@ -31,6 +31,22 @@ PANTALLAS = [
     ("11_vehiculos", "/vehiculos/", None),
     ("12_vehiculo_nuevo", "/vehiculos/nuevo", None),
     ("13_celdas", "/celdas/", None),
+    # Iteración 2: gestión de usuarios y de celdas
+    ("14_usuarios", "/usuarios/", None),
+    ("15_usuario_nuevo", "/usuarios/nuevo", None),
+    ("16_usuario_error", "/usuarios/nuevo", {"nombre": "Lucía Torres", "username": "ltorres", "rol": "OPERADOR",
+                                             "password": "Turno2026", "confirmacion": "Turno2026"}),
+    ("17_usuario_editar", "/usuarios/2/editar", None),
+    ("18_mi_clave", "/usuarios/mi-clave", None),
+    ("19_clientes", "/clientes/", None),
+    ("20_cliente_nuevo", "/clientes/nuevo", None),
+    ("21_cliente_detalle", "/clientes/2", None),
+    ("22_cliente_vehiculo", "/vehiculos/nuevo?documento=43987654", None),
+    ("23_celdas", "/celdas/", None),
+    ("24_celda_nueva", "/celdas/nueva", {"modo": "lote", "prefijo": "A", "desde": "7", "hasta": "10", "tipo": "CARRO"}),
+    ("25_celda_detalle", "/celdas/1", None),
+    ("26_celda_mantenimiento", "/celdas/8", None),
+    ("27_celda_error", "/celdas/1/eliminar", {}),
 ]
 
 
@@ -63,8 +79,8 @@ def main():
         for nombre, ruta, formulario in PANTALLAS:
             if nombre != "01_login":
                 cliente.post("/login", data={"username": "admin", "password": "admin123"})
-            if formulario:
-                html = cliente.post(ruta, data=formulario).get_data(as_text=True)
+            if formulario is not None:
+                html = cliente.post(ruta, data=formulario, follow_redirects=True).get_data(as_text=True)
             else:
                 html = cliente.get(ruta, follow_redirects=True).get_data(as_text=True)
             html = html.replace('<link rel="stylesheet" href="/static/css/app.css">', f"<style>{css}</style>")
@@ -75,7 +91,7 @@ def main():
             png.unlink(missing_ok=True)
             try:
                 subprocess.run(
-                    [navegador, "--headless=new", "--disable-gpu", "--hide-scrollbars",
+                    [navegador, "--headless=new", "--disable-gpu", "--hide-scrollbars", "--virtual-time-budget=1500",
                      f"--user-data-dir={tmp / 'perfil'}", "--window-size=1280,760",
                      f"--screenshot={png}", pagina.as_uri()],
                     capture_output=True, timeout=30,

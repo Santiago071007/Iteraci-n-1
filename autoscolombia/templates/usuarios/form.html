@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block titulo %}{{ 'Editar usuario' if usuario else 'Nuevo usuario' }}{% endblock %}
+{% block subtitulo %}{{ usuario.username if usuario else 'Crear una cuenta para un empleado del parqueadero' }}{% endblock %}
+{% block contenido %}
+<div class="grid grid-2">
+  <form method="post" class="tarjeta" style="align-self:start">
+    <div class="tarjeta-cab"><h2>{{ icono('usuario') }} Datos del usuario</h2></div>
+    <div class="campo"><label for="nombre">Nombre completo</label><input id="nombre" name="nombre" maxlength="100" value="{{ d.nombre or '' }}" required autofocus></div>
+    {% if usuario %}
+    <div class="campo"><label>Usuario de ingreso</label><input value="{{ usuario.username }}" disabled><div class="ayuda">El nombre de usuario no se puede cambiar.</div></div>
+    {% else %}
+    <div class="campo"><label for="username">Usuario de ingreso</label><input id="username" name="username" maxlength="20" value="{{ d.username or '' }}" autocomplete="off" placeholder="p. ej. ltorres" required>
+      <div class="ayuda">4 a 20 caracteres: minúsculas, números, punto o guion bajo.</div></div>
+    {% endif %}
+    <div class="campo">
+      <div class="etiqueta-campo">Rol</div>
+      <div class="pills">
+        {% for clave, nombre in roles.items() %}
+        <label class="pill"><input type="radio" name="rol" value="{{ clave }}" {{ 'checked' if d.rol == clave }}><span>{{ icono('escudo' if clave == 'ADMIN' else 'usuario', 16) }} {{ nombre }}</span></label>
+        {% endfor %}
+      </div>
+      <div class="ayuda">El operador registra entradas, salidas y novedades. El administrador además gestiona clientes, vehículos, celdas y usuarios.</div>
+    </div>
+    {% if not usuario %}
+    <div class="grid grid-2" style="gap:14px">
+      <div class="campo"><label for="password">Contraseña</label><div class="con-icono">{{ icono('candado', 16) }}<input id="password" name="password" type="password" minlength="8" autocomplete="new-password" required></div></div>
+      <div class="campo"><label for="confirmacion">Confirmar contraseña</label><div class="con-icono">{{ icono('candado', 16) }}<input id="confirmacion" name="confirmacion" type="password" minlength="8" autocomplete="new-password" required></div></div>
+    </div>
+    <p class="ayuda">Mínimo 8 caracteres, con letras y números. Se guarda cifrada.</p>
+    {% endif %}
+    <div style="display:flex;gap:10px;margin-top:14px">
+      <button class="btn exito grande" style="flex:1">{{ icono('check') }} {{ 'Guardar cambios' if usuario else 'Crear usuario' }}</button>
+      <a class="btn secundario grande" href="{{ url_for('usuarios.listar') }}">Cancelar</a>
+    </div>
+  </form>
+  {% if usuario %}
+  <div class="apilado">
+    <form method="post" action="{{ url_for('usuarios.restablecer_clave', usuario_id=usuario.id) }}" class="tarjeta">
+      <div class="tarjeta-cab"><h2>{{ icono('llave') }} Restablecer contraseña</h2></div>
+      <p class="ayuda" style="margin-top:0">Úselo cuando el empleado olvide su contraseña. Entréguele la nueva de forma personal.</p>
+      <div class="grid grid-2" style="gap:14px">
+        <div class="campo"><label for="password">Nueva contraseña</label><input id="password" name="password" type="password" minlength="8" autocomplete="new-password" required></div>
+        <div class="campo"><label for="confirmacion">Confirmar</label><input id="confirmacion" name="confirmacion" type="password" minlength="8" autocomplete="new-password" required></div>
+      </div>
+      <button class="btn amarillo">{{ icono('llave', 16) }} Restablecer</button>
+    </form>
+    <div class="tarjeta">
+      <div class="tarjeta-cab"><h2>{{ icono('info') }} Estado</h2></div>
+      <p style="margin:0">{% if usuario.activo %}<span class="etq ok">Activo</span> Puede iniciar sesión.{% else %}<span class="etq mal">Inactivo</span> No puede iniciar sesión.{% endif %}</p>
+      {% if usuario.creado_en %}<p class="ayuda">Creado el {{ usuario.creado_en }}</p>{% endif %}
+    </div>
+  </div>
+  {% else %}
+  <div class="tarjeta" style="align-self:start">
+    <div class="tarjeta-cab"><h2>{{ icono('info') }} Reglas</h2></div>
+    <ul class="lista-reglas">
+      <li>El nombre de usuario es único y no se puede cambiar después.</li>
+      <li>Debe existir siempre al menos un administrador activo.</li>
+      <li>Nadie puede desactivarse ni quitarse el rol de administrador a sí mismo.</li>
+      <li>Los usuarios se desactivan, no se borran, para conservar el historial de lo que registraron.</li>
+    </ul>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
