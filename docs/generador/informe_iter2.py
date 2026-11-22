@@ -3,6 +3,7 @@
 Uso:  python docs/generador/informe_iter2.py [url-del-repositorio]
 Requiere haber generado antes las capturas (capturas.py) y los diagramas (staruml_exportar.py).
 """
+import platform
 import re
 import subprocess
 import sys
@@ -116,7 +117,8 @@ def resultados_pruebas():
         mapa.setdefault(nombre, []).append(cp)
 
     sys.path.insert(0, str(RAIZ))
-    suite = unittest.defaultTestLoader.discover(str(RAIZ / "tests"), top_level_dir=str(RAIZ))
+    # Solo las pruebas de las iteraciones 1 y 2 (las de pagos pertenecen al informe de la iteración 3).
+    suite = unittest.defaultTestLoader.loadTestsFromNames(["tests.test_parqueo", "tests.test_usuarios_celdas"])
 
     class Resultado(unittest.TextTestResult):
         def __init__(self, *a, **k):
@@ -209,6 +211,7 @@ def main():
         "{{CODIGO_USUARIO}}": metodo("autoscolombia/services/usuario_service.py", "cambiar_estado"),
         "{{CODIGO_CELDA}}": metodo("autoscolombia/services/celda_service.py", "eliminar"),
         "{{REPO}}": escape(repo),
+        "{{PYTHON}}": platform.python_version(),
     }
     for clave, valor in reemplazos.items():
         html = html.replace(clave, valor)

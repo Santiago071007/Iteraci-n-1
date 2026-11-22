@@ -59,7 +59,7 @@
   </div>
   <div class="datos">
     Presentado por:<br><b>David Santiago Cantor Torres</b><br>
-    <br>10 de noviembre de 2026
+    <br>22 de noviembre de 2026
   </div>
 </section>
 
@@ -83,21 +83,21 @@
 </ul>
 
 <h1>1. Introducción</h1>
-<p>El parqueadero <b>Autos Colombia</b> presta el servicio de estacionamiento por mensualidad. En la <b>iteración 1</b> se construyó la gestión de la entrada y salida de vehículos: el operador registra cada movimiento con la placa, el sistema valida la mensualidad, asigna y libera celdas y deja trazabilidad de quién, cuándo y dónde. Para que esa iteración funcionara de punta a punta se incluyó solo un soporte mínimo de usuarios y celdas: dos usuarios fijos, registro de vehículos con su propietario y la opción de poner una celda en mantenimiento.</p>
-<p>Este documento presenta la <b>iteración 2: gestión de usuarios y gestión de celdas</b>. En el sistema existen dos clases de usuarios, y ambas se gestionan en esta iteración:</p>
+<p>Este trabajo corresponde a la segunda entrega del proyecto <b>Autos Colombia</b>, un parqueadero que presta el servicio por mensualidad. En la <b>iteración 1</b> se hizo el registro de entradas y salidas: el operador escribe la placa, el sistema revisa que la mensualidad esté vigente, le asigna una celda al vehículo y la libera cuando sale. Para que esa primera entrega funcionara completa se dejó solo lo básico de usuarios y celdas: dos usuarios fijos, el registro de vehículos con su dueño y la opción de poner una celda en mantenimiento.</p>
+<p>En esta <b>iteración 2</b> se trabajó la <b>gestión de usuarios y la gestión de celdas</b>. En el sistema hay dos tipos de usuarios y los dos se gestionan en esta entrega:</p>
 <table>
   <tr><th style="width:24%">Tipo de usuario</th><th>Qué se gestiona</th></tr>
   <tr><td>Usuarios del sistema (empleados)</td><td>Administradores y operadores que inician sesión: creación, edición de datos y rol, activación y desactivación, restablecimiento y cambio de contraseña, con reglas que impiden dejar el sistema sin administrador.</td></tr>
   <tr><td>Clientes (usuarios del servicio)</td><td>Personas que pagan la mensualidad: registro, consulta, edición, activación y desactivación, y asociación de sus vehículos. Un cliente inactivo no puede ingresar vehículos.</td></tr>
 </table>
-<p>La <b>gestión de celdas</b> pasa de un simple cambio de estado a una administración completa: crear celdas individuales o por rangos, editar código y tipo, ponerlas en mantenimiento indicando el motivo, habilitarlas, eliminar las que nunca se usaron y consultar su historial de uso.</p>
+<p>En la <b>gestión de celdas</b>, antes solo se podía cambiar el estado de una celda. Ahora el administrador puede crear celdas una por una o varias al tiempo, editarlas, ponerlas en mantenimiento escribiendo el motivo, habilitarlas de nuevo, eliminar las que nunca se usaron y ver el historial de cada una.</p>
 <table>
   <tr><th style="width:18%">Iteración</th><th>Alcance</th><th style="width:20%">Estado</th></tr>
   <tr><td>Iteración 1</td><td>Entrada y salida de vehículos, asignación y liberación de celdas, novedades, vehículos dentro e historial.</td><td>Entregada</td></tr>
   <tr><td>Iteración 2</td><td>Gestión de usuarios del sistema, de clientes y de celdas.</td><td>Desarrollada (este documento)</td></tr>
   <tr><td>Iteración 3</td><td>Gestión de pagos de mensualidades.</td><td>Planeada</td></tr>
 </table>
-<p>La solución mantiene la arquitectura de la iteración 1 (aplicación web en <b>Python 3 con Flask</b> y <b>SQLite</b>, organizada en controladores, servicios, repositorios y modelo de dominio). Se agregaron tres servicios (<code>UsuarioService</code>, <code>ClienteService</code> y <code>CeldaService</code>), sus controladores y vistas, y la base de datos de la iteración 1 se actualiza automáticamente sin perder información. El documento recorre los entregables solicitados: requerimientos, casos de uso, historias de usuario, mockups, diagramas de secuencia de ambas iteraciones, diagrama de componentes, plan de pruebas y repositorio.</p>
+<p>Se siguió usando la misma arquitectura de la iteración 1: una aplicación web hecha en <b>Python con Flask</b> y base de datos <b>SQLite</b>, organizada en controladores, servicios y repositorios. Se agregaron tres servicios nuevos (<code>UsuarioService</code>, <code>ClienteService</code> y <code>CeldaService</code>) con sus controladores y pantallas, y la base de datos de la iteración 1 se actualiza sola sin perder la información. En este documento se presentan los entregables que pide la actividad: requerimientos, casos de uso, historias de usuario, mockups, diagramas de secuencia y de componentes de las iteraciones 1 y 2, el plan de pruebas y el enlace del repositorio. La gestión de pagos queda para la iteración 3.</p>
 
 <h1>2. Entregables de la iteración 2</h1>
 <h2>2.1 Requerimientos funcionales y no funcionales</h2>
@@ -168,7 +168,7 @@
 </table>
 
 <h2 style="break-before:page">2.2 Diagramas de casos de uso</h2>
-<p>Los diagramas se elaboraron en <b>StarUML</b> (archivo <code>docs/AutosColombia.mdj</code>, paquete <i>Autos Colombia - Iteración 2</i>). Como en la iteración 1, el Administrador hereda los casos de uso del Operador. Las relaciones «include» representan pasos obligatorios que el sistema siempre ejecuta (validar datos, cifrar la contraseña, verificar que la celda no esté ocupada) y las «extend» comportamientos opcionales (asociar un vehículo al registrar un cliente, crear celdas por rango).</p>
+<p>Los diagramas se hicieron en <b>StarUML</b> y están en el archivo <code>docs/AutosColombia.mdj</code>, dentro del paquete <i>Autos Colombia - Iteración 2</i>. Igual que en la iteración 1, el Administrador hereda del Operador, es decir, puede hacer todo lo que hace el operador y además sus propios casos de uso. Las relaciones «include» son pasos que el sistema hace siempre (validar los datos, cifrar la contraseña, revisar que la celda no esté ocupada) y las «extend» son pasos opcionales (asociar un vehículo al registrar un cliente o crear varias celdas por rango).</p>
 <figure data-fig="uc_usuarios"><img class="diagrama" src="../img/staruml/casos_de_uso_gestion_de_usuarios.png" style="width:100%"><figcaption>Figura 1. Diagrama de casos de uso de gestión de usuarios: usuarios del sistema y clientes (StarUML).</figcaption></figure>
 <figure data-fig="uc_celdas"><img class="diagrama" src="../img/staruml/casos_de_uso_gestion_de_celdas.png" style="width:100%"><figcaption>Figura 2. Diagrama de casos de uso de gestión de celdas (StarUML).</figcaption></figure>
 
@@ -190,7 +190,7 @@
 </table>
 
 <h2 style="break-before:page">2.3 Historias de usuario</h2>
-<p>Formato <i>Como [rol] quiero [funcionalidad] para [beneficio]</i>, con criterios de aceptación verificables y estimación en puntos de historia (Fibonacci). La numeración continúa la de la iteración 1 (HU01–HU09).</p>
+<p>Las historias de usuario se escribieron con el formato <i>Como [rol] quiero [funcionalidad] para [beneficio]</i>. Cada una tiene sus criterios de aceptación, la prioridad y una estimación en puntos de historia. Se numeraron desde la HU10 porque la iteración 1 terminó en la HU09.</p>
 
 <div class="hu"><div class="titulo">HU10 · Crear usuarios del sistema</div>
 <p>Como <b>administrador</b> quiero <b>crear cuentas para los empleados con su rol</b> para <b>que cada persona ingrese con su propio usuario y quede registrado lo que hace</b>.</p>
@@ -287,7 +287,7 @@
 <div class="meta">Prioridad: Media · Estimación: 2 pts · RF35 · UC21, UC22 · Mockups: figuras 12 y 14</div></div>
 
 <h2 style="break-before:page">2.4 Mockups de las historias de usuario</h2>
-<p>Los mockups se construyeron como <b>prototipo navegable en HTML y CSS</b> (herramienta alternativa a Figma permitida en la actividad), con la misma línea gráfica de la iteración 1: menú lateral, barra superior con el usuario y área de contenido. Las imágenes corresponden a las pantallas del prototipo con datos de ejemplo y están en <code>docs/img/mockups/</code> (archivos 14 a 27). El menú incorpora la sección <i>Gestión</i> (Clientes, Vehículos, Celdas) y la sección <i>Administración</i> (Usuarios del sistema), visible solo para el administrador; el ícono de llave en la barra superior abre “Cambiar mi contraseña”.</p>
+<p>Los mockups se hicieron como un <b>prototipo navegable en HTML y CSS</b> (la actividad permite usar otra herramienta diferente a Figma), con el mismo diseño de la iteración 1 para que todo el sistema se vea igual: menú a la izquierda, barra superior con el usuario y el contenido en el centro. Las imágenes son las pantallas del prototipo con datos de ejemplo y están guardadas en <code>docs/img/mockups/</code> (archivos 14 a 27). En el menú se agregaron la sección <i>Gestión</i> (Clientes, Vehículos, Celdas) y la sección <i>Administración</i> (Usuarios del sistema), que solo ve el administrador. El ícono de la llave en la barra superior sirve para cambiar la contraseña.</p>
 <figure data-fig="14_usuarios"><img src="../img/mockups/14_usuarios.png" style="width:100%"><figcaption>Figura 3. Usuarios del sistema: indicadores, búsqueda, edición y activación/desactivación (HU10, HU12).</figcaption></figure>
 <figure data-fig="15_usuario_nuevo"><img src="../img/mockups/15_usuario_nuevo.png" style="width:100%"><figcaption>Figura 4. Crear usuario del sistema con rol y contraseña (HU10).</figcaption></figure>
 <figure data-fig="16_usuario_error"><img src="../img/mockups/16_usuario_error.png" style="width:100%"><figcaption>Figura 5. Creación rechazada: el nombre de usuario ya está en uso (HU10).</figcaption></figure>
@@ -305,7 +305,7 @@
 
 <div class="horizontal">
 <h2 class="seccion-horizontal" style="margin-top:0">2.5 Diagramas de secuencia de las iteraciones 1 y 2</h2>
-<p>Los diagramas de secuencia se elaboraron en StarUML y muestran la colaboración entre las capas de la arquitectura: el actor envía una petición HTTP al <b>controlador</b> (Blueprint de Flask), este invoca al <b>servicio</b> que aplica las reglas de negocio y el servicio usa los <b>repositorios</b>, que ejecutan las consultas SQL sobre SQLite. Se usan fragmentos <b>alt</b> (alternativas), <b>opt</b> (opcional), <b>loop</b> (repetición) y <b>break</b> (interrupción por error). Las flechas punteadas son respuestas.</p>
+<p>Los diagramas de secuencia se hicieron en StarUML. En todos se ve el mismo recorrido: el usuario hace una petición al <b>controlador</b>, el controlador llama al <b>servicio</b>, que es donde están las reglas de negocio, y el servicio usa los <b>repositorios</b> para consultar o guardar en la base de datos. Se usaron los fragmentos <b>alt</b> (alternativas), <b>opt</b> (opcional), <b>loop</b> (repetición) y <b>break</b> (cuando hay un error); las flechas punteadas son las respuestas. Se hicieron cuatro diagramas de la iteración 1 y seis de la iteración 2.</p>
 <table>
   <tr><th style="width:12%">Diagrama</th><th style="width:12%">Iteración</th><th>Escenario</th><th style="width:24%">Casos de uso / historias</th></tr>
   <tr><td>SD01</td><td>1</td><td>Iniciar sesión (incluye la validación de usuario activo de la iteración 2)</td><td>UC01 · HU01</td></tr>
@@ -335,7 +335,7 @@
 <h2 style="break-before:page">2.6 Diagrama de componentes de las iteraciones 1 y 2</h2>
 <figure data-fig="componentes"><img class="diagrama" src="../img/staruml/diagrama_de_componentes.png"><figcaption>Figura 27. Diagrama de componentes (StarUML). En amarillo, los componentes nuevos o ampliados en la iteración 2.</figcaption></figure>
 </div>
-<p>El sistema se organiza en tres subsistemas que se comunican mediante interfaces. La capa de <b>presentación</b> expone la interfaz HTTP al navegador del equipo de portería; cada controlador depende de la interfaz que ofrece su servicio (<i>IAutenticacion, IParqueo, IVehiculos, IClientes, ICeldas, IUsuarios</i>), de modo que los controladores no conocen la base de datos. La <b>lógica de negocio</b> usa la interfaz <i>IRepositorios</i> de la capa de <b>acceso a datos</b>, que trabaja con el modelo de dominio y con la conexión SQLite.</p>
+<p>El diagrama muestra las tres capas del sistema. La capa de <b>presentación</b> tiene los controladores y las pantallas que ve el usuario en el navegador. Cada controlador usa la interfaz de su servicio (<i>IAutenticacion, IParqueo, IVehiculos, IClientes, ICeldas, IUsuarios</i>), que están en la capa de <b>lógica de negocio</b>; así los controladores no tienen que conocer la base de datos. Los servicios usan los repositorios de la capa de <b>acceso a datos</b>, que son los que se conectan con SQLite.</p>
 <table>
   <tr><th style="width:24%">Componente</th><th>Responsabilidad</th><th style="width:13%">Iteración</th></tr>
   <tr><td>AuthController / AuthService</td><td>Inicio y cierre de sesión, control de acceso por rol; rechaza usuarios inactivos.</td><td>1 (ajustado en 2)</td></tr>
@@ -353,23 +353,23 @@
   <tr><th style="width:24%">Proyecto</th><td>Autos Colombia · Sistema de gestión de parqueadero por mensualidad</td></tr>
   <tr><th>Iteración / versión</th><td>Iteración 2 · Gestión de usuarios y gestión de celdas</td></tr>
   <tr><th>Responsable</th><td>David Santiago Cantor Torres</td></tr>
-  <tr><th>Fecha de ejecución</th><td>10 de noviembre de 2026</td></tr>
+  <tr><th>Fecha de ejecución</th><td>22 de noviembre de 2026</td></tr>
 </table>
 <h3>1. Objetivo y alcance</h3>
-<p>Verificar que las funciones de gestión de usuarios del sistema, de clientes y de celdas cumplen los requerimientos RF16–RF35, las reglas RN05–RN10 y los requerimientos no funcionales de seguridad e integridad, y que la iteración 1 sigue funcionando. <b>Incluye:</b> reglas de negocio de los servicios, pantallas y rutas web, control de acceso por rol y migración de datos. <b>No incluye:</b> pagos (iteración 3), pruebas de carga ni compatibilidad con navegadores antiguos.</p>
+<p>El objetivo es comprobar que la gestión de usuarios del sistema, de clientes y de celdas cumple los requerimientos RF16 a RF35 y las reglas de negocio RN05 a RN10, y que lo hecho en la iteración 1 sigue funcionando. <b>Se prueba:</b> las reglas de negocio de los servicios, las pantallas, los permisos por rol y la actualización de la base de datos de la iteración 1. <b>No se prueba:</b> los pagos (son de la iteración 3), pruebas de carga ni navegadores antiguos.</p>
 <h3>2. Estrategia</h3>
 <table>
   <tr><th style="width:24%">Tipo de prueba</th><th>Cómo se realiza</th></tr>
-  <tr><td>Unitarias de servicio</td><td>Cada regla de negocio se prueba sobre <code>UsuarioService</code>, <code>ClienteService</code> y <code>CeldaService</code> con una base de datos SQLite en memoria (<code>unittest</code>).</td></tr>
-  <tr><td>Integración web</td><td>Con el cliente de pruebas de Flask se recorren las pantallas y se envían formularios como administrador y como operador.</td></tr>
-  <tr><td>Seguridad</td><td>Acceso por URL a funciones administrativas con un operador; inicio de sesión de un usuario desactivado.</td></tr>
-  <tr><td>Regresión</td><td>Se ejecutan de nuevo las 15 pruebas de la iteración 1 (entradas, salidas, novedades).</td></tr>
-  <tr><td>Exploratoria</td><td>Revisión visual de las pantallas en Microsoft Edge (capturas de la sección 2.4).</td></tr>
+  <tr><td>Unitarias de servicio</td><td>Cada regla de negocio se prueba directamente en <code>UsuarioService</code>, <code>ClienteService</code> y <code>CeldaService</code> usando <code>unittest</code> y una base de datos en memoria.</td></tr>
+  <tr><td>Integración web</td><td>Con el cliente de pruebas de Flask se abren las pantallas y se envían los formularios como lo haría un administrador y un operador.</td></tr>
+  <tr><td>Seguridad</td><td>Se intenta entrar a las opciones del administrador con un usuario operador y se intenta iniciar sesión con un usuario desactivado.</td></tr>
+  <tr><td>Regresión</td><td>Se vuelven a ejecutar las 15 pruebas de la iteración 1 (entradas, salidas y novedades) para confirmar que nada se dañó.</td></tr>
+  <tr><td>Exploratoria</td><td>Se revisaron las pantallas una por una en Microsoft Edge (son las capturas de la sección 2.4).</td></tr>
 </table>
 <h3>3. Ambiente y datos de prueba</h3>
-<p>Windows 11, Python 3.13, Flask 3.1.2, SQLite 3, Microsoft Edge. Datos de ejemplo de <code>database/seed.sql</code>: 5 clientes, 5 vehículos (QRS234 con mensualidad vencida), 12 celdas (A-08 en mantenimiento) y 4 usuarios: <code>admin</code>, <code>operador</code>, <code>ltorres</code> (operadora) y <code>mdiaz</code> (inactivo).</p>
+<p>Windows 11, Python 3.11.2, Flask 3.1.2, SQLite 3, Microsoft Edge. Datos de ejemplo de <code>database/seed.sql</code>: 5 clientes, 5 vehículos (QRS234 con mensualidad vencida), 12 celdas (A-08 en mantenimiento) y 4 usuarios: <code>admin</code>, <code>operador</code>, <code>ltorres</code> (operadora) y <code>mdiaz</code> (inactivo).</p>
 <h3>4. Criterios</h3>
-<p><b>Entrada:</b> código integrado y base de datos de ejemplo cargada. <b>Aceptación:</b> el 100 % de los casos de prioridad alta aprobados, ninguna falla en la regresión de la iteración 1 y ningún defecto abierto de severidad alta. <b>Suspensión:</b> si la aplicación no inicia o la base de datos no se puede migrar.</p>
+<p><b>Para empezar las pruebas:</b> la aplicación debe iniciar y tener cargados los datos de ejemplo. <b>Para aprobar la iteración:</b> todos los casos de prioridad alta deben pasar, no puede fallar ninguna prueba de la iteración 1 y no puede quedar ningún defecto grave sin corregir. <b>Las pruebas se suspenden</b> si la aplicación no inicia o no se puede actualizar la base de datos.</p>
 <h3>5. Casos de prueba y resultados</h3>
 <table class="tabla-cp">
   <tr><th style="width:7%">ID</th><th style="width:10%">HU / requisito</th><th style="width:17%">Caso y precondición</th><th style="width:20%">Datos y pasos</th><th style="width:21%">Resultado esperado</th><th style="width:14%">Resultado obtenido</th><th style="width:11%">Estado</th></tr>
@@ -406,13 +406,14 @@
 <h3>7. Defectos encontrados</h3>
 <table>
   <tr><th style="width:9%">ID</th><th>Descripción</th><th style="width:13%">Severidad</th><th style="width:22%">Estado</th></tr>
-  <tr><td>DEF-01</td><td>La prueba de regresión <code>test_salida_libera_celda_y_calcula_permanencia</code> usaba una fecha fija (20/10/2026) mientras las mensualidades de ejemplo son relativas a la fecha actual; al pasar los días la entrada se rechazaba por mensualidad vencida.</td><td>Media (prueba)</td><td>Corregido: la prueba usa la fecha del día.</td></tr>
+  <tr><td>DEF-01</td><td>Una prueba de la iteración 1 (<code>test_salida_libera_celda_y_calcula_permanencia</code>) empezó a fallar porque usaba una fecha fija (20/10/2026). Como las mensualidades de ejemplo dependen de la fecha actual, con el paso de los días el sistema rechazaba la entrada por mensualidad vencida.</td><td>Media (prueba)</td><td>Corregido: la prueba usa la fecha del día.</td></tr>
 </table>
-<p>Se verificó además la migración (RNF15): una base de datos creada con el esquema de la iteración 1 se abrió con la versión nueva; las columnas <code>cliente.activo</code>, <code>celda.observacion</code> y <code>usuario.creado_en</code> se agregaron automáticamente, todas las pantallas respondieron correctamente y la desactivación de un cliente se guardó sin perder datos.</p>
+<p>También se probó la actualización de la base de datos (RNF15): se abrió con la versión nueva una base de datos creada en la iteración 1. Las columnas <code>cliente.activo</code>, <code>celda.observacion</code> y <code>usuario.creado_en</code> se agregaron solas, todas las pantallas abrieron bien y no se perdió ningún dato.</p>
 
 <h2 style="break-before:page">2.8 Código fuente y repositorio</h2>
-<p><b>Repositorio GitHub:</b> https://github.com/Santiago071007/Iteraci-n-1</p>
-<p>El repositorio contiene el código de las dos iteraciones, la base de datos de ejemplo, las pruebas, el proyecto StarUML (<code>docs/AutosColombia.mdj</code>), las imágenes de los diagramas y mockups, y los generadores de esta documentación.</p>
+<p><b>URL del repositorio en GitHub:</b> <a href="https://github.com/Santiago071007/Iteraci-n-1">https://github.com/Santiago071007/Iteraci-n-1</a></p>
+<p>El código de esta entrega quedó en la rama <code>main</code>, en el commit «Iteración 2: gestión de usuarios y gestión de celdas»: <a href="https://github.com/Santiago071007/Iteraci-n-1/commits/main">https://github.com/Santiago071007/Iteraci-n-1/commits/main</a></p>
+<p>En el repositorio está el código de las iteraciones 1 y 2, la base de datos de ejemplo, las pruebas, el proyecto de StarUML (<code>docs/AutosColombia.mdj</code>), las imágenes de los diagramas y de los mockups, y este informe.</p>
 <h3>Cambios de la iteración 2</h3>
 <table>
   <tr><th style="width:34%">Archivo</th><th>Cambio</th></tr>
@@ -459,11 +460,11 @@ Usuarios de prueba:  admin / admin123   ·   operador / operador123   ·   ltorr
 
 <h1>3. Conclusiones</h1>
 <ul>
-  <li><p>La iteración 2 completa la administración del parqueadero: el administrador ya no depende de cambios en la base de datos para crear empleados, registrar clientes o ampliar el número de celdas, y el operador tiene acceso de consulta a la información que necesita en portería.</p></li>
-  <li><p>Separar los usuarios del sistema (quién opera) de los clientes (quién recibe el servicio) aclaró las reglas de cada uno: los empleados se controlan con roles y contraseñas, y los clientes con su estado, que repercute directamente en la entrada de vehículos construida en la iteración 1.</p></li>
-  <li><p>Desactivar en lugar de borrar, y eliminar celdas solo cuando no tienen historial, preserva la trazabilidad lograda en la iteración 1: cada entrada, salida y novedad sigue apuntando a un usuario, un cliente y una celda existentes.</p></li>
-  <li><p>Los diagramas de secuencia de ambas iteraciones confirmaron que la arquitectura en capas se mantuvo: todos los escenarios siguen el mismo recorrido controlador → servicio → repositorio, y el diagrama de componentes muestra que la iteración 2 agregó componentes sin modificar las interfaces existentes.</p></li>
-  <li><p>El plan de pruebas, automatizado con 37 pruebas, permitió detectar y corregir una prueba de la iteración 1 dependiente de la fecha y verificar que las nuevas reglas no rompieron la operación existente. La base queda lista para la iteración 3 (pagos), que podrá apoyarse en los clientes y mensualidades ya gestionados.</p></li>
+  <li><p>Con la iteración 2 el administrador ya puede manejar el parqueadero desde el sistema: crear los usuarios de los empleados, registrar clientes y agregar celdas, sin tener que modificar la base de datos a mano. El operador puede consultar la información que necesita en la portería.</p></li>
+  <li><p>Fue importante separar los dos tipos de usuarios. Los empleados son los que usan el sistema y se controlan con roles y contraseñas; los clientes son los que reciben el servicio y se controlan con su estado, que afecta directamente la entrada de vehículos hecha en la iteración 1.</p></li>
+  <li><p>Se aprendió que es mejor desactivar que borrar. Si se eliminara un usuario, un cliente o una celda que ya se usó, se perdería el historial de entradas, salidas y novedades. Por eso los usuarios y clientes se desactivan y las celdas solo se eliminan cuando nunca se han usado.</p></li>
+  <li><p>Al hacer los diagramas de secuencia de las dos iteraciones se comprobó que todos los procesos siguen el mismo recorrido: controlador, servicio y repositorio. El diagrama de componentes muestra que en esta iteración solo se agregaron componentes nuevos y no hubo que cambiar los que ya estaban.</p></li>
+  <li><p>Las pruebas automatizadas (37 en total) sirvieron para encontrar y corregir una prueba de la iteración 1 que dependía de la fecha, y para confirmar que las reglas nuevas no dañaron lo que ya funcionaba. El sistema queda listo para la iteración 3, que es la gestión de pagos de las mensualidades.</p></li>
 </ul>
 
 <h1 style="break-before:auto;margin-top:30px">4. Referencias</h1>
