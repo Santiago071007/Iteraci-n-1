@@ -25,3 +25,12 @@ class MensualidadRepository:
             (vehiculo_id, fecha_inicio, fecha_fin, valor),
         )
         return cursor.lastrowid
+
+    def ultima(self, vehiculo_id: int) -> Optional[Mensualidad]:
+        fila = self.db.execute(
+            "SELECT * FROM mensualidad WHERE vehiculo_id = ? ORDER BY fecha_fin DESC LIMIT 1", (vehiculo_id,)
+        ).fetchone()
+        return Mensualidad(**fila) if fila else None
+
+    def eliminar(self, mensualidad_id: int):
+        self.db.execute("DELETE FROM mensualidad WHERE id = ?", (mensualidad_id,))

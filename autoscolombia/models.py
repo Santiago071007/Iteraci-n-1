@@ -102,3 +102,33 @@ class Novedad:
     fecha: str
     tipo: str
     descripcion: str
+
+
+@dataclass
+class Tarifa:
+    tipo_vehiculo: str
+    valor_mensual: float
+    actualizado_en: Optional[str] = None
+    usuario_id: Optional[int] = None
+
+
+@dataclass
+class Pago:
+    id: int
+    mensualidad_id: Optional[int]
+    vehiculo_id: int
+    fecha: str
+    meses: int
+    periodo_inicio: str
+    periodo_fin: str
+    valor: float
+    medio: str
+    referencia: Optional[str]
+    usuario_id: int
+    estado: str = "VIGENTE"
+    anulado_en: Optional[str] = None
+    anulado_por: Optional[int] = None
+    motivo_anulacion: Optional[str] = None
+
+    def esta_vigente(self) -> bool:
+        return self.estado == "VIGENTE"

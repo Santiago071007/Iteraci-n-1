@@ -378,3 +378,33 @@ fieldset[disabled] input { background: #f8fafc; }
   .ticket { box-shadow: none; max-width: 420px; }
   .grid { display: block; }
 }
+
+/* Iteración 3 · Gestión de pagos */
+.kpi .valor.dinero { font-size: 23px; }
+.total-pago { margin-top: 18px; background: var(--verde-claro); border: 1px solid var(--verde-borde); border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.total-pago b { font-size: 26px; color: var(--verde); letter-spacing: -.5px; }
+.total-pago small { color: var(--suave); display: block; }
+.total-pago.anulado { background: var(--rojo-claro); border-color: var(--rojo-borde); }
+.total-pago.anulado b { color: var(--rojo); text-decoration: line-through; }
+.ticket-cab.pago { background: linear-gradient(135deg, #0d6b4d, var(--verde)); }
+.ticket-cab.anulado { background: linear-gradient(135deg, #8f2620, var(--rojo)); }
+.ticket-cab .numero { margin-left: auto; text-align: right; font-size: 12px; opacity: .9; }
+.ticket-cab .numero b { display: block; font-size: 22px; }
+tr.anulado td { color: var(--muy-suave); }
+tr.anulado td.valor { text-decoration: line-through; }
+td.valor, th.valor { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+tfoot td { font-weight: 700; background: #f8fafc; border-top: 2px solid var(--borde); }
+.resumen-cliente { display: flex; gap: 14px; align-items: center; background: var(--azul-100); border-radius: 12px; padding: 14px 16px; margin-bottom: 16px; }
+.resumen-cliente .datos-veh { flex: 1; min-width: 0; }
+.resumen-cliente .datos-veh b { display: block; }
+.resumen-cliente .datos-veh span { color: var(--suave); font-size: 13px; }
+.barra-medio { margin-bottom: 14px; }
+.barra-medio .fila { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 5px; }
+.barra-medio .fila em { font-style: normal; color: var(--suave); }
+.barra-medio .pista i { background: var(--azul-600); }
+.tarifa-valor { font-size: 30px; font-weight: 750; letter-spacing: -.5px; }
+.tarifa-valor small { font-size: 14px; color: var(--suave); font-weight: 500; }
+@media print {
+  .total-pago, .ticket-cab { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+td.nw { white-space: nowrap; }

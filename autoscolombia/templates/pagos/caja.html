@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% set admin = g.usuario.es_admin() %}
+{% block titulo %}Cierre de caja{% endblock %}
+{% block subtitulo %}{{ 'Recaudo de todos los cajeros' if admin else 'Pagos que usted recibió: ' ~ g.usuario.nombre }}{% endblock %}
+{% block contenido %}
+<div class="tarjeta no-imprimir">
+  <form class="filtros" method="get">
+    <div class="campo"><label for="desde">{{ 'Desde' if admin else 'Día' }}</label><input id="desde" name="desde" type="date" value="{{ desde }}" max="{{ hoy }}"></div>
+    {% if admin %}<div class="campo"><label for="hasta">Hasta</label><input id="hasta" name="hasta" type="date" value="{{ hasta }}" max="{{ hoy }}"></div>{% endif %}
+    <button class="btn">Consultar</button>
+    <a class="btn secundario" href="{{ url_for('pagos.caja') }}">Hoy</a>
+    <button class="btn secundario" type="button" onclick="window.print()" style="margin-left:auto">{{ icono('imprimir', 16) }} Imprimir cierre</button>
+  </form>
+</div>
+<div class="grid grid-4" style="margin-bottom:22px">
+  <div class="kpi"><div class="kpi-icono verde">{{ icono('pago', 24) }}</div>
+    <div><div class="valor dinero">{{ total|pesos }}</div><div class="etiqueta">Total recaudado</div></div></div>
+  <div class="kpi"><div class="kpi-icono amarillo">{{ icono('caja', 24) }}</div>
+    <div><div class="valor dinero">{{ efectivo|pesos }}</div><div class="etiqueta">Efectivo a entregar</div></div></div>
+  <div class="kpi"><div class="kpi-icono azul">{{ icono('recibo', 24) }}</div>
+    <div><div class="valor">{{ cantidad }}</div><div class="etiqueta">Pagos recibidos</div></div></div>
+  <div class="kpi"><div class="kpi-icono rojo">{{ icono('anular', 24) }}</div>
+    <div><div class="valor">{{ anulados|length }}</div><div class="etiqueta">Recibos anulados</div></div></div>
+</div>
+<div class="grid grid-5-7">
+  <div class="apilado" style="align-self:start">
+    <div class="tarjeta">
+      <div class="tarjeta-cab"><h2>{{ icono('pago') }} Por medio de pago</h2></div>
+      {% for m in medios_totales %}
+      <div class="barra-medio">
+        <div class="fila"><span>{{ m.nombre.split(' (')[0] }} <em>· {{ m.cantidad }}</em></span><b>{{ m.total|pesos }}</b></div>
+        <div class="pista"><i style="width:{{ (m.total / total * 100) if total else 0 }}%"></i></div>
+      </div>
+      {% endfor %}
+      <p class="ayuda">{{ desde }}{% if hasta != desde %} a {{ hasta }}{% endif %}. Los recibos anulados no suman.</p>
+    </div>
+    {% if admin %}
+    <div class="tarjeta">
+      <div class="tarjeta-cab"><h2>{{ icono('usuario') }} Por cajero</h2></div>
+      <div class="tabla-envoltura">
+      <table>
+        <thead><tr><th>Cajero</th><th>Pagos</th><th class="valor">Efectivo</th><th class="valor">Total</th></tr></thead>
+        <tbody>
+        {% for c in cajeros %}
+        <tr><td>{{ c.cajero }}</td><td>{{ c.cantidad }}</td><td class="valor">{{ c.efectivo|pesos }}</td><td class="valor"><b>{{ c.total|pesos }}</b></td></tr>
+        {% else %}
+        <tr><td colspan="4" class="vacio">Sin pagos en el período.</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  <div class="tarjeta" style="align-self:start">
+    <div class="tarjeta-cab"><h2>{{ icono('lista') }} Detalle de recibos</h2></div>
+    <div class="tabla-envoltura">
+    <table>
+      <thead><tr><th>Recibo</th><th>Hora</th><th>Placa</th><th>Medio</th>{% if admin %}<th>Recibió</th>{% endif %}<th class="valor">Valor</th></tr></thead>
+      <tbody>
+      {% for p in pagos %}
+      <tr {% if p.estado == 'ANULADO' %}class="anulado"{% endif %}>
+        <td><a href="{{ url_for('pagos.recibo', pago_id=p.id) }}">N.º {{ '%05d'|format(p.id) }}</a>{% if p.estado == 'ANULADO' %} <span class="etq mal">Anulado</span>{% endif %}</td>
+        <td>{{ p.fecha[11:16] }}{% if hasta != desde %}<span class="secundario">{{ p.fecha[:10] }}</span>{% endif %}</td>
+        <td><span class="placa mini">{{ p.placa }}</span></td>
+        <td>{{ medios[p.medio].split(' ')[0] }}{% if p.referencia %}<span class="secundario">{{ p.referencia }}</span>{% endif %}</td>
+        {% if admin %}<td>{{ p.cajero }}</td>{% endif %}
+        <td class="valor">{{ p.valor|pesos }}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="{{ 6 if admin else 5 }}" class="vacio">{{ icono('caja', 28) }}No se recibieron pagos en el período.</td></tr>
+      {% endfor %}
+      </tbody>
+      {% if pagos %}<tfoot><tr><td colspan="{{ 5 if admin else 4 }}">Total recaudado</td><td class="valor">{{ total|pesos }}</td></tr></tfoot>{% endif %}
+    </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

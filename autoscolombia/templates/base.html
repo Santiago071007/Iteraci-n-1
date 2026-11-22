@@ -37,11 +37,17 @@
     <a href="{{ url_for('clientes.listar') }}" class="{{ 'activo' if ep.startswith('clientes.') }}">{{ icono('clientes') }} Clientes</a>
     <a href="{{ url_for('vehiculos.listar') }}" class="{{ 'activo' if ep.startswith('vehiculos.') }}">{{ icono('vehiculos') }} Vehículos</a>
     <a href="{{ url_for('celdas.listar') }}" class="{{ 'activo' if ep.startswith('celdas.') }}">{{ icono('celdas') }} Celdas</a>
+    <div class="seccion">Pagos</div>
+    <a href="{{ url_for('pagos.nuevo') }}" class="{{ 'activo' if ep == 'pagos.nuevo' }}">{{ icono('pago') }} Registrar pago <kbd>Alt P</kbd></a>
+    <a href="{{ url_for('pagos.cartera') }}" class="{{ 'activo' if ep == 'pagos.cartera' }}">{{ icono('calendario') }} Mensualidades por cobrar</a>
+    <a href="{{ url_for('pagos.listar') }}" class="{{ 'activo' if ep in ('pagos.listar', 'pagos.recibo') }}">{{ icono('recibo') }} Historial de pagos</a>
+    <a href="{{ url_for('pagos.caja') }}" class="{{ 'activo' if ep == 'pagos.caja' }}">{{ icono('caja') }} Cierre de caja</a>
     {% if g.usuario.es_admin() %}
     <div class="seccion">Administración</div>
+    <a href="{{ url_for('pagos.tarifas') }}" class="{{ 'activo' if ep == 'pagos.tarifas' }}">{{ icono('etiqueta') }} Tarifas</a>
     <a href="{{ url_for('usuarios.listar') }}" class="{{ 'activo' if ep.startswith('usuarios.') and ep != 'usuarios.mi_clave' }}">{{ icono('escudo') }} Usuarios del sistema</a>
     {% endif %}
-    <div class="menu-pie">Iteración 2 · Usuarios y celdas</div>
+    <div class="menu-pie">Iteración 3 · Gestión de pagos</div>
   </nav>
   <main class="contenido">
     <header class="barra">

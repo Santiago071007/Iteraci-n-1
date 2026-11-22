@@ -3,7 +3,9 @@ from datetime import date
 from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
 
 from ..db import get_db
+from ..repositories import PagoRepository
 from ..services import ClienteService, ReglaNegocioError
+from ..services.pago_service import MEDIOS_PAGO
 from .auth_controller import admin_requerido, login_requerido
 
 bp = Blueprint("clientes", __name__, url_prefix="/clientes")
@@ -38,6 +40,8 @@ def detalle(cliente_id):
         "clientes/detalle.html",
         c=cliente,
         vehiculos=servicio.clientes.vehiculos(cliente_id),
+        pagos=PagoRepository(get_db()).por_cliente(cliente_id),
+        medios=MEDIOS_PAGO,
         hoy=date.today().isoformat(),
     )
 

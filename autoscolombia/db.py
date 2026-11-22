@@ -46,8 +46,20 @@ def inicializar(conexion: sqlite3.Connection, con_datos: bool = True):
                 ("Mario Díaz Salcedo", "mdiaz", _hash_semilla("Turno2026"), "OPERADOR", 0),
             ],
         )
+        conexion.execute(PAGOS_DE_EJEMPLO)
     conexion.commit()
 
+
+# Cada mensualidad de ejemplo queda con su recibo de pago (registrado por el operador).
+PAGOS_DE_EJEMPLO = """
+    INSERT INTO pago (mensualidad_id, vehiculo_id, fecha, meses, periodo_inicio, periodo_fin, valor, medio, referencia, usuario_id)
+    SELECT m.id, m.vehiculo_id, printf('%s %02d:%02d:00', m.fecha_inicio, 7 + m.id, 10 + m.id * 7), 1,
+           m.fecha_inicio, m.fecha_fin, m.valor,
+           CASE m.id % 3 WHEN 1 THEN 'EFECTIVO' WHEN 2 THEN 'TRANSFERENCIA' ELSE 'BILLETERA' END,
+           CASE m.id % 3 WHEN 1 THEN NULL WHEN 2 THEN 'TRF' || (48210 + m.id * 137) ELSE 'NEQ' || (73015 + m.id * 211) END,
+           2
+    FROM mensualidad m ORDER BY m.fecha_inicio
+"""
 
 # Columnas agregadas en la iteración 2: (tabla, columna, definición).
 COLUMNAS_ITERACION_2 = [
@@ -57,12 +69,21 @@ COLUMNAS_ITERACION_2 = [
 ]
 
 
+def ddl_iteracion_3() -> str:
+    """Bloque de pagos de schema.sql, apto para ejecutarse sobre una base de datos existente."""
+    bloque = (CARPETA_BD / "schema.sql").read_text(encoding="utf-8").split("-- [iteracion-3]", 1)[1]
+    for sentencia in ("CREATE TABLE", "CREATE UNIQUE INDEX", "CREATE INDEX"):
+        bloque = bloque.replace(sentencia + " ", sentencia + " IF NOT EXISTS ")
+    return "--" + bloque
+
+
 def migrar(conexion: sqlite3.Connection):
-    """Actualiza una base de datos creada en la iteración 1 sin perder sus datos."""
+    """Actualiza una base de datos creada en las iteraciones 1 o 2 sin perder sus datos."""
     for tabla, columna, definicion in COLUMNAS_ITERACION_2:
         columnas = {fila["name"] for fila in conexion.execute(f"PRAGMA table_info({tabla})")}
         if columna not in columnas:
             conexion.execute(f"ALTER TABLE {tabla} ADD COLUMN {columna} {definicion}")
+    conexion.executescript(ddl_iteracion_3())
     conexion.commit()
 
 

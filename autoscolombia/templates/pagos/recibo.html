@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block titulo %}Recibo N.º {{ '%05d'|format(p.id) }}{% endblock %}
+{% block subtitulo %}{{ 'Recibo de pago anulado' if p.estado == 'ANULADO' else 'Recibo de pago de mensualidad' }}{% endblock %}
+{% block contenido %}
+{% set anulado = p.estado == 'ANULADO' %}
+<div class="grid grid-5-7">
+  <div class="ticket">
+    <div class="ticket-cab {{ 'anulado' if anulado else 'pago' }}">
+      <div class="ico-grande">{{ icono('anular' if anulado else 'recibo', 24) }}</div>
+      <div><h2>{{ 'Recibo anulado' if anulado else 'Recibo de pago' }}</h2><small>Autos Colombia · Parqueadero por mensualidad</small></div>
+      <div class="numero">Recibo N.º<b>{{ '%05d'|format(p.id) }}</b></div>
+    </div>
+    <div class="ticket-cuerpo">
+      <div class="ticket-placa">
+        <span class="placa grande">{{ p.placa }}</span>
+        <div class="secundario">{{ p.tipo|capitalize }} {{ p.marca or '' }} {{ p.color or '' }}</div>
+      </div>
+      <dl>
+        <dt>Cliente</dt><dd>{{ p.cliente }}<br><small style="color:var(--suave);font-weight:400">CC {{ p.documento }}</small></dd>
+        <dt>Fecha del pago</dt><dd>{{ p.fecha }}</dd>
+        <dt>Concepto</dt><dd>Mensualidad · {{ p.meses }} {{ 'mes' if p.meses == 1 else 'meses' }}</dd>
+        <dt>Período pagado</dt><dd>{{ p.periodo_inicio }} a {{ p.periodo_fin }}</dd>
+        <dt>Medio de pago</dt><dd>{{ medios[p.medio] }}{% if p.referencia %}<br><small style="color:var(--suave);font-weight:400">Ref. {{ p.referencia }}</small>{% endif %}</dd>
+        <dt>Recibido por</dt><dd>{{ p.cajero }}</dd>
+        <dt>Estado</dt><dd>{% if anulado %}<span class="etq mal">Anulado</span>{% else %}<span class="etq ok">Pagado</span>{% endif %}</dd>
+      </dl>
+      <div class="total-pago {{ 'anulado' if anulado }}">
+        <div><small>{{ 'Valor anulado' if anulado else 'Total pagado' }}</small>Pesos colombianos (COP)</div>
+        <b>{{ p.valor|pesos }}</b>
+      </div>
+      {% if anulado %}
+      <div class="nota" style="margin-top:14px">{{ icono('alerta', 18) }}<div><b>Anulado el {{ p.anulado_en }} por {{ p.anulador }}.</b><br>Motivo: {{ p.motivo_anulacion }}</div></div>
+      {% endif %}
+    </div>
+    <div class="ticket-pie no-imprimir">
+      <button class="btn" type="button" onclick="window.print()">{{ icono('imprimir', 16) }} Imprimir recibo</button>
+      <a class="btn secundario" href="{{ url_for('pagos.nuevo') }}">{{ icono('mas', 16) }} Otro pago</a>
+      <a class="btn secundario" href="{{ url_for('pagos.listar') }}">Ver historial</a>
+    </div>
+  </div>
+  <div class="apilado no-imprimir" style="align-self:start">
+    <div class="tarjeta">
+      <div class="tarjeta-cab"><h2>{{ icono('clientes') }} Cliente</h2>
+        <div class="acciones"><a href="{{ url_for('clientes.detalle', cliente_id=p.cliente_id) }}">Ver estado de cuenta</a></div></div>
+      <p style="margin:0">{% if anulado %}Este recibo no tiene validez. El período {{ p.periodo_inicio }} a {{ p.periodo_fin }} se retiró de la mensualidad del vehículo.
+        {% else %}El vehículo <span class="placa mini">{{ p.placa }}</span> quedó con mensualidad paga hasta el <b>{{ p.periodo_fin }}</b>.{% endif %}</p>
+    </div>
+    {% if g.usuario.es_admin() and not anulado %}
+    <form method="post" action="{{ url_for('pagos.anular', pago_id=p.id) }}" class="tarjeta zona-peligro"
+          data-confirmar="¿Anular el recibo N.º {{ p.id }} por {{ p.valor|pesos }}? El período pagado se retirará de la mensualidad.">
+      <div class="tarjeta-cab"><h2>{{ icono('anular') }} Anular recibo</h2></div>
+      <p class="ayuda" style="margin-top:0">Use la anulación para corregir un pago mal registrado. El recibo no se borra: queda marcado como anulado con su motivo y deja de sumar en el recaudo.</p>
+      <div class="campo"><label for="motivo">Motivo de la anulación</label>
+        <textarea id="motivo" name="motivo" rows="2" minlength="10" maxlength="200" required placeholder="Ej.: se registró el pago a la placa equivocada"></textarea></div>
+      <button class="btn peligro">{{ icono('anular', 16) }} Anular recibo</button>
+    </form>
+    {% elif not anulado %}
+    <div class="nota">{{ icono('info', 18) }}<div>Si este pago quedó mal registrado, solicite la anulación al administrador.</div></div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

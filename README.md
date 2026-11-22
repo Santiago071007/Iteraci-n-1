@@ -6,6 +6,8 @@ Sistema web para gestionar la operación diaria del parqueadero **Autos Colombia
 
 **Iteración 2 – Gestión de usuarios y gestión de celdas:** usuarios del sistema (crear, editar rol, activar/desactivar, restablecer y cambiar contraseña, siempre con al menos un administrador activo), clientes (registrar, editar, activar/desactivar, asociar vehículos; un cliente inactivo no ingresa) y celdas (crear una o por rango, editar, mantenimiento con motivo, habilitar, eliminar si no tiene historial, detalle con historial de uso).
 
+**Iteración 3 – Gestión de pagos:** registro de pagos de mensualidad (1 a 12 meses; efectivo, transferencia, tarjeta o billetera con referencia única), cálculo automático del período y el valor con la tarifa vigente, recibo numerado imprimible, historial con filtros, mensualidades por cobrar, estado de cuenta del cliente, cierre de caja por cajero, anulación de pagos con motivo (solo administrador) y gestión de tarifas.
+
 ## Tecnologías
 
 Python 3.10+ · Flask 3.1 · Jinja2 · SQLite 3 · HTML5/CSS3 · unittest
@@ -62,6 +64,7 @@ docs/             informe PDF, diagramas (SVG/PNG) y mockups
 
 ## Documentación
 
+- Informe iteración 3: [`docs/Informe_Iteracion3_AutosColombia.pdf`](docs/Informe_Iteracion3_AutosColombia.pdf) – gestión de pagos: requerimientos, casos de uso, historias de usuario, mockups (28–39), diagramas de secuencia SD01–SD15 y de componentes de las tres iteraciones, y plan de pruebas
 - Informe iteración 2: [`docs/Informe_Iteracion2_AutosColombia.pdf`](docs/Informe_Iteracion2_AutosColombia.pdf) – requerimientos, casos de uso, historias de usuario, mockups, diagramas de secuencia (iteraciones 1 y 2), diagrama de componentes y plan de pruebas
 - Informe iteración 1: [`docs/Informe_Iteracion1_AutosColombia.pdf`](docs/Informe_Iteracion1_AutosColombia.pdf)
 - Proyecto StarUML: [`docs/AutosColombia.mdj`](docs/AutosColombia.mdj) con los modelos de ambas iteraciones; imágenes exportadas en [`docs/img/staruml`](docs/img/staruml)
@@ -74,6 +77,10 @@ docs/             informe PDF, diagramas (SVG/PNG) y mockups
 python docs/generador/capturas.py                      # mockups (capturas de la aplicación)
 python docs/generador/staruml_exportar.py RUTA\StarUML.exe   # proyecto StarUML e imágenes de los diagramas
 python docs/generador/informe_iter2.py <url-repo>      # informe PDF de la iteración 2 (ejecuta las pruebas)
+python docs/generador/capturas.py 28                   # solo los mockups de la iteración 3
+python docs/generador/informe_iter3.py <url-repo>      # informe PDF de la iteración 3 (ejecuta las pruebas)
 ```
+
+Los generadores requieren además `pip install Pillow`. `staruml_exportar.py` agrega los diagramas de la iteración 3 con `staruml_iter3.js` y funciona con StarUML 7 y 8 (usa una extensión temporal que elimina al terminar).
 
 `staruml_exportar.py` crea los diagramas de la iteración 1 con `staruml.py` y agrega los de la iteración 2 ejecutando `staruml_iter2.js` en la consola de scripts de StarUML 8.

@@ -37,7 +37,13 @@
       <div class="campo"><label for="fecha_inicio">Desde</label><input id="fecha_inicio" name="fecha_inicio" type="date" value="{{ d.fecha_inicio }}" required></div>
       <div class="campo"><label for="fecha_fin">Hasta</label><input id="fecha_fin" name="fecha_fin" type="date" value="{{ d.fecha_fin }}" required></div>
     </div>
-    <div class="campo"><label for="valor">Valor de la mensualidad (COP)</label><input id="valor" name="valor" type="number" min="0" step="1000" value="{{ d.valor }}" required></div>
+    <div class="campo"><label for="valor">Valor de la mensualidad (COP)</label><input id="valor" name="valor" type="number" min="0" step="1000" value="{{ d.valor }}" required>
+      <div class="ayuda">Tarifa vigente: carro {{ tarifas.CARRO|pesos }} · moto {{ tarifas.MOTO|pesos }}. Este primer pago genera su recibo.</div></div>
+    <div class="grid grid-2" style="gap:14px">
+      <div class="campo"><label for="medio">Medio de pago</label>
+        <select id="medio" name="medio">{% for clave, nombre in medios.items() %}<option value="{{ clave }}" {{ 'selected' if d.medio == clave }}>{{ nombre }}</option>{% endfor %}</select></div>
+      <div class="campo"><label for="referencia">Referencia (si no es efectivo)</label><input id="referencia" name="referencia" maxlength="30" value="{{ d.referencia or '' }}" placeholder="N.º de aprobación"></div>
+    </div>
     {% if not cliente %}<p class="ayuda">Si el documento ya existe, el vehículo se asocia a ese cliente. También puede registrar primero el cliente en <a href="{{ url_for('clientes.nuevo') }}">Clientes</a>.</p>{% endif %}
     <div style="display:flex;gap:10px;margin-top:8px">
       <button class="btn exito grande" style="flex:1">{{ icono('check') }} Guardar</button>

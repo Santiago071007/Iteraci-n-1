@@ -9,7 +9,7 @@
   </div>
   <div class="tabla-envoltura">
   <table>
-    <thead><tr><th>Placa</th><th>Vehículo</th><th>Propietario</th><th>Mensualidad</th><th>Ubicación</th></tr></thead>
+    <thead><tr><th>Placa</th><th>Vehículo</th><th>Propietario</th><th>Mensualidad</th><th>Ubicación</th><th></th></tr></thead>
     <tbody>
     {% for v in vehiculos %}
     {% set vigente = v.mensualidad_hasta and v.mensualidad_hasta >= hoy %}
@@ -20,9 +20,10 @@
       <td>{% if vigente %}<span class="etq ok">Vigente</span><span class="secundario">hasta {{ v.mensualidad_hasta }}</span>
           {% else %}<span class="etq mal">Vencida</span><span class="secundario">{{ v.mensualidad_hasta or 'sin mensualidad' }}</span>{% endif %}</td>
       <td>{% if v.dentro %}<span class="etq info">Dentro</span>{% else %}<span class="etq neutro">Fuera</span>{% endif %}</td>
+      <td style="text-align:right">{% if v.cliente_activo %}<a class="btn peq {{ 'secundario' if vigente else 'exito' }}" href="{{ url_for('pagos.nuevo', placa=v.placa) }}">{{ icono('pago', 14) }} {{ 'Pagar' if vigente else 'Cobrar' }}</a>{% endif %}</td>
     </tr>
     {% endfor %}
-    <tr class="sin-resultados" hidden><td colspan="5" class="vacio">Sin resultados para la búsqueda.</td></tr>
+    <tr class="sin-resultados" hidden><td colspan="6" class="vacio">Sin resultados para la búsqueda.</td></tr>
     </tbody>
   </table>
   </div>

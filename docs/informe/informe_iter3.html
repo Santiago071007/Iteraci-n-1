@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Autos Colombia · Iteración 3</title>
+<style>
+  @page { size: Letter; margin: 2.2cm 2cm 2cm 2cm; }
+  @page horizontal { size: Letter landscape; margin: 1.6cm 1.6cm; }
+  body { font-family: "Segoe UI", Arial, sans-serif; font-size: 11pt; color: #1d2433; line-height: 1.45; }
+  h1 { font-size: 19pt; color: #12305a; border-bottom: 3px solid #f6c343; padding-bottom: 6px; margin: 0 0 14px; break-before: page; }
+  h2 { font-size: 14pt; color: #12305a; margin: 22px 0 8px; break-after: avoid; }
+  h3 { font-size: 12pt; margin: 16px 0 6px; break-after: avoid; }
+  p { margin: 6px 0; text-align: justify; }
+  table { width: 100%; border-collapse: collapse; margin: 8px 0 14px; font-size: 9.5pt; }
+  th, td { border: 1px solid #b9c3d3; padding: 5px 7px; vertical-align: top; text-align: left; }
+  th { background: #dbe6f5; color: #12305a; }
+  tr { break-inside: avoid; }
+  figure { margin: 10px 0 16px; text-align: center; break-inside: avoid; }
+  figure img { max-width: 100%; border: 1px solid #dfe3ea; }
+  figure img.diagrama { border: 0; }
+  figcaption { font-size: 9.5pt; color: #5b6575; margin-top: 4px; font-style: italic; }
+  pre { background: #f5f7fa; border: 1px solid #dfe3ea; padding: 10px; font-size: 8pt; line-height: 1.3; white-space: pre-wrap; font-family: Consolas, monospace; }
+  code { font-family: Consolas, monospace; font-size: 9pt; background: #f2f4f7; padding: 0 3px; }
+  .hu { border: 1px solid #b9c3d3; border-left: 5px solid #1d4a85; padding: 8px 12px; margin: 10px 0; break-inside: avoid; }
+  .hu .titulo { font-weight: 700; color: #12305a; }
+  .hu ul { margin: 4px 0 0; padding-left: 20px; }
+  .meta { color: #5b6575; font-size: 9pt; }
+  .portada { height: 23cm; display: flex; flex-direction: column; justify-content: space-between; text-align: center; }
+  .portada .inst { font-size: 13pt; font-weight: 600; color: #12305a; }
+  .portada .titulo { font-size: 30pt; font-weight: 800; color: #12305a; margin-top: 3cm; }
+  .portada .titulo span { color: #d4a017; }
+  .portada .sub { font-size: 15pt; margin-top: 10px; }
+  .portada .datos { font-size: 12pt; line-height: 1.9; }
+  .indice { list-style: none; padding: 0; font-size: 11.5pt; line-height: 1.9; }
+  .indice ul { list-style: none; padding-left: 22px; font-size: 10.5pt; line-height: 1.7; }
+  .nota { background: #fff8e1; border: 1px solid #f0d78c; padding: 8px 12px; font-size: 10pt; margin: 10px 0; }
+  .horizontal { page: horizontal; }
+  .horizontal figure img { max-height: 15.2cm; width: auto; max-width: 100%; }
+  .seccion-horizontal { break-before: page; }
+  .ok { color: #12805c; }
+  .mal { color: #c4372f; }
+  .tabla-cp { font-size: 8.4pt; table-layout: fixed; }
+  .tabla-cp td { padding: 4px 5px; }
+  .tabla-cp code { font-size: 7.2pt; word-break: break-all; background: none; padding: 0; }
+  .resumen { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 10px 0; }
+  .resumen div { border: 1px solid #b9c3d3; border-radius: 6px; padding: 8px; text-align: center; }
+  .resumen b { display: block; font-size: 17pt; color: #12305a; }
+  .resumen span { font-size: 9pt; color: #5b6575; }
+  .leyenda-color { display: inline-block; width: 11px; height: 11px; border: 1px solid #777; vertical-align: -1px; margin: 0 3px 0 8px; }
+</style>
+</head>
+<body>
+
+<section class="portada">
+  <div class="inst">IU Digital de Antioquia<br>Tecnología en Desarrollo de Software · Ingeniería de Software</div>
+  <div>
+    <div class="titulo">Autos <span>Colombia</span></div>
+    <div class="sub">Sistema de gestión de parqueadero por mensualidad</div>
+    <div class="sub" style="font-size:13pt;color:#5b6575">Iteración 3: Gestión de pagos</div>
+  </div>
+  <div class="datos">
+    Presentado por:<br><b>David Santiago Cantor Torres</b><br>
+    <br>22 de noviembre de 2026
+  </div>
+</section>
+
+<h1>Contenido</h1>
+<ul class="indice">
+  <li>1. Introducción</li>
+  <li>2. Entregables de la iteración 3
+    <ul>
+      <li>2.1 Requerimientos funcionales y no funcionales de la gestión de pagos</li>
+      <li>2.2 Diagrama de casos de uso de gestión de pagos</li>
+      <li>2.3 Historias de usuario de gestión de pagos</li>
+      <li>2.4 Mockups de las historias de usuario</li>
+      <li>2.5 Diagramas de secuencia de las iteraciones 1, 2 y 3</li>
+      <li>2.6 Diagrama de componentes de las iteraciones 1, 2 y 3</li>
+      <li>2.7 Plan de pruebas resumido de la gestión de pagos</li>
+      <li>2.8 Código fuente y repositorio en GitHub</li>
+    </ul>
+  </li>
+  <li>3. Conclusiones</li>
+  <li>4. Referencias</li>
+</ul>
+
+<h1>1. Introducción</h1>
+<p>Este trabajo corresponde a la tercera entrega del proyecto <b>Autos Colombia</b>, un parqueadero que funciona por mensualidades: el cliente paga un mes por adelantado y durante ese tiempo puede entrar y salir con su vehículo las veces que quiera. En la <b>iteración 1</b> se hizo el registro de entradas y salidas de los vehículos y en la <b>iteración 2</b> la gestión de usuarios, clientes y celdas.</p>
+<p>Al terminar la iteración 2 quedaba un problema: la fecha hasta la que estaba paga la mensualidad se escribía a mano cuando se registraba el vehículo, y después no había forma de renovarla ni de saber cuánto dinero había recibido el parqueadero. Por eso en esta <b>iteración 3</b> se trabajó la <b>gestión de pagos</b>. Ahora el operador recibe el pago, el sistema calcula solo el valor y las fechas, renueva la mensualidad, genera un recibo con número y guarda el pago para el cierre de caja.</p>
+<p>Las funciones que se desarrollaron en esta iteración son:</p>
+<table>
+  <tr><th style="width:26%">Función</th><th>Para qué sirve</th></tr>
+  <tr><td>Registrar pagos y recibos</td><td>Cobrar de 1 a 12 meses en efectivo, transferencia, tarjeta o billetera digital. El sistema hace las cuentas y no deja registrar dos veces el mismo comprobante.</td></tr>
+  <tr><td>Mensualidades por cobrar</td><td>Ver qué vehículos están vencidos o por vencer para cobrarles a tiempo.</td></tr>
+  <tr><td>Historial y estado de cuenta</td><td>Consultar qué pagó cada cliente, cuándo, con qué medio de pago y hasta qué fecha está cubierto.</td></tr>
+  <tr><td>Cierre de caja</td><td>Que cada operador sepa cuánto efectivo debe entregar al final del turno y que el administrador vea lo recaudado por cada cajero.</td></tr>
+  <tr><td>Anular pagos y cambiar tarifas</td><td>Corregir un pago mal registrado sin borrarlo y cambiar el precio de la mensualidad cuando sea necesario.</td></tr>
+</table>
+<table>
+  <tr><th style="width:18%">Iteración</th><th>Qué incluye</th><th style="width:24%">Estado</th></tr>
+  <tr><td>Iteración 1</td><td>Entrada y salida de vehículos, asignación de celdas, novedades e historial.</td><td>Entregada</td></tr>
+  <tr><td>Iteración 2</td><td>Gestión de usuarios del sistema, de clientes y de celdas.</td><td>Entregada</td></tr>
+  <tr><td>Iteración 3</td><td>Gestión de pagos: tarifas, pagos, recibos, mensualidades por cobrar, cierre de caja y anulaciones.</td><td>Desarrollada (este documento)</td></tr>
+</table>
+<p>Se siguió usando la misma arquitectura de las entregas anteriores: una aplicación web hecha en <b>Python con Flask</b> y base de datos <b>SQLite</b>, organizada en controladores, servicios y repositorios. Para los pagos se agregó un servicio nuevo (<code>PagoService</code>) con su controlador, dos repositorios, dos tablas (<code>pago</code> y <code>tarifa</code>) y seis pantallas. En este documento se presentan los entregables que pide la actividad: requerimientos, casos de uso, historias de usuario, mockups, diagramas de secuencia y de componentes actualizados con las tres iteraciones, el plan de pruebas y el enlace del repositorio.</p>
+
+<h1>2. Entregables de la iteración 3</h1>
+<h2>2.1 Requerimientos funcionales y no funcionales de la gestión de pagos</h2>
+<h3>Actores</h3>
+<table>
+  <tr><th style="width:22%">Actor</th><th>Participación en la iteración 3</th></tr>
+  <tr><td>Operador</td><td>Empleado de portería que también hace de cajero. Consulta el valor a pagar, registra pagos, entrega recibos, consulta el historial, las mensualidades por cobrar y el estado de cuenta de un cliente, y hace el cierre de caja de lo que él recibió.</td></tr>
+  <tr><td>Administrador</td><td>Hereda lo del operador. Además consulta el recaudo de todos los cajeros en un rango de fechas, anula pagos y actualiza las tarifas.</td></tr>
+  <tr><td>Cliente <i>(actor indirecto)</i></td><td>Paga la mensualidad en portería y recibe el recibo; no usa el sistema.</td></tr>
+</table>
+
+<h3>Requerimientos funcionales</h3>
+<p>Los requerimientos se numeraron a partir de donde terminó la iteración 2 (el último era el RF35).</p>
+<table>
+  <tr><th style="width:8%">ID</th><th style="width:23%">Nombre</th><th>Descripción</th><th style="width:9%">Prioridad</th></tr>
+  <tr><td>RF36</td><td>Consultar valor a pagar</td><td>Al digitar una placa, el sistema debe mostrar el cliente, el vehículo, el estado de la mensualidad (vigente hasta, vencida desde o sin mensualidad), la tarifa mensual, el período que cubriría el pago y el total, sin guardar nada.</td><td>Alta</td></tr>
+  <tr><td>RF37</td><td>Registrar pago de mensualidad</td><td>El operador debe poder registrar el pago de 1 a 12 meses de un vehículo. El sistema guarda el pago y amplía la vigencia de la mensualidad en una sola operación.</td><td>Alta</td></tr>
+  <tr><td>RF38</td><td>Calcular período y valor</td><td>El sistema debe calcular el valor (tarifa vigente del tipo de vehículo × meses) y el período: si la mensualidad está vigente empieza al día siguiente de su vencimiento; si no, empieza hoy. El período termina el día anterior a la misma fecha N meses después.</td><td>Alta</td></tr>
+  <tr><td>RF39</td><td>Medios de pago y referencia</td><td>El pago debe indicar el medio: efectivo, transferencia bancaria, tarjeta o billetera digital. Para los medios distintos de efectivo es obligatoria la referencia del comprobante (4 a 30 letras, números o guiones), que no puede repetirse en otro pago vigente del mismo medio.</td><td>Alta</td></tr>
+  <tr><td>RF40</td><td>Generar recibo de pago</td><td>Cada pago debe generar un recibo con número consecutivo, fecha y hora, cliente, placa, concepto, período pagado, medio, referencia, valor y cajero. El recibo se puede consultar e imprimir en cualquier momento.</td><td>Alta</td></tr>
+  <tr><td>RF41</td><td>Consultar historial de pagos</td><td>El sistema debe listar los recibos con filtros por placa, cliente o referencia, rango de fechas, medio de pago y estado, mostrando el total recaudado de la consulta.</td><td>Media</td></tr>
+  <tr><td>RF42</td><td>Consultar mensualidades por cobrar</td><td>El sistema debe clasificar los vehículos de clientes activos en vencidos (o sin mensualidad), por vencer en 5 días o menos y al día, con el valor por cobrar y acceso directo a registrar el pago.</td><td>Alta</td></tr>
+  <tr><td>RF43</td><td>Estado de cuenta del cliente</td><td>El detalle del cliente debe mostrar sus últimos pagos (recibo, fecha, placa, período, medio y valor) y permitir pagar cada uno de sus vehículos.</td><td>Media</td></tr>
+  <tr><td>RF44</td><td>Cierre de caja</td><td>El operador debe poder consultar e imprimir el cierre de un día con los pagos que él recibió: total recaudado, efectivo a entregar, totales por medio de pago, recibos anulados y detalle.</td><td>Alta</td></tr>
+  <tr><td>RF45</td><td>Recaudo por cajero y fechas</td><td>El administrador debe poder consultar el recaudo de todos los cajeros en un rango de fechas, con el total y el efectivo de cada uno.</td><td>Media</td></tr>
+  <tr><td>RF46</td><td>Anular pago</td><td>El administrador debe poder anular un pago indicando el motivo. El recibo queda marcado como anulado (con fecha, responsable y motivo), deja de sumar en el recaudo y el período que pagó se retira de la mensualidad.</td><td>Alta</td></tr>
+  <tr><td>RF47</td><td>Gestionar tarifas</td><td>El administrador debe poder actualizar la tarifa mensual de carro y de moto (entre $ 10.000 y $ 2.000.000). El cambio aplica a los pagos nuevos y registra quién y cuándo lo hizo.</td><td>Media</td></tr>
+  <tr><td>RF48</td><td>Pago al registrar un vehículo</td><td>Al registrar un vehículo nuevo con su primera mensualidad (RF14 y RF29), el valor recibido debe quedar como un pago con su recibo y medio de pago. <i>(Amplía RF14.)</i></td><td>Media</td></tr>
+</table>
+
+<h3>Requerimientos no funcionales</h3>
+<table>
+  <tr><th style="width:8%">ID</th><th style="width:18%">Tipo</th><th>Descripción</th></tr>
+  <tr><td>RNF18</td><td>Seguridad · autorización</td><td>Anular pagos y cambiar tarifas solo está disponible para el rol Administrador, validado en el servidor. Todas las pantallas de pagos exigen sesión iniciada. El operador solo ve su propio cierre de caja.</td></tr>
+  <tr><td>RNF19</td><td>Integridad de datos</td><td>El pago y la ampliación de la mensualidad se guardan en una sola transacción (todo o nada). La base de datos rechaza valores no positivos, medios desconocidos, pagos sin referencia cuando no son en efectivo, referencias repetidas (índice único) y anulaciones sin motivo ni responsable.</td></tr>
+  <tr><td>RNF20</td><td>Trazabilidad y auditoría</td><td>Un pago nunca se edita ni se elimina. Cada recibo conserva quién lo recibió y cuándo; cada anulación, quién la hizo, cuándo y por qué; cada cambio de tarifa, su autor y fecha.</td></tr>
+  <tr><td>RNF21</td><td>Exactitud</td><td>El valor y las fechas se calculan siempre en el servidor con la tarifa vigente; lo que muestra el navegador es solo una vista previa. Los valores son pesos colombianos sin decimales. Un recibo conserva el valor cobrado aunque la tarifa cambie después.</td></tr>
+  <tr><td>RNF22</td><td>Privacidad de datos de pago</td><td>El sistema no solicita ni almacena números de tarjeta, claves ni datos bancarios del cliente; solo la referencia o número de aprobación del comprobante.</td></tr>
+  <tr><td>RNF23</td><td>Usabilidad</td><td>Registrar un pago toma máximo tres pasos (placa, meses y medio, confirmar). El total y la fecha final se actualizan al cambiar los meses; los valores se muestran con formato de moneda ($ 180.000); el recibo y el cierre de caja se imprimen desde el navegador. Atajo de teclado Alt + P.</td></tr>
+  <tr><td>RNF24</td><td>Compatibilidad de datos</td><td>Al iniciar, la aplicación crea automáticamente las tablas de pagos y tarifas en una base de datos de las iteraciones 1 o 2, sin perder información.</td></tr>
+  <tr><td>RNF25</td><td>Rendimiento</td><td>El historial, la cartera y el cierre de caja deben cargar en menos de 1 segundo con hasta 10.000 pagos (índices por fecha y por vehículo).</td></tr>
+  <tr><td>RNF26</td><td>Mantenibilidad</td><td>La lógica de pagos está en un servicio propio con pruebas automatizadas que no dependen de la interfaz; las reglas de fechas se prueban con fechas fijas.</td></tr>
+</table>
+
+<h3>Reglas de negocio</h3>
+<table>
+  <tr><th style="width:8%">ID</th><th>Regla</th></tr>
+  <tr><td>RN11</td><td>Un pago no hace perder días ya pagados: si la mensualidad está vigente, el nuevo período empieza al día siguiente de su vencimiento; si está vencida o no existe, empieza el día del pago.</td></tr>
+  <tr><td>RN12</td><td>Cada recibo cubre de 1 a 12 meses y un vehículo no puede quedar pagado más de 12 meses por adelantado.</td></tr>
+  <tr><td>RN13</td><td>El valor del pago es la tarifa vigente del tipo de vehículo multiplicada por los meses. Los recibos ya emitidos no cambian cuando cambia la tarifa.</td></tr>
+  <tr><td>RN14</td><td>Todo pago que no sea en efectivo exige referencia, y una referencia no puede usarse en dos pagos vigentes del mismo medio.</td></tr>
+  <tr><td>RN15</td><td>Solo se reciben pagos de vehículos registrados cuyo cliente esté activo.</td></tr>
+  <tr><td>RN16</td><td>Los pagos no se editan ni se borran. Solo el administrador puede anularlos, con un motivo de mínimo 10 caracteres.</td></tr>
+  <tr><td>RN17</td><td>Solo se puede anular el pago más reciente de un vehículo, y no se puede anular un pago cuyo período está en curso mientras el vehículo esté dentro del parqueadero.</td></tr>
+  <tr><td>RN18</td><td>Los recibos anulados no suman en el recaudo ni en el cierre de caja, pero se listan aparte.</td></tr>
+</table>
+
+<h2 style="break-before:page">2.2 Diagrama de casos de uso de gestión de pagos</h2>
+<p>El diagrama se hizo en <b>StarUML</b> y está en el archivo <code>docs/AutosColombia.mdj</code>, dentro del paquete <i>Autos Colombia - Iteración 3</i>. Igual que en las entregas anteriores, el Administrador hereda del Operador, es decir, puede hacer todo lo que hace el operador y además sus propios casos de uso. Las relaciones «include» son pasos que el sistema hace siempre (por ejemplo, calcular el valor cada vez que se registra un pago) y la relación «extend» muestra que consultar el recaudo por cajero es una opción adicional del cierre de caja que solo usa el administrador. Los casos de uso se numeraron desde el UC29 porque la iteración 2 terminó en el UC28.</p>
+<figure data-fig="uc_pagos"><img class="diagrama" src="../img/staruml/casos_de_uso_gestion_de_pagos.png" style="width:100%"><figcaption>Figura 1. Diagrama de casos de uso de gestión de pagos (StarUML).</figcaption></figure>
+
+<h3>Especificación UC29 · Registrar pago de mensualidad</h3>
+<table>
+  <tr><th style="width:24%">Actor</th><td>Operador (también el Administrador)</td></tr>
+  <tr><th>Precondición</th><td>El usuario inició sesión. El vehículo está registrado y su cliente está activo.</td></tr>
+  <tr><th>Flujo principal</th><td>1. El operador abre “Registrar pago”, escribe la placa y consulta.<br>2. El sistema muestra el cliente, el estado de la mensualidad, la tarifa, el período y el total (include: calcular período y valor).<br>3. El operador elige los meses y el medio de pago; si no es efectivo escribe la referencia.<br>4. El sistema valida el medio y la referencia (include).<br>5. El sistema guarda el pago y amplía la vigencia de la mensualidad (include).<br>6. El sistema muestra el recibo numerado listo para imprimir (include).</td></tr>
+  <tr><th>Flujos alternos</th><td>1a. Placa con formato inválido, vehículo no registrado o cliente inactivo → se informa y no se muestra el formulario.<br>3a. El pago dejaría el vehículo con más de 12 meses por adelantado → se rechaza.<br>4a. Falta la referencia o tiene un formato inválido → se solicita.<br>4b. La referencia ya está en otro recibo → “ya fue registrada en el recibo N.º X; el pago no se duplicó”.</td></tr>
+  <tr><th>Postcondición</th><td>Existe un pago vigente con su recibo; la mensualidad cubre hasta la nueva fecha y, si estaba vencida, el vehículo puede ingresar de inmediato.</td></tr>
+</table>
+<h3>Especificación UC36 · Anular pago</h3>
+<table>
+  <tr><th style="width:24%">Actor</th><td>Administrador</td></tr>
+  <tr><th>Precondición</th><td>El administrador inició sesión y el recibo existe y está vigente.</td></tr>
+  <tr><th>Flujo principal</th><td>1. El administrador abre el recibo, escribe el motivo y pulsa “Anular recibo”.<br>2. El sistema pide confirmación.<br>3. El sistema verifica que sea el último pago del vehículo y que el vehículo no esté dentro con ese período en curso (include).<br>4. El sistema retira el período de la mensualidad y marca el recibo como anulado con fecha, responsable y motivo (include).</td></tr>
+  <tr><th>Flujos alternos</th><td>1a. Motivo con menos de 10 caracteres → se solicita.<br>3a. Existe un pago posterior del mismo vehículo → “anule primero ese recibo”.<br>3b. El vehículo está dentro y el período está en curso → “registre la salida antes de anular”.<br>3c. El recibo ya estaba anulado → se informa.</td></tr>
+  <tr><th>Postcondición</th><td>El recibo se conserva como ANULADO y no suma en el recaudo; la mensualidad vuelve a la vigencia anterior; la referencia queda libre para registrar el pago correcto.</td></tr>
+</table>
+
+<h2 style="break-before:page">2.3 Historias de usuario de gestión de pagos</h2>
+<p>Las historias de usuario se escribieron con el formato <i>Como [rol] quiero [funcionalidad] para [beneficio]</i>. Cada una tiene sus criterios de aceptación, la prioridad y una estimación en puntos de historia. Se numeraron desde la HU24 porque la iteración 2 terminó en la HU23.</p>
+
+<div class="hu"><div class="titulo">HU24 · Consultar el valor a pagar</div>
+<p>Como <b>operador</b> quiero <b>escribir la placa y ver cuánto debe pagar el cliente y hasta cuándo queda cubierto</b> para <b>informarle el valor exacto sin hacer cuentas</b>.</p>
+<ul><li>Al consultar una placa veo el cliente, el vehículo, la tarifa mensual y si la mensualidad está vigente (hasta qué fecha) o vencida (desde cuándo).</li>
+<li>Al cambiar el número de meses se actualizan el total y la fecha final del período.</li>
+<li>Si la placa no tiene formato válido, el vehículo no está registrado o el cliente está inactivo, se informa la causa.</li>
+<li>La pantalla lista los vehículos pendientes de pago con un botón “Cobrar”.</li></ul>
+<div class="meta">Prioridad: Alta · Estimación: 3 pts · RF36, RF38, RN11, RN13, RN15 · UC29 · Mockups: figuras 2 y 3</div></div>
+
+<div class="hu"><div class="titulo">HU25 · Registrar el pago de una mensualidad</div>
+<p>Como <b>operador</b> quiero <b>registrar el pago indicando meses y medio de pago</b> para <b>que la mensualidad quede renovada y el dinero registrado a mi nombre</b>.</p>
+<ul><li>Puedo cobrar de 1 a 12 meses en efectivo, transferencia, tarjeta o billetera digital.</li>
+<li>Si el medio no es efectivo debo escribir la referencia; si esa referencia ya se usó, el pago no se registra y se indica en qué recibo está.</li>
+<li>Si la mensualidad estaba vigente, el nuevo período empieza al día siguiente del vencimiento; si estaba vencida, empieza hoy y el vehículo puede ingresar de inmediato.</li>
+<li>No se puede dejar un vehículo pagado más de 12 meses por adelantado.</li></ul>
+<div class="meta">Prioridad: Alta · Estimación: 5 pts · RF37, RF38, RF39, RN11–RN15 · UC29 · Mockups: figuras 3 y 4</div></div>
+
+<div class="hu"><div class="titulo">HU26 · Entregar el recibo de pago</div>
+<p>Como <b>operador</b> quiero <b>imprimir un recibo numerado apenas registro el pago</b> para <b>entregarle al cliente el soporte de lo que pagó</b>.</p>
+<ul><li>El recibo muestra número consecutivo, fecha y hora, cliente, placa, período pagado, medio, referencia, valor y quién lo recibió.</li>
+<li>Puedo imprimirlo y volver a consultarlo después desde el historial.</li>
+<li>Como operador no veo la opción de anular; se me indica que debo solicitarla al administrador.</li></ul>
+<div class="meta">Prioridad: Alta · Estimación: 2 pts · RF40 · UC30 · Mockup: figura 5</div></div>
+
+<div class="hu"><div class="titulo">HU27 · Consultar el historial de pagos</div>
+<p>Como <b>operador o administrador</b> quiero <b>buscar pagos por placa, cliente, referencia, fechas, medio o estado</b> para <b>resolver reclamos y verificar comprobantes</b>.</p>
+<ul><li>El listado muestra recibo, fecha, vehículo, período, medio, cajero, estado y valor.</li>
+<li>Los filtros se pueden combinar y limpiar.</li>
+<li>Al pie veo el total recaudado de la consulta; los recibos anulados aparecen tachados y no suman.</li></ul>
+<div class="meta">Prioridad: Media · Estimación: 3 pts · RF41, RN18 · UC31 · Mockup: figura 8</div></div>
+
+<div class="hu"><div class="titulo">HU28 · Ver las mensualidades por cobrar</div>
+<p>Como <b>operador</b> quiero <b>ver qué mensualidades están vencidas o próximas a vencer</b> para <b>recordarle el pago al cliente antes de negarle la entrada</b>.</p>
+<ul><li>Veo indicadores de vencidas, por vencer en 5 días o menos, al día y el valor por cobrar.</li>
+<li>El listado empieza por las más atrasadas e indica hace cuántos días venció o en cuántos vence, y si el vehículo está dentro.</li>
+<li>Cada fila tiene un botón para cobrar que abre el pago con la placa ya consultada.</li>
+<li>No aparecen los vehículos de clientes inactivos.</li></ul>
+<div class="meta">Prioridad: Alta · Estimación: 3 pts · RF42 · UC32 · Mockup: figura 9</div></div>
+
+<div class="hu"><div class="titulo">HU29 · Consultar el estado de cuenta de un cliente</div>
+<p>Como <b>operador</b> quiero <b>ver los pagos de un cliente junto a sus vehículos</b> para <b>responderle hasta cuándo está cubierto y qué ha pagado</b>.</p>
+<ul><li>El detalle del cliente muestra la vigencia de cada vehículo y sus últimos pagos con enlace al recibo.</li>
+<li>Puedo iniciar el pago de cualquiera de sus vehículos desde ahí.</li></ul>
+<div class="meta">Prioridad: Media · Estimación: 2 pts · RF43 · UC33 · Mockup: figura 13</div></div>
+
+<div class="hu"><div class="titulo">HU30 · Hacer mi cierre de caja</div>
+<p>Como <b>operador</b> quiero <b>ver al final del turno cuánto recibí por cada medio de pago</b> para <b>entregar el efectivo exacto y los comprobantes</b>.</p>
+<ul><li>Veo solo los pagos que yo recibí en el día elegido: total, efectivo a entregar, cantidad de pagos y anulados.</li>
+<li>Veo los totales por medio de pago y el detalle de recibos, y puedo imprimir el cierre.</li>
+<li>Los recibos anulados se muestran pero no suman.</li></ul>
+<div class="meta">Prioridad: Alta · Estimación: 3 pts · RF44, RN18, RNF18 · UC34 · Mockup: figura 11</div></div>
+
+<div class="hu"><div class="titulo">HU31 · Consultar el recaudo por cajero</div>
+<p>Como <b>administrador</b> quiero <b>ver el recaudo de todos los cajeros en un rango de fechas</b> para <b>controlar los ingresos del parqueadero y cuadrar lo que entrega cada empleado</b>.</p>
+<ul><li>Puedo elegir fecha inicial y final; la inicial no puede ser posterior a la final.</li>
+<li>Veo el total, los totales por medio de pago y, por cada cajero, cuántos pagos recibió, cuánto en efectivo y el total.</li></ul>
+<div class="meta">Prioridad: Media · Estimación: 2 pts · RF45 · UC35 · Mockup: figura 10</div></div>
+
+<div class="hu"><div class="titulo">HU32 · Anular un pago mal registrado</div>
+<p>Como <b>administrador</b> quiero <b>anular un recibo indicando el motivo</b> para <b>corregir errores de registro sin borrar el rastro de lo ocurrido</b>.</p>
+<ul><li>Debo escribir un motivo de mínimo 10 caracteres y confirmar.</li>
+<li>El recibo queda como anulado con fecha, responsable y motivo; la mensualidad vuelve a su vigencia anterior.</li>
+<li>Solo puedo anular el último pago del vehículo, y no si el vehículo está dentro con ese período en curso.</li>
+<li>La referencia de un pago anulado puede usarse para registrar el pago correcto.</li></ul>
+<div class="meta">Prioridad: Alta · Estimación: 5 pts · RF46, RN16, RN17, RN18 · UC36 · Mockups: figuras 6 y 7</div></div>
+
+<div class="hu"><div class="titulo">HU33 · Actualizar las tarifas</div>
+<p>Como <b>administrador</b> quiero <b>cambiar el valor de la mensualidad de carros y motos</b> para <b>aplicar los ajustes de precio sin depender de un programador</b>.</p>
+<ul><li>Veo la tarifa actual de cada tipo, cuántos vehículos tiene, y quién y cuándo la cambió por última vez.</li>
+<li>El valor debe estar entre $ 10.000 y $ 2.000.000; se pide confirmación.</li>
+<li>La nueva tarifa aplica a los pagos nuevos; los recibos anteriores conservan su valor.</li></ul>
+<div class="meta">Prioridad: Media · Estimación: 2 pts · RF47, RN13 · UC37 · Mockup: figura 12</div></div>
+
+<h2 style="break-before:page">2.4 Mockups de las historias de usuario</h2>
+<p>Los mockups se hicieron como un <b>prototipo navegable en HTML y CSS</b> (la actividad permite usar otra herramienta diferente a Figma), con el mismo diseño de las entregas anteriores para que todo el sistema se vea igual. Las imágenes son las pantallas del prototipo con datos de ejemplo y están guardadas en <code>docs/img/mockups/</code> (archivos 28 a 39). En el menú se agregó la sección <i>Pagos</i>, que pueden usar los dos roles, y la opción <i>Tarifas</i>, que solo ve el administrador.</p>
+<figure data-fig="28_pago_nuevo"><img src="../img/mockups/28_pago_nuevo.png" style="width:100%;max-height:19cm;object-fit:contain"><figcaption>Figura 2. Registrar pago: búsqueda por placa y lista de vehículos pendientes de pago (HU24).</figcaption></figure>
+<figure data-fig="29_pago_cotizacion"><img src="../img/mockups/29_pago_cotizacion.png" style="width:100%;max-height:19cm;object-fit:contain"><figcaption>Figura 3. Valor a pagar de una mensualidad vencida: meses, período, medio, referencia y total (HU24, HU25).</figcaption></figure>
+<figure data-fig="30_pago_error"><img src="../img/mockups/30_pago_error.png" style="width:100%;max-height:19cm;object-fit:contain"><figcaption>Figura 4. Pago rechazado: la referencia ya fue registrada en otro recibo (HU25).</figcaption></figure>
+<figure data-fig="31_recibo"><img src="../img/mockups/31_recibo.png" style="width:100%;max-height:19cm;object-fit:contain"><figcaption>Figura 5. Recibo de pago numerado, visto por el operador (sin opción de anular) (HU26).</figcaption></figure>
+<figure data-fig="32_recibo_anular"><img src="../img/mockups/32_recibo_anular.png" style="width:100%;max-height:19cm;object-fit:contain"><figcaption>Figura 6. Recibo visto por el administrador, con el formulario de anulación (HU32).</figcaption></figure>
+<figure data-fig="33_recibo_anulado"><img src="../img/mockups/33_recibo_anulado.png" style="width:100%;max-height:19cm;object-fit:contain"><figcaption>Figura 7. Recibo anulado con fecha, responsable y motivo (HU32).</figcaption></figure>
+<figure data-fig="34_pagos_historial"><img src="../img/mockups/34_pagos_historial.png" style="width:100%;max-height:19cm;object-fit:contain"><figcaption>Figura 8. Historial de pagos con filtros y total recaudado (HU27).</figcaption></figure>
+<figure data-fig="35_cartera"><img src="../img/mockups/35_cartera.png" style="width:100%;max-height:19cm;object-fit:contain"><figcaption>Figura 9. Mensualidades por cobrar: vencidas, por vencer y al día (HU28).</figcaption></figure>
+<figure data-fig="36_caja_admin"><img src="../img/mockups/36_caja_admin.png" style="width:100%;max-height:19cm;object-fit:contain"><figcaption>Figura 10. Cierre de caja del administrador: recaudo por medio de pago y por cajero (HU31).</figcaption></figure>
+<figure data-fig="37_caja_operador"><img src="../img/mockups/37_caja_operador.png" style="width:100%;max-height:19cm;object-fit:contain"><figcaption>Figura 11. Cierre de caja de una operadora: solo los pagos que ella recibió (HU30).</figcaption></figure>
+<figure data-fig="38_tarifas"><img src="../img/mockups/38_tarifas.png" style="width:100%;max-height:19cm;object-fit:contain"><figcaption>Figura 12. Tarifas de mensualidad por tipo de vehículo (HU33).</figcaption></figure>
+<figure data-fig="39_cliente_estado_cuenta"><img src="../img/mockups/39_cliente_estado_cuenta.png" style="width:100%;max-height:19cm;object-fit:contain"><figcaption>Figura 13. Detalle del cliente con su estado de cuenta y acceso a pagar (HU29).</figcaption></figure>
+
+<div class="horizontal">
+<h2 class="seccion-horizontal" style="margin-top:0">2.5 Diagramas de secuencia de las iteraciones 1, 2 y 3</h2>
+<p>Los diagramas de secuencia se hicieron en StarUML. En todos se ve el mismo recorrido: el usuario hace una petición al <b>controlador</b>, el controlador llama al <b>servicio</b>, que es donde están las reglas de negocio, y el servicio usa los <b>repositorios</b> para consultar o guardar en la base de datos. Se usaron los fragmentos <b>alt</b> (alternativas), <b>opt</b> (opcional), <b>loop</b> (repetición) y <b>break</b> (cuando hay un error); las flechas punteadas son las respuestas. Para esta entrega se agregaron cinco diagramas de la gestión de pagos (SD11 a SD15) y se dejaron los diez de las iteraciones 1 y 2, porque esos procesos no cambiaron. La relación entre lo nuevo y lo anterior está en la entrada del vehículo (SD02): ahí se revisa que la mensualidad esté vigente, y esa mensualidad es la que ahora se renueva con cada pago.</p>
+<table>
+  <tr><th style="width:10%">Diagrama</th><th style="width:10%">Iteración</th><th>Escenario</th><th style="width:26%">Casos de uso / historias</th></tr>
+  <tr><td>SD01</td><td>1</td><td>Iniciar sesión</td><td>UC01 · HU01</td></tr>
+  <tr><td>SD02</td><td>1</td><td>Registrar entrada de vehículo (valida la mensualidad vigente)</td><td>UC02 · HU02, HU03</td></tr>
+  <tr><td>SD03</td><td>1</td><td>Registrar salida de vehículo</td><td>UC03 · HU04</td></tr>
+  <tr><td>SD04</td><td>1</td><td>Registrar novedad</td><td>UC04 · HU05</td></tr>
+  <tr><td>SD05</td><td>2</td><td>Crear usuario del sistema</td><td>UC10 · HU10</td></tr>
+  <tr><td>SD06</td><td>2</td><td>Activar o desactivar usuario</td><td>UC12 · HU12</td></tr>
+  <tr><td>SD07</td><td>2</td><td>Registrar cliente y asociar vehículo</td><td>UC16, UC20 · HU15, HU18</td></tr>
+  <tr><td>SD08</td><td>2</td><td>Crear celdas por rango</td><td>UC24 · HU19</td></tr>
+  <tr><td>SD09</td><td>2</td><td>Mantenimiento y habilitación de celda</td><td>UC26, UC27 · HU21</td></tr>
+  <tr><td>SD10</td><td>2</td><td>Eliminar celda</td><td>UC28 · HU22</td></tr>
+  <tr><td><b>SD11</b></td><td><b>3</b></td><td>Registrar pago de mensualidad (consulta del valor y registro)</td><td>UC29 · HU24, HU25, HU26</td></tr>
+  <tr><td><b>SD12</b></td><td><b>3</b></td><td>Anular pago</td><td>UC36 · HU32</td></tr>
+  <tr><td><b>SD13</b></td><td><b>3</b></td><td>Consultar mensualidades por cobrar</td><td>UC32 · HU28</td></tr>
+  <tr><td><b>SD14</b></td><td><b>3</b></td><td>Realizar cierre de caja (operador y administrador)</td><td>UC34, UC35 · HU30, HU31</td></tr>
+  <tr><td><b>SD15</b></td><td><b>3</b></td><td>Actualizar tarifa</td><td>UC37 · HU33</td></tr>
+</table>
+<h3 style="break-before:page">Iteración 3 · Gestión de pagos</h3>
+<figure data-fig="sd11"><img class="diagrama" src="../img/staruml/sd11_registrar_pago_de_mensualidad.png" style="max-height:14.6cm"><figcaption>Figura 14. SD11 · Registrar pago de mensualidad.</figcaption></figure>
+<figure data-fig="sd12" style="break-before:page"><img class="diagrama" src="../img/staruml/sd12_anular_pago.png"><figcaption>Figura 15. SD12 · Anular pago.</figcaption></figure>
+<figure data-fig="sd13" style="break-before:page"><img class="diagrama" src="../img/staruml/sd13_consultar_mensualidades_por_cobrar.png"><figcaption>Figura 16. SD13 · Consultar mensualidades por cobrar.</figcaption></figure>
+<figure data-fig="sd14" style="break-before:page"><img class="diagrama" src="../img/staruml/sd14_realizar_cierre_de_caja.png"><figcaption>Figura 17. SD14 · Realizar cierre de caja.</figcaption></figure>
+<figure data-fig="sd15" style="break-before:page"><img class="diagrama" src="../img/staruml/sd15_actualizar_tarifa.png"><figcaption>Figura 18. SD15 · Actualizar tarifa.</figcaption></figure>
+<h3 style="break-before:page">Iteración 1 · Entrada y salida de vehículos</h3>
+<figure data-fig="sd01"><img class="diagrama" src="../img/staruml/sd01_iniciar_sesion.png" style="max-height:14.6cm"><figcaption>Figura 19. SD01 · Iniciar sesión.</figcaption></figure>
+<figure data-fig="sd02" style="break-before:page"><img class="diagrama" src="../img/staruml/sd02_registrar_entrada_de_vehiculo.png"><figcaption>Figura 20. SD02 · Registrar entrada de vehículo.</figcaption></figure>
+<figure data-fig="sd03" style="break-before:page"><img class="diagrama" src="../img/staruml/sd03_registrar_salida_de_vehiculo.png"><figcaption>Figura 21. SD03 · Registrar salida de vehículo.</figcaption></figure>
+<figure data-fig="sd04" style="break-before:page"><img class="diagrama" src="../img/staruml/sd04_registrar_novedad.png"><figcaption>Figura 22. SD04 · Registrar novedad.</figcaption></figure>
+<h3 style="break-before:page">Iteración 2 · Usuarios y celdas</h3>
+<figure data-fig="sd05"><img class="diagrama" src="../img/staruml/sd05_crear_usuario_del_sistema.png" style="max-height:14.6cm"><figcaption>Figura 23. SD05 · Crear usuario del sistema.</figcaption></figure>
+<figure data-fig="sd06" style="break-before:page"><img class="diagrama" src="../img/staruml/sd06_activar_o_desactivar_usuario.png"><figcaption>Figura 24. SD06 · Activar o desactivar usuario.</figcaption></figure>
+<figure data-fig="sd07" style="break-before:page"><img class="diagrama" src="../img/staruml/sd07_registrar_cliente_y_asociar_vehiculo.png"><figcaption>Figura 25. SD07 · Registrar cliente y asociar vehículo.</figcaption></figure>
+<figure data-fig="sd08" style="break-before:page"><img class="diagrama" src="../img/staruml/sd08_crear_celdas_por_rango.png"><figcaption>Figura 26. SD08 · Crear celdas por rango.</figcaption></figure>
+<figure data-fig="sd09" style="break-before:page"><img class="diagrama" src="../img/staruml/sd09_mantenimiento_y_habilitacion_de_celda.png"><figcaption>Figura 27. SD09 · Poner celda en mantenimiento y habilitarla.</figcaption></figure>
+<figure data-fig="sd10" style="break-before:page"><img class="diagrama" src="../img/staruml/sd10_eliminar_celda.png"><figcaption>Figura 28. SD10 · Eliminar celda.</figcaption></figure>
+
+<h2 style="break-before:page">2.6 Diagrama de componentes de las iteraciones 1, 2 y 3</h2>
+<figure data-fig="componentes"><img class="diagrama" src="../img/staruml/diagrama_de_componentes_actualizado.png" style="max-height:14.2cm"><figcaption>Figura 29. Diagrama de componentes actualizado (StarUML). <span class="leyenda-color" style="background:#fff"></span>iteración 1 <span class="leyenda-color" style="background:#fff6d6"></span>iteración 2 <span class="leyenda-color" style="background:#dff3e4"></span>nuevos o ampliados en la iteración 3.</figcaption></figure>
+</div>
+<p>El diagrama muestra las tres capas del sistema. La capa de <b>presentación</b> tiene los controladores y las pantallas que ve el usuario en el navegador. Cada controlador usa la interfaz de su servicio (<i>IAutenticacion, IParqueo, IVehiculos, IClientes, ICeldas, IUsuarios</i> y la nueva <i>IPagos</i>), que están en la capa de <b>lógica de negocio</b>. Los servicios usan los repositorios de la capa de <b>acceso a datos</b>, que son los que se conectan con SQLite. Para la iteración 3 se agregó una columna completa (controlador, interfaz, servicio y repositorios de pagos) y no fue necesario cambiar las interfaces que ya existían.</p>
+<table>
+  <tr><th style="width:27%">Componente</th><th>Responsabilidad</th><th style="width:15%">Iteración</th></tr>
+  <tr><td>AuthController / AuthService</td><td>Inicio y cierre de sesión y control de acceso por rol.</td><td>1 (ajustado en 2)</td></tr>
+  <tr><td>ParqueoController / ParqueoService</td><td>Entradas, salidas, novedades, tablero e historial. Exige mensualidad vigente, que ahora amplían los pagos.</td><td>1 (ajustado en 2)</td></tr>
+  <tr><td>VehiculoController / VehiculoService</td><td>Registro de vehículos de mensualidad; ahora genera el recibo del primer pago.</td><td>1 (ampliado en 2 y 3)</td></tr>
+  <tr><td>UsuarioController / UsuarioService</td><td>Gestión de usuarios del sistema y contraseñas.</td><td>2</td></tr>
+  <tr><td>ClienteController / ClienteService</td><td>Gestión de clientes; el detalle incluye el estado de cuenta.</td><td>2 (ajustado en 3)</td></tr>
+  <tr><td>CeldaController / CeldaService</td><td>Creación, edición, mantenimiento, eliminación y consulta de celdas.</td><td>2</td></tr>
+  <tr><td><b>PagoController / PagoService</b></td><td>Consulta del valor a pagar, registro de pagos, recibos, anulaciones, historial, cartera, cierre de caja y tarifas.</td><td><b>3</b></td></tr>
+  <tr><td><b>PagoRepository, TarifaRepository</b></td><td>Acceso a las tablas <code>pago</code> y <code>tarifa</code>; totales por medio y por cajero; estado de pago de los vehículos.</td><td><b>3</b></td></tr>
+  <tr><td>MensualidadRepository</td><td>Períodos pagados de cada vehículo; nuevos métodos para obtener el último período y retirarlo al anular.</td><td>1 (ampliado en 3)</td></tr>
+  <tr><td>Vistas Jinja2 + CSS/JS</td><td>Seis pantallas de pagos, sección Pagos del menú y cálculo en vivo del total.</td><td>1, 2 y 3</td></tr>
+  <tr><td>models.py / db.py</td><td>Entidades <code>Pago</code> y <code>Tarifa</code>; creación del esquema, datos de ejemplo y migración automática de bases de datos anteriores.</td><td>1 (ampliado en 2 y 3)</td></tr>
+</table>
+
+<h2 style="break-before:page">2.7 Plan de pruebas resumido · Gestión de pagos</h2>
+<table>
+  <tr><th style="width:24%">Proyecto</th><td>Autos Colombia · Sistema de gestión de parqueadero por mensualidad</td></tr>
+  <tr><th>Iteración / versión</th><td>Iteración 3 · Gestión de pagos</td></tr>
+  <tr><th>Responsable</th><td>David Santiago Cantor Torres</td></tr>
+  <tr><th>Fecha de ejecución</th><td>22 de noviembre de 2026</td></tr>
+</table>
+<h3>1. Objetivo y alcance</h3>
+<p>El objetivo es comprobar que la gestión de pagos cumple los requerimientos RF36 a RF48 y las reglas de negocio RN11 a RN18, y que lo hecho en las iteraciones 1 y 2 sigue funcionando. <b>Se prueba:</b> las reglas de negocio de <code>PagoService</code>, el cálculo de fechas, las restricciones de la base de datos, las pantallas, los permisos por rol y la actualización de una base de datos anterior. <b>No se prueba:</b> pagos en línea con bancos o pasarelas (los pagos se reciben en la portería y solo se registran), pruebas de carga ni navegadores antiguos.</p>
+<h3>2. Estrategia</h3>
+<table>
+  <tr><th style="width:24%">Tipo de prueba</th><th>Cómo se realiza</th></tr>
+  <tr><td>Unitarias de servicio</td><td>Cada regla de negocio se prueba directamente en <code>PagoService</code> usando <code>unittest</code> y una base de datos en memoria. Para las fechas se usaron casos fijos como fin de mes, año bisiesto y cambio de año.</td></tr>
+  <tr><td>Integridad de datos</td><td>Se intenta guardar pagos incorrectos directamente en la base de datos para comprobar que no los acepta.</td></tr>
+  <tr><td>Integración web</td><td>Con el cliente de pruebas de Flask se hace el recorrido completo como lo haría un usuario: consultar, pagar, ver el recibo, ingresar el vehículo, hacer el cierre de caja, cambiar la tarifa y anular.</td></tr>
+  <tr><td>Seguridad</td><td>Se intenta anular un pago y cambiar tarifas con un usuario operador, y entrar a las pantallas sin iniciar sesión.</td></tr>
+  <tr><td>Regresión</td><td>Se vuelven a ejecutar las 37 pruebas de las iteraciones 1 y 2 para confirmar que nada se dañó.</td></tr>
+  <tr><td>Exploratoria</td><td>Se revisaron las pantallas una por una en Microsoft Edge (son las capturas de la sección 2.4).</td></tr>
+</table>
+<h3>3. Ambiente y datos de prueba</h3>
+<p>Windows 11, Python 3.11.2, Flask 3.1.2, SQLite 3.39.4, Microsoft Edge. Datos de ejemplo de <code>database/seed.sql</code>: 5 clientes, 5 vehículos con una mensualidad cada uno (QRS234 vencida hace 30 días; las demás vencen en 15 a 28 días), un recibo por cada mensualidad, tarifas de $ 180.000 (carro) y $ 90.000 (moto) y los usuarios <code>admin</code>, <code>operador</code> y <code>ltorres</code>.</p>
+<h3>4. Criterios</h3>
+<p><b>Para empezar las pruebas:</b> la aplicación debe iniciar y tener cargados los datos de ejemplo. <b>Para aprobar la iteración:</b> todos los casos de prioridad alta deben pasar, no puede fallar ninguna prueba de las iteraciones 1 y 2 y no puede quedar ningún defecto grave sin corregir. <b>Las pruebas se suspenden</b> si la aplicación no inicia o no se puede actualizar la base de datos.</p>
+<h3>5. Casos de prueba y resultados</h3>
+<table class="tabla-cp">
+  <tr><th style="width:7%">ID</th><th style="width:10%">HU / requisito</th><th style="width:17%">Caso y precondición</th><th style="width:20%">Datos y pasos</th><th style="width:21%">Resultado esperado</th><th style="width:14%">Resultado obtenido</th><th style="width:11%">Estado</th></tr>
+  <tr><td><b>CP-01</b></td><td>HU24 · RF36, RF38</td><td><b>Consultar valor a pagar</b><br><span class='meta'>ABC123 (carro) con mensualidad vigente hasta hoy + 20 días.</span></td><td>Consultar la placa «abc-123» para 1 mes.</td><td>Tarifa y total $ 180.000; el período empieza en hoy + 21 días y termina un mes después. No se guarda nada.</td><td>Igual al esperado<br><span class='meta'><code>test_cotizar_mensualidad_vigente</code></span></td><td><b class='ok'>Aprobado</b></td></tr>
+<tr><td><b>CP-02</b></td><td>HU25 · RF37, RN11</td><td><b>Pago en efectivo de mensualidad vigente</b><br><span class='meta'>ABC123 vigente.</span></td><td>Registrar 1 mes en efectivo como operador.</td><td>Pago VIGENTE por $ 180.000 sin referencia, a nombre del operador; la mensualidad se amplía sin perder días.</td><td>Igual al esperado<br><span class='meta'><code>test_pago_en_efectivo_amplia_la_vigencia</code></span></td><td><b class='ok'>Aprobado</b></td></tr>
+<tr><td><b>CP-03</b></td><td>HU25 · RF37, RN11</td><td><b>Pago de mensualidad vencida habilita la entrada</b><br><span class='meta'>QRS234 vencida hace 30 días; su entrada se rechaza.</span></td><td>Registrar 1 mes en efectivo y luego la entrada del vehículo.</td><td>El período empieza hoy (no en la fecha vencida) y la entrada se registra.</td><td>Igual al esperado<br><span class='meta'><code>test_pago_de_mensualidad_vencida_habilita_la_entrada</code></span></td><td><b class='ok'>Aprobado</b></td></tr>
+<tr><td><b>CP-04</b></td><td>HU25 · RF38, RN13</td><td><b>Pago de varios meses</b><br><span class='meta'>Moto XYZ78D vigente; tarifa de moto $ 90.000.</span></td><td>Registrar 3 meses con tarjeta, referencia «AP-774512».</td><td>Valor $ 270.000; el período cubre exactamente 3 meses a partir del día siguiente al vencimiento.</td><td>Igual al esperado<br><span class='meta'><code>test_pago_de_varios_meses</code></span></td><td><b class='ok'>Aprobado</b></td></tr>
+<tr><td><b>CP-05</b></td><td>HU25 · RN12</td><td><b>Meses inválidos y anticipo máximo</b><br><span class='meta'>ABC123 vigente.</span></td><td>Pagar 0, 13, vacío y «dos» meses; pagar 11 meses y luego 1 mes más.</td><td>Los valores inválidos se rechazan; se aceptan 11 meses y el siguiente se rechaza por superar 12 meses por adelantado.</td><td>Igual al esperado<br><span class='meta'><code>test_meses_invalidos_y_anticipo_maximo</code></span></td><td><b class='ok'>Aprobado</b></td></tr>
+<tr><td><b>CP-06</b></td><td>HU25 · RF39, RN14</td><td><b>Medio de pago y referencia</b><br><span class='meta'>ABC123 vigente.</span></td><td>Medio «CHEQUE»; transferencia sin referencia, con «ab» y con símbolos; luego « trf 99 12 ».</td><td>Se rechazan el medio desconocido y las referencias inválidas; la válida se guarda como «TRF9912».</td><td>Igual al esperado<br><span class='meta'><code>test_medio_de_pago_y_referencia</code></span></td><td><b class='ok'>Aprobado</b></td></tr>
+<tr><td><b>CP-07</b></td><td>HU25 · RF39, RN14</td><td><b>Referencia duplicada</b><br><span class='meta'>Pago de ABC123 por billetera con «NEQ5550001».</span></td><td>Registrar a JKL456 la misma referencia por billetera; luego por transferencia.</td><td>El duplicado se rechaza indicando el recibo y JKL456 no cambia; con otro medio sí se acepta.</td><td>Igual al esperado<br><span class='meta'><code>test_referencia_duplicada_no_registra_dos_veces</code></span></td><td><b class='ok'>Aprobado</b></td></tr>
+<tr><td><b>CP-08</b></td><td>HU24 · RN15</td><td><b>Vehículo o cliente no válidos</b><br><span class='meta'>Datos de ejemplo.</span></td><td>Placa «12AB»; placa ZZZ999 no registrada; desactivar al cliente de ABC123 y cobrarle.</td><td>Los tres casos se rechazan con su mensaje (formato, no registrado, cliente inactivo).</td><td>Igual al esperado<br><span class='meta'><code>test_rechaza_placa_invalida_no_registrada_o_cliente_inactivo</code></span></td><td><b class='ok'>Aprobado</b></td></tr>
+<tr><td><b>CP-09</b></td><td>RF38 · RNF21</td><td><b>Períodos en fin de mes</b><br><span class='meta'>Fechas fijas.</span></td><td>Sumar meses al 31 de enero (año normal y bisiesto), cruzar de año; pagar 1 mes el 31/01/2027.</td><td>31 ene + 1 mes = 28 o 29 feb; nov + 3 = feb del año siguiente; el pago cubre del 31/01 al 27/02.</td><td>Igual al esperado<br><span class='meta'><code>test_calculo_de_periodos_en_fin_de_mes</code></span></td><td><b class='ok'>Aprobado</b></td></tr>
+<tr><td><b>CP-10</b></td><td>HU32 · RF46, RN16, RN18</td><td><b>Anular pago</b><br><span class='meta'>Pago de 2 meses de ABC123.</span></td><td>Anular con motivo «error»; con motivo válido; anular de nuevo; anular el recibo 9999.</td><td>Motivo corto rechazado; queda ANULADO con responsable, fecha y motivo; la vigencia vuelve a la anterior y no suma en el recaudo.</td><td>Igual al esperado<br><span class='meta'><code>test_anular_pago_retira_el_periodo</code></span></td><td><b class='ok'>Aprobado</b></td></tr>
+<tr><td><b>CP-11</b></td><td>HU32 · RN17</td><td><b>Solo se anula el último pago</b><br><span class='meta'>Dos pagos seguidos de ABC123.</span></td><td>Anular el primero; luego el segundo y después el primero.</td><td>El primero se rechaza indicando el recibo posterior; en orden inverso ambos se anulan.</td><td>Igual al esperado<br><span class='meta'><code>test_solo_se_anula_el_ultimo_pago_del_vehiculo</code></span></td><td><b class='ok'>Aprobado</b></td></tr>
+<tr><td><b>CP-12</b></td><td>HU32 · RN17</td><td><b>No anular con el vehículo dentro</b><br><span class='meta'>QRS234 pagó hoy y está dentro.</span></td><td>Anular su pago; registrar la salida y anular; registrar la entrada.</td><td>Dentro: se rechaza. Tras la salida se anula y la entrada vuelve a rechazarse por falta de mensualidad.</td><td>Igual al esperado<br><span class='meta'><code>test_no_anula_pago_vigente_con_vehiculo_dentro</code></span></td><td><b class='ok'>Aprobado</b></td></tr>
+<tr><td><b>CP-13</b></td><td>HU32 · RN14</td><td><b>Reutilizar referencia de pago anulado</b><br><span class='meta'>Transferencia «TRF700100» registrada a la placa equivocada.</span></td><td>Anular ese pago y registrar la misma referencia a JKL456.</td><td>El nuevo pago se acepta.</td><td>Igual al esperado<br><span class='meta'><code>test_referencia_de_pago_anulado_se_puede_reutilizar</code></span></td><td><b class='ok'>Aprobado</b></td></tr>
+<tr><td><b>CP-14</b></td><td>HU33 · RF47, RN13</td><td><b>Actualizar tarifas</b><br><span class='meta'>Un pago de carro ya registrado a $ 180.000.</span></td><td>Cambiar carro a «195.000»; pagar 2 meses de otro carro; probar «abc», 500, 9.000.000 y tipo «BUS».</td><td>Nuevo pago por $ 390.000; el recibo anterior sigue en $ 180.000 y la moto en $ 90.000; queda el autor del cambio; lo inválido se rechaza.</td><td>Igual al esperado<br><span class='meta'><code>test_tarifas</code></span></td><td><b class='ok'>Aprobado</b></td></tr>
+<tr><td><b>CP-15</b></td><td>HU28 · RF42</td><td><b>Mensualidades por cobrar</b><br><span class='meta'>Datos de ejemplo.</span></td><td>Consultar hoy y con fecha hoy + 12 días; pagar QRS234; desactivar un cliente.</td><td>Hoy: QRS234 vencida, 4 al día, $ 180.000 por cobrar. En 12 días MNO901 por vencer (3 días). Tras pagar no hay vencidas; el cliente inactivo no aparece.</td><td>Igual al esperado<br><span class='meta'><code>test_cartera_clasifica_las_mensualidades</code></span></td><td><b class='ok'>Aprobado</b></td></tr>
+<tr><td><b>CP-16</b></td><td>HU30, HU31 · RF44, RF45</td><td><b>Cierre de caja</b><br><span class='meta'>Pagos de hoy: 2 en efectivo (operador), 1 transferencia y 1 tarjeta anulada (operadora).</span></td><td>Consultar el cierre general y el de la operadora; rango con fecha inicial posterior.</td><td>General: $ 540.000 en 3 pagos, $ 360.000 en efectivo, 1 anulado, totales por cajero. Operadora: $ 180.000. Rango inválido rechazado.</td><td>Igual al esperado<br><span class='meta'><code>test_cierre_de_caja</code></span></td><td><b class='ok'>Aprobado</b></td></tr>
+<tr><td><b>CP-17</b></td><td>RF48</td><td><b>Recibo al registrar un vehículo</b><br><span class='meta'>Sesión de administrador.</span></td><td>Registrar NVO123 con $ 180.000 por billetera «NEQ900800»; registrar otro con tarjeta sin referencia.</td><td>El primero queda con un recibo a nombre del administrador; el segundo se rechaza y el vehículo no se crea.</td><td>Igual al esperado<br><span class='meta'><code>test_registro_de_vehiculo_genera_recibo_de_la_primera_mensualidad</code></span></td><td><b class='ok'>Aprobado</b></td></tr>
+<tr><td><b>CP-18</b></td><td>RNF18</td><td><b>Control de acceso por rol</b><br><span class='meta'>Sesión de operador.</span></td><td>Abrir y enviar /pagos/tarifas; enviar /pagos/1/anular; abrir un recibo; consultar un pago; entrar sin sesión.</td><td>Tarifas y anulación redirigen sin ejecutar; el recibo no ofrece anular; el operador sí consulta y cobra; sin sesión se pide iniciar sesión.</td><td>Igual al esperado<br><span class='meta'><code>test_operador_no_anula_ni_cambia_tarifas</code></span></td><td><b class='ok'>Aprobado</b></td></tr>
+<tr><td><b>CP-19</b></td><td>HU24–HU33</td><td><b>Flujo web completo</b><br><span class='meta'>Sesión de operador y luego de administrador.</span></td><td>Consultar QRS234, pagar 2 meses por transferencia, ingresar el vehículo, recorrer las pantallas, cambiar tarifa y anular.</td><td>Recibo por $ 360.000 con su referencia; todas las pantallas responden; la tarifa cambia; la anulación exige motivo y la salida del vehículo.</td><td>Igual al esperado<br><span class='meta'><code>test_flujo_web_de_pagos</code></span></td><td><b class='ok'>Aprobado</b></td></tr>
+<tr><td><b>CP-20</b></td><td>RNF19</td><td><b>La base de datos protege los pagos</b><br><span class='meta'>Acceso directo a SQLite.</span></td><td>Insertar pagos con valor 0, 13 meses, medio «CHEQUE», tarjeta sin referencia y referencia repetida; anular sin motivo.</td><td>Todas las operaciones son rechazadas por las restricciones de la base de datos.</td><td>Igual al esperado<br><span class='meta'><code>test_la_base_de_datos_protege_los_pagos</code></span></td><td><b class='ok'>Aprobado</b></td></tr>
+<tr><td><b>CP-21</b></td><td>RNF24</td><td><b>Migración desde la iteración 2</b><br><span class='meta'>Base de datos sin las tablas pago y tarifa.</span></td><td>Iniciar la aplicación, abrir el historial y registrar un pago.</td><td>Se crean las tablas y las 2 tarifas, se conservan las 5 mensualidades y el pago genera su recibo.</td><td>Igual al esperado<br><span class='meta'><code>test_migracion_de_base_de_datos_de_la_iteracion_2</code></span></td><td><b class='ok'>Aprobado</b></td></tr>
+</table>
+<h3>6. Resumen de la ejecución</h3>
+<div class="resumen">
+  <div><b>21/21</b><span>casos de prueba aprobados</span></div>
+  <div><b>21</b><span>pruebas automatizadas nuevas</span></div>
+  <div><b>37/37</b><span>pruebas de regresión (iteraciones 1 y 2)</span></div>
+  <div><b>0</b><span>fallas en la última ejecución</span></div>
+</div>
+<p>Comando: <code>python -m unittest discover -s tests -t . -v</code> · 58 pruebas, todas aprobadas.</p>
+<h3>7. Defectos encontrados</h3>
+<table>
+  <tr><th style="width:9%">ID</th><th>Descripción</th><th style="width:13%">Severidad</th><th style="width:24%">Estado</th></tr>
+  <tr><td>DEF-02</td><td>La pantalla de cierre de caja no abría y mostraba un error. La causa era que el servicio y el controlador enviaban a la pantalla dos datos distintos con el mismo nombre (<code>medios</code>).</td><td>Alta</td><td>Corregido: se cambió el nombre a <code>medios_totales</code>. Se verifica en CP-16 y CP-19.</td></tr>
+  <tr><td>DEF-03</td><td>La prueba de actualización de la base de datos fallaba en Windows porque dejaba abierta la conexión y no se podía borrar el archivo temporal.</td><td>Baja (prueba)</td><td>Corregido: la prueba ahora cierra la conexión.</td></tr>
+  <tr><td>DEF-04</td><td>En el historial de pagos la fecha, el número de recibo y el período se partían en dos renglones y la tabla era difícil de leer.</td><td>Baja (visual)</td><td>Corregido: esas columnas ya no se parten.</td></tr>
+</table>
+
+<h2 style="break-before:page">2.8 Código fuente y repositorio en GitHub</h2>
+<p><b>URL del repositorio en GitHub:</b> <a href="https://github.com/Santiago071007/Iteraci-n-1">https://github.com/Santiago071007/Iteraci-n-1</a></p>
+<p>El código de esta entrega quedó en la rama <code>main</code>, en el commit «Iteración 3: gestión de pagos»: <a href="https://github.com/Santiago071007/Iteraci-n-1/commits/main">https://github.com/Santiago071007/Iteraci-n-1/commits/main</a></p>
+<p>En el repositorio está el código de las tres iteraciones, la base de datos de ejemplo, las pruebas, el proyecto de StarUML (<code>docs/AutosColombia.mdj</code>), las imágenes de los diagramas y de los mockups, y este informe.</p>
+<h3>Cambios de la iteración 3</h3>
+<table>
+  <tr><th style="width:36%">Archivo</th><th>Cambio</th></tr>
+  <tr><td><code>services/pago_service.py</code></td><td>Nuevo. Consulta del valor a pagar, registro y anulación de pagos, tarifas, cartera y cierre de caja; cálculo de períodos por meses.</td></tr>
+  <tr><td><code>controllers/pago_controller.py</code></td><td>Nuevo. Rutas <code>/pagos</code> (historial), <code>/pagos/nuevo</code>, <code>/pagos/&lt;id&gt;</code> (recibo), <code>/pagos/&lt;id&gt;/anular</code>, <code>/pagos/cartera</code>, <code>/pagos/caja</code> y <code>/pagos/tarifas</code>; filtro de moneda.</td></tr>
+  <tr><td><code>repositories/pago_repository.py</code></td><td>Nuevo. <code>PagoRepository</code> y <code>TarifaRepository</code>.</td></tr>
+  <tr><td><code>repositories/mensualidad_repository.py</code></td><td>Métodos <code>ultima()</code> y <code>eliminar()</code>.</td></tr>
+  <tr><td><code>services/vehiculo_service.py</code>, <code>controllers/vehiculo_controller.py</code></td><td>El registro de un vehículo genera el recibo de su primera mensualidad y usa la tarifa vigente como valor sugerido.</td></tr>
+  <tr><td><code>controllers/cliente_controller.py</code></td><td>El detalle del cliente incluye su estado de cuenta.</td></tr>
+  <tr><td><code>templates/pagos/</code></td><td>Seis vistas nuevas: registrar pago, recibo, historial, mensualidades por cobrar, cierre de caja y tarifas. Menú con la sección Pagos.</td></tr>
+  <tr><td><code>models.py</code>, <code>database/schema.sql</code>, <code>db.py</code></td><td>Entidades y tablas <code>pago</code> y <code>tarifa</code> con sus restricciones e índices; recibos de ejemplo; migración automática.</td></tr>
+  <tr><td><code>static/js/app.js</code>, <code>static/css/app.css</code>, <code>iconos.py</code></td><td>Cálculo en vivo del total y del período, atajo Alt + P, estilos e íconos de pagos.</td></tr>
+  <tr><td><code>tests/test_pagos.py</code></td><td>Nuevo. 21 pruebas que automatizan los casos CP-01 a CP-21.</td></tr>
+  <tr><td><code>docs/generador/</code></td><td><code>staruml_iter3.js</code>, <code>informe_iter3.py</code> y capturas 28 a 39; el exportador de StarUML ahora funciona con StarUML 7.</td></tr>
+</table>
+<h3>Ejecución</h3>
+<pre>python -m venv .venv
+.venv\Scripts\activate          (Windows)   |   source .venv/bin/activate   (Linux/Mac)
+pip install -r requirements.txt
+flask --app app run             → abrir http://127.0.0.1:5000
+Usuarios de prueba:  admin / admin123   ·   operador / operador123   ·   ltorres / Turno2026</pre>
+<h3>Fragmento: registro del pago (<code>services/pago_service.py</code>)</h3>
+<pre>    def registrar_pago(self, placa: str, meses, medio: str, referencia: Optional[str], usuario_id: int,
+                       ahora: Optional[datetime] = None) -&gt; Pago:
+        ahora = ahora or datetime.now()
+        c = self.cotizar(placa, meses, ahora.date())
+        medio, referencia = validar_medio(medio, referencia)
+        repetido = referencia and self.pagos.referencia_en_uso(medio, referencia)
+        if repetido:
+            raise ReglaNegocioError(
+                f&quot;La referencia {referencia} ya fue registrada en el recibo N.º {repetido.id}; el pago no se duplicó.&quot;
+            )
+        with self.db:
+            mensualidad_id = self.mensualidades.crear(c[&quot;vehiculo&quot;].id, c[&quot;inicio&quot;], c[&quot;fin&quot;], c[&quot;valor&quot;])
+            pago_id = self.pagos.crear(
+                mensualidad_id, c[&quot;vehiculo&quot;].id, ahora.strftime(FORMATO_FECHA_HORA), c[&quot;meses&quot;],
+                c[&quot;inicio&quot;], c[&quot;fin&quot;], c[&quot;valor&quot;], medio, referencia, usuario_id,
+            )
+        return self.pagos.obtener(pago_id)</pre>
+<h3>Fragmento: anulación del pago (<code>services/pago_service.py</code>)</h3>
+<pre>    def anular_pago(self, pago_id: int, motivo: str, usuario_id: int, ahora: Optional[datetime] = None) -&gt; Pago:
+        &quot;&quot;&quot;Anula un recibo y retira el período que había pagado. El recibo se conserva como ANULADO.&quot;&quot;&quot;
+        ahora = ahora or datetime.now()
+        pago = self.pagos.obtener(pago_id)
+        if not pago:
+            raise ReglaNegocioError(&quot;El recibo no existe.&quot;)
+        if not pago.esta_vigente():
+            raise ReglaNegocioError(f&quot;El recibo N.º {pago.id} ya está anulado.&quot;)
+        motivo = &quot; &quot;.join((motivo or &quot;&quot;).split())
+        if len(motivo) &lt; 10:
+            raise ReglaNegocioError(&quot;Explique el motivo de la anulación (mínimo 10 caracteres).&quot;)
+        posterior = self.pagos.posterior_vigente(pago.vehiculo_id, pago.periodo_fin)
+        if posterior:
+            raise ReglaNegocioError(
+                f&quot;El vehículo tiene un pago posterior (recibo N.º {posterior.id}); anule primero ese recibo.&quot;
+            )
+        hoy = ahora.date().isoformat()
+        cubre_hoy = pago.periodo_inicio &lt;= hoy &lt;= pago.periodo_fin
+        if cubre_hoy and self.registros.abierto_por_vehiculo(pago.vehiculo_id):
+            raise ReglaNegocioError(
+                &quot;El vehículo está dentro del parqueadero con este período; registre la salida antes de anular.&quot;
+            )
+        with self.db:
+            if pago.mensualidad_id:
+                self.mensualidades.eliminar(pago.mensualidad_id)
+            self.pagos.anular(pago.id, ahora.strftime(FORMATO_FECHA_HORA), usuario_id, motivo[:200])
+        return self.pagos.obtener(pago.id)</pre>
+
+<h1>3. Conclusiones</h1>
+<ul>
+  <li><p>Con la iteración 3 el sistema quedó completo en lo principal: el cliente se registra, paga, entra y sale del parqueadero y vuelve a pagar. Antes la mensualidad era solo una fecha que se escribía a mano; ahora depende de un pago registrado y eso le da más orden al parqueadero.</p></li>
+  <li><p>Dejar que el sistema calcule el valor y las fechas evita los errores que se cometen al hacer las cuentas a mano, como cobrar una tarifa que no es o quitarle días al cliente que paga antes de que se le venza. Esta parte fue la que más trabajo dio, sobre todo por los meses que tienen menos días y los años bisiestos.</p></li>
+  <li><p>Se aprendió que la información de dinero no se debe borrar. Por eso un pago no se puede editar ni eliminar, solo anular, y queda guardado quién lo anuló, cuándo y por qué. Así las cuentas del cierre de caja son confiables.</p></li>
+  <li><p>Trabajar por capas desde la iteración 1 facilitó esta entrega, porque se pudo agregar todo lo de pagos sin dañar lo que ya funcionaba. Esto se nota al actualizar los diagramas de secuencia y de componentes: solo hubo que agregar lo nuevo.</p></li>
+  <li><p>Las pruebas automatizadas fueron muy útiles. Se escribieron 21 pruebas nuevas, con las que se encontraron tres errores antes de entregar, y al ejecutar las 37 pruebas anteriores se confirmó que las iteraciones 1 y 2 siguen funcionando. Como mejoras para más adelante se podría agregar el pago en línea, enviar el recibo y los recordatorios de vencimiento al correo del cliente y exportar el recaudo a Excel.</p></li>
+</ul>
+
+<h1 style="break-before:auto;margin-top:30px">4. Referencias</h1>
+<ul>
+  <li>Pallets Projects. <i>Flask Documentation (3.1.x)</i>. https://flask.palletsprojects.com/</li>
+  <li>SQLite. <i>CREATE TABLE: CHECK constraints</i> y <i>Partial Indexes</i>. https://www.sqlite.org/</li>
+  <li>MKLabs. <i>StarUML Documentation</i>. https://docs.staruml.io/</li>
+  <li>Object Management Group. <i>Unified Modeling Language (UML) Specification, v2.5.1</i>. 2017.</li>
+  <li>Cohn, M. <i>User Stories Applied: For Agile Software Development</i>. Addison-Wesley, 2004.</li>
+  <li>Sommerville, I. <i>Ingeniería de Software</i>. 9.ª ed. Pearson, 2011.</li>
+  <li>ISO/IEC/IEEE 29119-3:2021. <i>Software and systems engineering — Software testing — Part 3: Test documentation</i>.</li>
+</ul>
+</body>
+</html>

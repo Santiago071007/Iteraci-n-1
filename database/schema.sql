@@ -1,5 +1,7 @@
 PRAGMA foreign_keys = ON;
 
+DROP TABLE IF EXISTS pago;
+DROP TABLE IF EXISTS tarifa;
 DROP TABLE IF EXISTS novedad;
 DROP TABLE IF EXISTS registro_parqueo;
 DROP TABLE IF EXISTS mensualidad;
@@ -77,3 +79,39 @@ CREATE TABLE novedad (
     tipo         VARCHAR(20)  NOT NULL CHECK (tipo IN ('DANO', 'OBJETO', 'INCIDENTE', 'OTRO')),
     descripcion  VARCHAR(500) NOT NULL
 );
+
+-- [iteracion-3] Gestión de pagos. db.migrar() ejecuta este bloque sobre bases de datos anteriores.
+CREATE TABLE tarifa (
+    tipo_vehiculo   VARCHAR(10)   PRIMARY KEY CHECK (tipo_vehiculo IN ('CARRO', 'MOTO')),
+    valor_mensual   DECIMAL(12,2) NOT NULL CHECK (valor_mensual > 0),
+    actualizado_en  DATETIME      NOT NULL DEFAULT (datetime('now', 'localtime')),
+    usuario_id      INTEGER       REFERENCES usuario (id)
+);
+
+INSERT OR IGNORE INTO tarifa (tipo_vehiculo, valor_mensual) VALUES ('CARRO', 180000), ('MOTO', 90000);
+
+-- El id del pago es el número del recibo. Un pago no se borra: se anula y conserva quién, cuándo y por qué.
+CREATE TABLE pago (
+    id                INTEGER PRIMARY KEY AUTOINCREMENT,
+    mensualidad_id    INTEGER       REFERENCES mensualidad (id) ON DELETE SET NULL,
+    vehiculo_id       INTEGER       NOT NULL REFERENCES vehiculo (id) ON DELETE RESTRICT,
+    fecha             DATETIME      NOT NULL,
+    meses             INTEGER       NOT NULL CHECK (meses BETWEEN 1 AND 12),
+    periodo_inicio    DATE          NOT NULL,
+    periodo_fin       DATE          NOT NULL,
+    valor             DECIMAL(12,2) NOT NULL CHECK (valor > 0),
+    medio             VARCHAR(15)   NOT NULL CHECK (medio IN ('EFECTIVO', 'TRANSFERENCIA', 'TARJETA', 'BILLETERA')),
+    referencia        VARCHAR(30),
+    usuario_id        INTEGER       NOT NULL REFERENCES usuario (id),
+    estado            VARCHAR(10)   NOT NULL DEFAULT 'VIGENTE' CHECK (estado IN ('VIGENTE', 'ANULADO')),
+    anulado_en        DATETIME,
+    anulado_por       INTEGER       REFERENCES usuario (id),
+    motivo_anulacion  VARCHAR(200),
+    CHECK (periodo_fin >= periodo_inicio),
+    CHECK (medio = 'EFECTIVO' OR referencia IS NOT NULL),
+    CHECK (estado = 'VIGENTE' OR (anulado_en IS NOT NULL AND anulado_por IS NOT NULL AND motivo_anulacion IS NOT NULL))
+);
+
+CREATE UNIQUE INDEX ux_pago_referencia ON pago (medio, referencia) WHERE referencia IS NOT NULL AND estado = 'VIGENTE';
+CREATE INDEX ix_pago_fecha    ON pago (fecha);
+CREATE INDEX ix_pago_vehiculo ON pago (vehiculo_id);

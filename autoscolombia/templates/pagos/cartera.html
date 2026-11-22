@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block titulo %}Mensualidades por cobrar{% endblock %}
+{% block subtitulo %}Estado de pago de los vehículos de clientes activos{% endblock %}
+{% block contenido %}
+<div class="grid grid-4" style="margin-bottom:22px">
+  <div class="kpi"><div class="kpi-icono rojo">{{ icono('alerta', 24) }}</div>
+    <div><div class="valor">{{ vencidas|length }}</div><div class="etiqueta">Vencidas o sin pago</div></div></div>
+  <div class="kpi"><div class="kpi-icono amarillo">{{ icono('calendario', 24) }}</div>
+    <div><div class="valor">{{ por_vencer|length }}</div><div class="etiqueta">Vencen en {{ dias_aviso }} días o menos</div></div></div>
+  <div class="kpi"><div class="kpi-icono verde">{{ icono('check', 24) }}</div>
+    <div><div class="valor">{{ al_dia|length }}</div><div class="etiqueta">Al día</div></div></div>
+  <div class="kpi"><div class="kpi-icono azul">{{ icono('pago', 24) }}</div>
+    <div><div class="valor dinero">{{ por_cobrar|pesos }}</div><div class="etiqueta">Por cobrar (un mes c/u)</div></div></div>
+</div>
+<div class="tarjeta" id="tabla-cartera">
+  <div class="tarjeta-cab">
+    <div class="buscador" style="flex:1"><div class="con-icono">{{ icono('buscar', 16) }}<input placeholder="Buscar placa, cliente o estado" data-filtrar="#tabla-cartera" aria-label="Buscar"></div></div>
+    <div class="acciones"><a class="btn" href="{{ url_for('pagos.nuevo') }}">{{ icono('mas', 16) }} Registrar pago</a></div>
+  </div>
+  <div class="tabla-envoltura">
+  <table>
+    <thead><tr><th>Placa</th><th>Cliente</th><th>Paga hasta</th><th>Estado</th><th>Último pago</th><th class="valor">Tarifa</th><th></th></tr></thead>
+    <tbody>
+    {% for grupo, filas in [('vencida', vencidas), ('por vencer', por_vencer), ('al día', al_dia)] %}
+    {% for v in filas %}
+    <tr data-texto="{{ v.placa }} {{ v.cliente }} {{ grupo }}">
+      <td><span class="placa">{{ v.placa }}</span><span class="secundario">{{ 'Carro' if v.tipo == 'CARRO' else 'Moto' }} {{ v.marca or '' }}</span></td>
+      <td><a href="{{ url_for('clientes.detalle', cliente_id=v.cliente_id) }}">{{ v.cliente }}</a><span class="secundario">{{ v.telefono or 'sin teléfono' }}</span></td>
+      <td>{{ v.vence or '—' }}{% if v.dentro %}<span class="secundario">Vehículo dentro</span>{% endif %}</td>
+      <td>{% if v.dias is none %}<span class="etq mal">Sin mensualidad</span>
+          {% elif v.dias < 0 %}<span class="etq mal">Vencida hace {{ -v.dias }} día(s)</span>
+          {% elif v.dias == 0 %}<span class="etq info">Vence hoy</span>
+          {% elif grupo == 'por vencer' %}<span class="etq info">Vence en {{ v.dias }} día(s)</span>
+          {% else %}<span class="etq ok">Al día · {{ v.dias }} días</span>{% endif %}</td>
+      <td>{{ v.ultimo_pago[:10] if v.ultimo_pago else '—' }}</td>
+      <td class="valor">{{ v.tarifa|pesos }}</td>
+      <td style="text-align:right"><a class="btn peq {{ 'secundario' if grupo == 'al día' else 'exito' }}" href="{{ url_for('pagos.nuevo', placa=v.placa) }}">{{ icono('pago', 14) }} {{ 'Pagar' if grupo == 'al día' else 'Cobrar' }}</a></td>
+    </tr>
+    {% endfor %}
+    {% endfor %}
+    {% if not (vencidas or por_vencer or al_dia) %}
+    <tr><td colspan="7" class="vacio">{{ icono('vehiculos', 28) }}Aún no hay vehículos registrados.</td></tr>
+    {% endif %}
+    <tr class="sin-resultados" hidden><td colspan="7" class="vacio">Sin resultados para la búsqueda.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="ayuda">Un vehículo con la mensualidad vencida no puede ingresar al parqueadero hasta que se registre su pago. No se incluyen los vehículos de clientes inactivos.</p>
+</div>
+{% endblock %}

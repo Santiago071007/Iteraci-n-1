@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block titulo %}Registrar pago{% endblock %}
+{% block subtitulo %}Recibe el pago de una mensualidad y amplía su vigencia{% endblock %}
+{% block contenido %}
+<div class="grid grid-5-7">
+  <div class="apilado" style="align-self:start">
+    <div class="tarjeta">
+      <div class="tarjeta-cab"><h2>{{ icono('buscar') }} Vehículo que paga</h2></div>
+      <form method="get">
+        <label for="placa">Placa del vehículo</label>
+        <div class="placa-campo">
+          <input id="placa" name="placa" class="placa-input" maxlength="7" placeholder="ABC123" autocomplete="off"
+                 data-estado="placa-estado" value="{{ placa }}" required {{ 'autofocus' if not c }}>
+        </div>
+        <div id="placa-estado" class="placa-estado">Carro ABC123 · Moto ABC12D</div>
+        <button class="btn bloque {{ 'secundario' if c else 'grande' }}" style="margin-top:18px">{{ icono('buscar', 16) }} Consultar valor a pagar</button>
+      </form>
+    </div>
+    <div class="tarjeta" id="tabla-pendientes">
+      <div class="tarjeta-cab"><h2>{{ icono('calendario') }} Pendientes de pago <span class="etq {{ 'mal' if pendientes.vencidas else 'neutro' }}">{{ pendientes.vencidas|length + pendientes.por_vencer|length }}</span></h2>
+        <div class="acciones"><a href="{{ url_for('pagos.cartera') }}">Ver todas</a></div></div>
+      <div class="tabla-envoltura">
+      <table>
+        <tbody>
+        {% for v in pendientes.vencidas + pendientes.por_vencer %}
+        <tr>
+          <td><span class="placa mini">{{ v.placa }}</span><span class="secundario">{{ v.cliente }}</span></td>
+          <td>{% if v.dias is none %}<span class="etq mal">Sin mensualidad</span>{% elif v.dias < 0 %}<span class="etq mal">Vencida hace {{ -v.dias }} d</span>{% elif v.dias == 0 %}<span class="etq info">Vence hoy</span>{% else %}<span class="etq info">Vence en {{ v.dias }} d</span>{% endif %}</td>
+          <td style="text-align:right"><a class="btn peq secundario" href="{{ url_for('pagos.nuevo', placa=v.placa) }}">Cobrar</a></td>
+        </tr>
+        {% else %}
+        <tr><td class="vacio">{{ icono('check', 28) }}Todas las mensualidades están al día.</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+
+  {% if c %}
+  <form method="post" class="tarjeta" style="align-self:start" data-pago data-tarifa="{{ c.tarifa }}" data-inicio="{{ c.inicio }}">
+    <div class="tarjeta-cab"><h2>{{ icono('pago') }} Pago de mensualidad</h2>
+      <div class="acciones">{% if c.vence is none %}<span class="etq mal">Sin mensualidad</span>{% elif c.vigente %}<span class="etq ok">Vigente hasta {{ c.vence }}</span>{% else %}<span class="etq mal">Vencida desde {{ c.vence }}</span>{% endif %}</div></div>
+    <input type="hidden" name="placa" value="{{ c.vehiculo.placa }}">
+    <div class="resumen-cliente">
+      <span class="placa">{{ c.vehiculo.placa }}</span>
+      <div class="datos-veh"><b>{{ c.cliente.nombres }}</b>
+        <span>{{ 'Carro' if c.vehiculo.tipo == 'CARRO' else 'Moto' }} {{ c.vehiculo.marca or '' }} {{ c.vehiculo.color or '' }} · CC {{ c.cliente.documento }}</span></div>
+      <div style="text-align:right"><b>{{ c.tarifa|pesos }}</b><span class="ayuda" style="display:block;margin:0">tarifa mensual</span></div>
+    </div>
+    <div class="grid grid-2" style="gap:14px">
+      <div class="campo"><label for="meses">Meses a pagar</label>
+        <select id="meses" name="meses">{% for n in range(1, max_meses + 1) %}<option value="{{ n }}" {{ 'selected' if n == c.meses }}>{{ n }} {{ 'mes' if n == 1 else 'meses' }}</option>{% endfor %}</select></div>
+      <div class="campo"><div class="etiqueta-campo">Período que se paga</div>
+        <div style="padding:10px 0;font-weight:600">{{ c.inicio }} &nbsp;→&nbsp; <span id="pago-hasta">{{ c.fin }}</span></div></div>
+    </div>
+    <div class="campo">
+      <div class="etiqueta-campo">Medio de pago</div>
+      <div class="pills">
+        {% for clave, nombre in medios.items() %}
+        <label class="pill"><input type="radio" name="medio" value="{{ clave }}" {{ 'checked' if (d.medio or 'EFECTIVO') == clave }}><span>{{ nombre }}</span></label>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="campo" id="bloque-referencia" {{ 'hidden' if (d.medio or 'EFECTIVO') == 'EFECTIVO' }}>
+      <label for="referencia">Referencia o número de aprobación</label>
+      <input id="referencia" name="referencia" maxlength="30" value="{{ d.referencia or '' }}" placeholder="Ej.: TRF48210" style="text-transform:uppercase" autocomplete="off">
+      <div class="ayuda">Aparece en el comprobante de la transferencia o del datáfono. No se puede usar dos veces.</div>
+    </div>
+    <div class="total-pago">
+      <div><small>Total a recibir</small><span id="pago-detalle">{{ c.meses }} {{ 'mes' if c.meses == 1 else 'meses' }} × {{ c.tarifa|pesos }}</span></div>
+      <b id="pago-total">{{ c.valor|pesos }}</b>
+    </div>
+    {% if c.vigente %}<p class="ayuda">La mensualidad aún está vigente: el nuevo período empieza al día siguiente de su vencimiento, sin perder días.</p>
+    {% else %}<p class="ayuda">La mensualidad no está vigente: el nuevo período empieza hoy y el vehículo podrá ingresar de inmediato.</p>{% endif %}
+    <div style="display:flex;gap:10px;margin-top:14px">
+      <button class="btn exito grande" style="flex:1">{{ icono('check') }} Registrar pago y generar recibo</button>
+      <a class="btn secundario grande" href="{{ url_for('pagos.nuevo') }}">Cancelar</a>
+    </div>
+  </form>
+  {% else %}
+  <div class="tarjeta" style="align-self:start">
+    <div class="tarjeta-cab"><h2>{{ icono('info') }} Cómo se registra un pago</h2></div>
+    <ol class="pasos">
+      <li><span class="num">1</span><div>Escriba la <b>placa</b> y consulte. El sistema muestra el cliente, la tarifa y hasta cuándo está paga la mensualidad.</div></li>
+      <li><span class="num">2</span><div>Elija cuántos <b>meses</b> paga el cliente. El período y el total se calculan solos con la tarifa vigente.</div></li>
+      <li><span class="num">3</span><div>Seleccione el <b>medio de pago</b>. Si no es efectivo, escriba la referencia del comprobante.</div></li>
+      <li><span class="num">4</span><div>Al registrar se genera el <b>recibo numerado</b> y la mensualidad queda ampliada de inmediato.</div></li>
+    </ol>
+    <div class="nota" style="margin-top:14px">{{ icono('info', 18) }}<div>Un pago registrado no se edita ni se borra. Si hubo un error, el administrador lo anula indicando el motivo y se registra de nuevo.</div></div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -112,7 +112,7 @@
   }
 
   function atajos() {
-    const rutas = { e: "/entrada", s: "/salida", n: "/novedades" };
+    const rutas = { e: "/entrada", s: "/salida", n: "/novedades", p: "/pagos/nuevo" };
     document.addEventListener("keydown", (ev) => {
       const ruta = ev.altKey && rutas[ev.key.toLowerCase()];
       if (ruta && document.body.dataset.sesion) {
@@ -156,7 +156,34 @@
     actualizar();
   }
 
+  function pagos() {
+    const form = document.querySelector("[data-pago]");
+    if (!form) return;
+    const tarifa = parseFloat(form.dataset.tarifa);
+    const inicio = form.dataset.inicio.split("-").map(Number);
+    const pesos = (v) => "$ " + Math.round(v).toLocaleString("es-CO");
+    const iso = (f) => f.getFullYear() + "-" + String(f.getMonth() + 1).padStart(2, "0") + "-" + String(f.getDate()).padStart(2, "0");
+    const actualizar = () => {
+      const meses = parseInt(form.meses.value, 10) || 1;
+      // Mismo cálculo del servidor: la misma fecha N meses después (ajustada al fin de mes) menos un día.
+      const indice = inicio[1] - 1 + meses;
+      const anio = inicio[0] + Math.floor(indice / 12), mes = indice % 12;
+      const dia = Math.min(inicio[2], new Date(anio, mes + 1, 0).getDate());
+      const fin = new Date(anio, mes, dia - 1);
+      document.getElementById("pago-total").textContent = pesos(tarifa * meses);
+      document.getElementById("pago-hasta").textContent = iso(fin);
+      document.getElementById("pago-detalle").textContent = meses + (meses === 1 ? " mes × " : " meses × ") + pesos(tarifa);
+      const efectivo = form.medio.value === "EFECTIVO";
+      document.getElementById("bloque-referencia").hidden = efectivo;
+      form.referencia.required = !efectivo;
+    };
+    form.addEventListener("input", actualizar);
+    form.addEventListener("change", actualizar);
+    actualizar();
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
+    pagos();
     confirmaciones();
     modoCeldas();
     reloj();

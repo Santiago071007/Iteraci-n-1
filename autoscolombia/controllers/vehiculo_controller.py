@@ -1,10 +1,11 @@
 from datetime import date, timedelta
 
-from flask import Blueprint, flash, redirect, render_template, request, url_for
+from flask import Blueprint, flash, g, redirect, render_template, request, url_for
 
 from ..db import get_db
-from ..repositories import ClienteRepository, VehiculoRepository
+from ..repositories import ClienteRepository, TarifaRepository, VehiculoRepository
 from ..services import ReglaNegocioError, VehiculoService
+from ..services.pago_service import MEDIOS_PAGO
 from .auth_controller import admin_requerido, login_requerido
 
 bp = Blueprint("vehiculos", __name__, url_prefix="/vehiculos")
@@ -23,16 +24,17 @@ def listar():
 @bp.route("/nuevo", methods=["GET", "POST"])
 @admin_requerido
 def nuevo():
+    tarifas = {t["tipo_vehiculo"]: int(t["valor_mensual"]) for t in TarifaRepository(get_db()).listar()}
     datos = request.form.to_dict() if request.method == "POST" else {
         "fecha_inicio": date.today().isoformat(),
         "fecha_fin": (date.today() + timedelta(days=30)).isoformat(),
-        "valor": "180000",
+        "valor": str(tarifas.get("CARRO", 180000)),
         "documento": request.args.get("documento", ""),
     }
     if request.method == "POST":
         try:
-            VehiculoService(get_db()).registrar(datos)
-            flash("Vehículo registrado.", "ok")
+            VehiculoService(get_db()).registrar(datos, g.usuario.id)
+            flash("Vehículo registrado; el pago de su primera mensualidad quedó en el historial de pagos.", "ok")
             cliente = ClienteRepository(get_db()).buscar_por_documento(request.args.get("documento", ""))
             if cliente:
                 return redirect(url_for("clientes.detalle", cliente_id=cliente.id))
@@ -40,4 +42,4 @@ def nuevo():
         except ReglaNegocioError as error:
             flash(str(error), "error")
     cliente = ClienteRepository(get_db()).buscar_por_documento(datos.get("documento") or "")
-    return render_template("vehiculos/nuevo.html", d=datos, cliente=cliente)
+    return render_template("vehiculos/nuevo.html", d=datos, cliente=cliente, medios=MEDIOS_PAGO, tarifas=tarifas)

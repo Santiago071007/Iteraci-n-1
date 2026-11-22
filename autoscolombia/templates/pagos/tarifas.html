@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block titulo %}Tarifas{% endblock %}
+{% block subtitulo %}Valor de la mensualidad por tipo de vehículo{% endblock %}
+{% block contenido %}
+<div class="grid grid-2">
+  {% for t in tarifas %}
+  <form method="post" class="tarjeta" data-confirmar="¿Actualizar la tarifa mensual de {{ tipos[t.tipo_vehiculo]|lower }}? Aplicará para los pagos nuevos.">
+    <div class="tarjeta-cab"><h2>{{ icono('carro' if t.tipo_vehiculo == 'CARRO' else 'moto') }} {{ tipos[t.tipo_vehiculo] }}</h2>
+      <div class="acciones"><span class="etq neutro">{{ t.vehiculos }} vehículo(s)</span></div></div>
+    <div class="tarifa-valor">{{ t.valor_mensual|pesos }} <small>/ mes</small></div>
+    <p class="ayuda">Última actualización: {{ t.actualizado_en[:16] }}{% if t.usuario %} · {{ t.usuario }}{% endif %}</p>
+    <input type="hidden" name="tipo" value="{{ t.tipo_vehiculo }}">
+    <div class="campo" style="margin-top:16px"><label for="valor-{{ t.tipo_vehiculo }}">Nueva tarifa mensual (COP)</label>
+      <input id="valor-{{ t.tipo_vehiculo }}" name="valor" type="number" min="10000" max="2000000" step="1000" required
+             value="{{ d.valor if d.tipo == t.tipo_vehiculo else t.valor_mensual|int }}"></div>
+    <button class="btn">{{ icono('check', 16) }} Actualizar tarifa</button>
+  </form>
+  {% endfor %}
+</div>
+<div class="nota" style="margin-top:22px">{{ icono('info', 18) }}<div>El cambio de tarifa <b>no modifica los pagos ya registrados</b>: cada recibo conserva el valor que se cobró. La nueva tarifa se usa para calcular los pagos que se registren a partir de ahora.</div></div>
+{% endblock %}
